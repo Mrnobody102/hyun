@@ -83,7 +83,7 @@ const CompanyProjects = () => {
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            Company Projects
+                            Main Projects
                         </span>
                     </h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>

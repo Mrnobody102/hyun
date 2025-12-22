@@ -92,7 +92,7 @@ const Hero = () => {
                         })} className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
                             Get In Touch
                         </button>
-                        <button onClick={() => document.querySelector('#projects').scrollIntoView({
+                        <button onClick={() => document.querySelector('#company-projects').scrollIntoView({
                             behavior: 'smooth'
                         })} className="px-8 py-4 border-2 border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-100 rounded-lg font-semibold hover:border-amber-500 hover:text-amber-600 dark:hover:border-amber-400 dark:hover:text-amber-300 hover:shadow-lg transition-all duration-300">
                             View Projects
