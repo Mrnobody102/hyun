@@ -154,7 +154,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
         { name: { en: 'Home', vi: 'Trang chủ' }, key: 'home', icon: Home },
         { name: { en: 'Skills & Expertise', vi: 'Kỹ năng & Chuyên môn' }, key: 'skills', icon: Zap },
         { name: { en: 'Projects', vi: 'Dự án' }, key: 'projects', icon: Briefcase },
-        { name: { en: '🐧 My Little Startup', vi: '🐧 Startup nhỏ của tôi' }, key: 'personal-projects', icon: null },
+        { name: { en: 'My Little Startup', vi: 'Dự án cá nhân' }, key: 'personal-projects', icon: null },
         { name: { en: 'Articles', vi: 'Bài viết' }, key: 'articles', icon: BookOpen },
         { name: { en: 'Contact', vi: 'Liên hệ' }, key: 'contact', icon: Mail }
     ]), []);
@@ -195,9 +195,10 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                     onClick={() => handleNavigate(item.key)}
                                     className={`flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium transition-colors relative group ${activeTab === item.key ? 'text-amber-600 dark:text-amber-400' : ''}`}
+                                    title={t(item.name, language)}
                                 >
-                                    {item.icon && <item.icon size={18} />}
-                                    {t(item.name, language)}
+                                    {item.icon ? <item.icon size={18} /> : <span className="text-lg">🐧</span>}
+                                    <span className="hidden xl:inline">{t(item.name, language)}</span>
                                     <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-amber-600 to-yellow-500 transition-all duration-300 ${activeTab === item.key ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                                 </motion.button>
                             ))}
