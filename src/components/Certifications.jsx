@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, ExternalLink } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import ShareSectionButton from './ShareSectionButton';
 
 const Certifications = () => {
+    const { language } = useLanguage();
     const certifications = [
         {
             title: 'OCP Java SE 17 Developer',
@@ -30,13 +33,19 @@ const Certifications = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            Certifications
-                        </span>
-                    </h2>
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold">
+                            <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
+                                {language === 'vi' ? 'Chứng chỉ' : 'Certifications'}
+                            </span>
+                        </h2>
+                        <ShareSectionButton
+                            sectionName={language === 'vi' ? 'Chứng chỉ' : 'Certifications'}
+                            sectionPath="/certifications"
+                        />
+                    </div>
                     <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
-                    <p className="text-slate-600 dark:text-slate-300 mt-4">Proof of skills and continuous learning</p>
+                    <p className="text-slate-600 dark:text-slate-300 mt-4">{language === 'vi' ? 'Chứng minh kỹ năng và học tập liên tục' : 'Proof of skills and continuous learning'}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 gap-8">
@@ -47,7 +56,7 @@ const Certifications = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
-                            className="bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all duration-300 relative group"
+                            className="bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600 shadow-lg hover:shadow-xl transition-all duration-300 relative group"
                         >
                             <div className="flex items-start justify-between mb-4">
                                 <div className="p-3 bg-amber-100 dark:bg-amber-500/20 rounded-lg text-amber-600 dark:text-amber-200">
@@ -59,7 +68,7 @@ const Certifications = () => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-slate-400 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 transition-colors"
-                                        title="View Certificate"
+                                        title={language === 'vi' ? 'Xem chứng chỉ' : 'View Certificate'}
                                     >
                                         <ExternalLink size={20} />
                                     </a>

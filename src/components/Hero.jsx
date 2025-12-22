@@ -1,7 +1,105 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
-const Hero = () => {
+import { ChevronDown, Download } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/lib/utils';
+import CVFile from '@/assets/CV.pdf';
+const Hero = ({ onNavigate = () => { } }) => {
+    const { language } = useLanguage();
+    // Greeting fixed in English only
+    const greetings = {
+        text1: 'Hi, I am Hyun!',
+        text2: 'Hi, I am a handsome guy!',
+        base: 'Hi, I am H'
+    };
+    const heroCopy = {
+        role: { en: 'Full Stack Developer', vi: 'Lập trình viên Full Stack' },
+        lead: {
+            en: 'Crafting innovative digital solutions with modern technologies. Passionate about creating seamless user experiences and scalable applications.',
+            vi: 'Tạo ra các giải pháp số hiện đại với công nghệ mới. Đam mê trải nghiệm mượt mà và hệ thống có thể mở rộng.'
+        },
+        ctaContact: { en: 'Get In Touch', vi: 'Liên hệ' },
+        ctaProjects: { en: 'View Projects', vi: 'Xem dự án' },
+        ctaDownload: { en: 'Download CV', vi: 'Tải CV' }
+    };
+    const [greetingText, setGreetingText] = useState(() => greetings.text1);
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        let timeoutId;
+        const text1 = greetings.text1;
+        const text2 = greetings.text2;
+        const baseText = greetings.base;
+
+        const typingSpeed = 50;
+        const deletingSpeed = 40;
+        const pauseDuration = 1200;
+
+        let phase = 0;
+        let currentText = text1;
+        setGreetingText(text1);
+
+        const animate = () => {
+            if (phase === 0) {
+                setGreetingText(text1);
+                currentText = text1;
+                timeoutId = setTimeout(() => {
+                    phase = 1;
+                    animate();
+                }, pauseDuration);
+            } else if (phase === 1) {
+                if (currentText.length > baseText.length) {
+                    currentText = currentText.slice(0, -1);
+                    setGreetingText(currentText);
+                    timeoutId = setTimeout(animate, deletingSpeed);
+                } else {
+                    phase = 2;
+                    timeoutId = setTimeout(animate, 200);
+                }
+            } else if (phase === 2) {
+                if (currentText.length < text2.length) {
+                    currentText = text2.slice(0, currentText.length + 1);
+                    setGreetingText(currentText);
+                    timeoutId = setTimeout(animate, typingSpeed);
+                } else {
+                    phase = 3;
+                    timeoutId = setTimeout(animate, pauseDuration);
+                }
+            } else if (phase === 3) {
+                if (currentText.length > baseText.length) {
+                    currentText = currentText.slice(0, -1);
+                    setGreetingText(currentText);
+                    timeoutId = setTimeout(animate, deletingSpeed);
+                } else {
+                    phase = 4;
+                    timeoutId = setTimeout(animate, 200);
+                }
+            } else if (phase === 4) {
+                if (currentText.length < text1.length) {
+                    currentText = text1.slice(0, currentText.length + 1);
+                    setGreetingText(currentText);
+                    timeoutId = setTimeout(animate, typingSpeed);
+                } else {
+                    phase = 0;
+                    timeoutId = setTimeout(animate, pauseDuration);
+                }
+            }
+        };
+
+        animate();
+
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    const handleDownloadCV = () => {
+        const link = document.createElement('a');
+        link.href = CVFile;
+        link.download = 'Pham_Quang_Huy_CV.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     const scrollToAbout = () => {
         const element = document.querySelector('#about');
         if (element) {
@@ -10,7 +108,16 @@ const Hero = () => {
             });
         }
     };
-    return <section id="hero" className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+
+    const scrollBack = () => {
+        const element = document.querySelector('#hero');
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    };
+    return <section id="hero" ref={sectionRef} className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
             <motion.div animate={{
@@ -52,14 +159,14 @@ const Hero = () => {
                         delay: 0.2,
                         duration: 0.8
                     }}>
-                        <span className="inline-block px-4 py-2 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 rounded-full text-sm font-semibold mb-4">Hi, I am Hyun!</span>
+                        <span className="inline-block px-4 py-2 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 rounded-full text-sm font-semibold mb-4">{greetingText}</span>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
                             <span className="bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-amber-200 dark:via-yellow-200 dark:to-amber-300 bg-clip-text text-transparent">
                                 Phạm Quang Huy
                             </span>
                         </h1>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            Full Stack Developer
+                            {t(heroCopy.role, language)}
                         </h2>
                     </motion.div>
 
@@ -73,8 +180,7 @@ const Hero = () => {
                         delay: 0.4,
                         duration: 0.8
                     }} className="text-lg text-slate-600 dark:text-slate-200 leading-relaxed">
-                        Crafting innovative digital solutions with modern technologies.
-                        Passionate about creating seamless user experiences and scalable applications.
+                        {t(heroCopy.lead, language)}
                     </motion.p>
 
                     <motion.div initial={{
@@ -86,16 +192,16 @@ const Hero = () => {
                     }} transition={{
                         delay: 0.6,
                         duration: 0.8
-                    }} className="flex gap-4">
-                        <button onClick={() => document.querySelector('#contact').scrollIntoView({
-                            behavior: 'smooth'
-                        })} className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
-                            Get In Touch
+                    }} className="flex flex-wrap gap-4">
+                        <button onClick={() => onNavigate('contact')} className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
+                            {t(heroCopy.ctaContact, language)}
                         </button>
-                        <button onClick={() => document.querySelector('#company-projects').scrollIntoView({
-                            behavior: 'smooth'
-                        })} className="px-8 py-4 border-2 border-slate-300 text-slate-700 dark:border-slate-600 dark:text-slate-100 rounded-lg font-semibold hover:border-amber-500 hover:text-amber-600 dark:hover:border-amber-400 dark:hover:text-amber-300 hover:shadow-lg transition-all duration-300">
-                            View Projects
+                        <button onClick={() => onNavigate('projects')} className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
+                            {t(heroCopy.ctaProjects, language)}
+                        </button>
+                        <button onClick={handleDownloadCV} className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                            <Download size={18} />
+                            {t(heroCopy.ctaDownload, language)}
                         </button>
                     </motion.div>
                 </motion.div>
@@ -118,7 +224,7 @@ const Hero = () => {
                             repeat: Infinity,
                             ease: "linear"
                         }} className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full blur-2xl opacity-20" />
-                        <img src="https://horizons-cdn.hostinger.com/0840079b-7f92-4535-b740-5fb19b216fc9/img_3010-SQxak.JPG" alt="Phạm Quang Huy - Full Stack Developer" className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl" />
+                        <img src="https://horizons-cdn.hostinger.com/0840079b-7f92-4535-b740-5fb19b216fc9/img_3010-SQxak.JPG" alt="Phạm Quang Huy - Full Stack Developer" className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl" style={{ objectPosition: 'center 70%' }} />
                         <motion.div animate={{
                             scale: [1, 1.05, 1]
                         }} transition={{

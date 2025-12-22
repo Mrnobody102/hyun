@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/lib/utils';
+import ShareSectionButton from './ShareSectionButton';
 
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mzdpjqby';
 
 const Contact = () => {
     const { toast } = useToast();
+    const { language } = useLanguage();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -92,15 +96,15 @@ const Contact = () => {
             }
 
             toast({
-                title: 'Message sent!',
-                description: 'Cảm ơn bạn đã liên hệ. Mình sẽ phản hồi sớm nhất.',
+                title: language === 'vi' ? 'Gửi thành công!' : 'Message sent!',
+                description: language === 'vi' ? 'Cảm ơn bạn đã liên hệ. Mình sẽ phản hồi sớm nhất.' : 'Thank you for reaching out. I\'ll get back to you soon.',
                 duration: 3000,
             });
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (err) {
             toast({
-                title: 'Gửi thất bại',
-                description: 'Vui lòng thử lại hoặc kiểm tra cấu hình Formspree.',
+                title: language === 'vi' ? 'Gửi thất bại' : 'Failed to send',
+                description: language === 'vi' ? 'Vui lòng thử lại hoặc liên hệ trực tiếp qua email.' : 'Please try again or contact me directly via email.',
                 variant: 'destructive',
                 duration: 4000,
             });
@@ -130,14 +134,20 @@ const Contact = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                        <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-400 dark:via-yellow-400 dark:to-orange-400 bg-clip-text text-transparent">
-                            Get In Touch
-                        </span>
-                    </h2>
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                        <h2 className="text-4xl md:text-5xl font-bold">
+                            <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-400 dark:via-yellow-400 dark:to-orange-400 bg-clip-text text-transparent">
+                                {language === 'vi' ? 'Liên hệ' : 'Get In Touch'}
+                            </span>
+                        </h2>
+                        <ShareSectionButton
+                            sectionName={language === 'vi' ? 'Liên hệ' : 'Contact'}
+                            sectionPath="/contact"
+                        />
+                    </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 dark:from-amber-400 dark:to-yellow-400 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">
-                        Let's collaborate and bring your ideas to life
+                        {language === 'vi' ? 'Hãy cùng hợp tác và biến ý tưởng của bạn thành hiện thực' : 'Let\'s collaborate and bring your ideas to life'}
                     </p>
                 </motion.div>
 
@@ -160,7 +170,7 @@ const Contact = () => {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     whileHover={{ x: 10, scale: 1.02 }}
-                                    className={`flex items-center gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700`}
+                                    className={`flex items-center gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600`}
                                 >
                                     <div className={`p-3 bg-gradient-to-r ${info.color} rounded-lg`}>
                                         <info.icon className="text-white" size={24} />
@@ -179,9 +189,9 @@ const Contact = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.3 }}
-                            className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 border-amber-200 dark:border-slate-700 p-6 rounded-xl border`}
+                            className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600`}
                         >
-                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">Follow Me</h3>
+                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{language === 'vi' ? 'Theo dõi tôi' : 'Follow Me'}</h3>
                             <div className="flex gap-4">
                                 {socialLinks.map((social) => (
                                     <motion.button
@@ -189,7 +199,7 @@ const Contact = () => {
                                         onClick={() => handleSocialClick(social.href)}
                                         whileHover={{ scale: 1.1, y: -5 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className={`p-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 ${social.color}`}
+                                        className={`p-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-400 dark:hover:border-amber-400 ${social.color}`}
                                         title={social.label}
                                     >
                                         <social.icon size={24} />
@@ -206,10 +216,10 @@ const Contact = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <form onSubmit={handleSubmit} className="space-y-4 p-8 rounded-xl shadow-xl border bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700">
+                        <form onSubmit={handleSubmit} className="space-y-4 p-8 rounded-xl shadow-xl border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
-                                    Your Name
+                                    {language === 'vi' ? 'Tên của bạn' : 'Your Name'}
                                 </label>
                                 <input
                                     type="text"
@@ -217,15 +227,15 @@ const Contact = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
-                                    placeholder="John Doe"
+                                    className="w-full px-4 py-3 border rounded-lg focus:outline-none transition-colors border-slate-300 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
+                                    placeholder={language === 'vi' ? 'Nguyễn Văn A' : 'John Doe'}
                                     required
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="email" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
-                                    Email Address
+                                    {language === 'vi' ? 'Địa chỉ Email' : 'Email Address'}
                                 </label>
                                 <input
                                     type="email"
@@ -233,15 +243,15 @@ const Contact = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
-                                    placeholder="john@example.com"
+                                    className="w-full px-4 py-3 border rounded-lg focus:outline-none transition-colors border-slate-300 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
+                                    placeholder={language === 'vi' ? 'email@example.com' : 'john@example.com'}
                                     required
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="subject" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
-                                    Subject
+                                    {language === 'vi' ? 'Chủ đề' : 'Subject'}
                                 </label>
                                 <input
                                     type="text"
@@ -249,15 +259,15 @@ const Contact = () => {
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
-                                    placeholder="Project Inquiry"
+                                    className="w-full px-4 py-3 border rounded-lg focus:outline-none transition-colors border-slate-300 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
+                                    placeholder={language === 'vi' ? 'Yêu cầu dự án' : 'Project Inquiry'}
                                     required
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="message" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
-                                    Message
+                                    {language === 'vi' ? 'Tin nhắn' : 'Message'}
                                 </label>
                                 <textarea
                                     id="message"
@@ -265,8 +275,8 @@ const Contact = () => {
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows="5"
-                                    className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none transition-colors resize-none border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
-                                    placeholder="Tell me about your project..."
+                                    className="w-full px-4 py-3 border rounded-lg focus:outline-none transition-colors resize-none border-slate-300 dark:border-slate-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-amber-500 dark:focus:border-amber-400"
+                                    placeholder={language === 'vi' ? 'Kể cho tôi về dự án của bạn...' : 'Tell me about your project...'}
                                     required
                                 />
                             </div>
@@ -278,7 +288,7 @@ const Contact = () => {
                                 className="w-full px-6 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                             >
                                 <Send size={20} />
-                                Send Message
+                                {language === 'vi' ? 'Gửi tin nhắn' : 'Send Message'}
                             </motion.button>
                         </form>
                     </motion.div>
