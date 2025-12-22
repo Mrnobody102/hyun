@@ -6,6 +6,7 @@ import { useDarkMode } from '@/context/DarkModeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { aboutMe, articles as articlesData } from '@/data/portfolioData';
 import { t } from '@/lib/utils';
+import { useToast } from '@/components/ui/use-toast';
 
 const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = null }) => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -14,12 +15,12 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
     const [searchQuery, setSearchQuery] = useState('');
     const [showSelectHint, setShowSelectHint] = useState(false);
     const inputRef = useRef(null);
-    const backdropRef = useRef(null);
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const { language, toggleLanguage } = useLanguage();
+    const { toast } = useToast();
 
     const searchCopy = {
-        title: { en: 'Quick search', vi: 'Tìm kiếm nhanh' },
+        title: { en: 'Quick search (Ctrl + K)', vi: 'Tìm kiếm nhanh (Ctrl + K)' },
         hint: { en: 'Up to 50 characters, press Enter to search', vi: 'Tối đa 50 ký tự, nhấn Enter để tìm' },
         placeholder: { en: 'Search across the site...', vi: 'Tìm kiếm trên trang...' },
         empty: { en: 'Type something to search', vi: 'Hãy nhập nội dung cần tìm' },
@@ -147,36 +148,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
         }
     }, [isSearchOpen]);
 
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (!isSearchOpen) return;
-            const clickedBackdrop = backdropRef.current && backdropRef.current.contains(e.target);
-            const clickedInput = inputRef.current && inputRef.current.contains(e.target);
-
-            if (clickedInput) return;
-
-            if (!normalizedQuery) {
-                setIsSearchOpen(false);
-                setShowSelectHint(false);
-                return;
-            }
-
-            if (inputRef.current) {
-                inputRef.current.select();
-            }
-
-            // If already highlighted once, close on next click
-            if (showSelectHint) {
-                setIsSearchOpen(false);
-                setShowSelectHint(false);
-            } else {
-                setShowSelectHint(true);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isSearchOpen, normalizedQuery, showSelectHint]);
+    // No document-level close; closing only via X or backdrop
 
     const navItems = useMemo(() => ([
         { name: { en: 'Home', vi: 'Trang chủ' }, key: 'home', icon: Home },
@@ -332,11 +304,14 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
             <AnimatePresence>
                 {isSearchOpen && (
                     <motion.div
-                        ref={backdropRef}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-16 px-4"
+                        onClick={() => {
+                            setIsSearchOpen(false);
+                            setShowSelectHint(false);
+                        }}
                     >
                         <motion.div
                             initial={{ y: -16, opacity: 0 }}

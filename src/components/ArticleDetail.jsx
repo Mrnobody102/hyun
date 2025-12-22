@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Calendar, User, Share2 } from 'lucide-react';
 import { getArticleById, allArticles } from '@/articles/index';
+import ShareModal from './ShareModal';
 
-const ArticleDetail = ({ articleId, onBack }) => {
+const ArticleDetail = ({ articleId, slug, onBack }) => {
     const article = getArticleById(articleId);
     const articlesList = Object.values(allArticles);
+    const [shareModalOpen, setShareModalOpen] = useState(false);
 
     const handleBack = () => {
         onBack();
+    };
+
+    const handleOpenShare = () => {
+        setShareModalOpen(true);
+    };
+
+    const handleCloseShare = () => {
+        setShareModalOpen(false);
     };
 
     if (!article) {
@@ -155,11 +165,21 @@ const ArticleDetail = ({ articleId, onBack }) => {
                         Share This Article
                     </h3>
                     <div className="flex justify-center gap-4">
-                        <button className="p-3 bg-white dark:bg-slate-600 rounded-lg hover:bg-amber-100 dark:hover:bg-slate-500 transition-all">
+                        <button
+                            onClick={handleOpenShare}
+                            className="p-3 bg-white dark:bg-slate-600 rounded-lg hover:bg-amber-100 dark:hover:bg-slate-500 transition-all"
+                        >
                             <Share2 size={20} className="text-slate-700 dark:text-slate-200" />
                         </button>
                     </div>
                 </motion.div>
+
+                <ShareModal
+                    isOpen={shareModalOpen}
+                    onClose={handleCloseShare}
+                    articleUrl={`${window.location.origin}/articles/${slug || ''}`}
+                    articleTitle={article.title}
+                />
 
                 {/* Related Articles */}
                 <motion.div

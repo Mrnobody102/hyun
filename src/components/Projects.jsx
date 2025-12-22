@@ -6,7 +6,6 @@ import { getTechIcon } from '@/lib/techIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { personalProjects as personalProjectsData } from '@/data/portfolioData';
-import ShareSectionButton from './ShareSectionButton';
 
 const Projects = ({ compact = false }) => {
     const { toast } = useToast();
@@ -53,10 +52,6 @@ const Projects = ({ compact = false }) => {
                                 {language === 'vi' ? 'Dự án cá nhân nổi bật' : 'Featured Personal Projects'}
                             </span>
                         </h2>
-                        <ShareSectionButton
-                            sectionName={language === 'vi' ? 'Dự án cá nhân nổi bật' : 'Featured Personal Projects'}
-                            sectionPath="/projects"
-                        />
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">

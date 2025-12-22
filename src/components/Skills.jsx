@@ -5,7 +5,6 @@ import { getTechIcon } from '@/lib/techIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { skills as skillsData } from '@/data/portfolioData';
-import ShareSectionButton from './ShareSectionButton';
 
 const Skills = () => {
     const sectionRef = useRef(null);
@@ -43,10 +42,6 @@ const Skills = () => {
                                 {language === 'vi' ? 'Kỹ năng & Chuyên môn' : 'Skills & Expertise'}
                             </span>
                         </h2>
-                        <ShareSectionButton
-                            sectionName={language === 'vi' ? 'Kỹ năng & Chuyên môn' : 'Skills & Expertise'}
-                            sectionPath="/skills"
-                        />
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">

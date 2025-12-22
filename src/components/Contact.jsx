@@ -4,7 +4,6 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-re
 import { useToast } from '@/components/ui/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
-import ShareSectionButton from './ShareSectionButton';
 
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mzdpjqby';
 
@@ -140,10 +139,6 @@ const Contact = () => {
                                 {language === 'vi' ? 'Liên hệ' : 'Get In Touch'}
                             </span>
                         </h2>
-                        <ShareSectionButton
-                            sectionName={language === 'vi' ? 'Liên hệ' : 'Contact'}
-                            sectionPath="/contact"
-                        />
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 dark:from-amber-400 dark:to-yellow-400 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">

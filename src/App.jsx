@@ -101,7 +101,7 @@ function ArticleDetailPage() {
       <Helmet>
         <title>{article.title.en} - Phạm Quang Huy</title>
       </Helmet>
-      <ArticleDetail articleId={article.id} onBack={handleBackToArticles} />
+      <ArticleDetail articleId={article.id} slug={slug} onBack={handleBackToArticles} />
     </>
   );
 }

@@ -5,7 +5,6 @@ import { getTechIcon } from '@/lib/techIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { companyProjects } from '@/data/companyProjects';
-import ShareSectionButton from './ShareSectionButton';
 
 const CompanyProjects = ({ compact = false }) => {
     const { language } = useLanguage();
@@ -28,10 +27,6 @@ const CompanyProjects = ({ compact = false }) => {
                                 {language === 'vi' ? 'Dự án chính' : 'Main Projects'}
                             </span>
                         </h2>
-                        <ShareSectionButton
-                            sectionName={language === 'vi' ? 'Dự án chính' : 'Main Projects'}
-                            sectionPath="/company-projects"
-                        />
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">

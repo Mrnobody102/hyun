@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Award, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import ShareSectionButton from './ShareSectionButton';
 
 const Certifications = () => {
     const { language } = useLanguage();
@@ -39,10 +38,6 @@ const Certifications = () => {
                                 {language === 'vi' ? 'Chứng chỉ' : 'Certifications'}
                             </span>
                         </h2>
-                        <ShareSectionButton
-                            sectionName={language === 'vi' ? 'Chứng chỉ' : 'Certifications'}
-                            sectionPath="/certifications"
-                        />
                     </div>
                     <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
                     <p className="text-slate-600 dark:text-slate-300 mt-4">{language === 'vi' ? 'Chứng minh kỹ năng và học tập liên tục' : 'Proof of skills and continuous learning'}</p>
