@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -110,6 +110,20 @@ function ArticleDetailPage() {
 function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const scrollPositions = useRef({});
+  const previousPathRef = useRef(location.pathname);
+
+  // Remember scroll position per route; restore when returning.
+  useEffect(() => {
+    const prevPath = previousPathRef.current;
+    scrollPositions.current[prevPath] = window.scrollY;
+
+    const targetPath = location.pathname;
+    const saved = scrollPositions.current[targetPath];
+    window.scrollTo({ top: saved ?? 0, behavior: 'auto' });
+
+    previousPathRef.current = targetPath;
+  }, [location.pathname]);
 
   // Determine active tab from URL
   const getActiveTab = () => {
