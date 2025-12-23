@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Calendar, User, Share2 } from 'lucide-react';
 import { getArticleById, allArticles } from '@/articles/index';
@@ -8,6 +8,9 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
     const article = getArticleById(articleId);
     const articlesList = Object.values(allArticles);
     const [shareModalOpen, setShareModalOpen] = useState(false);
+    const [backButtonVisible, setBackButtonVisible] = useState(true);
+    const hideTimeoutRef = useRef(null);
+    const lastTapTimeRef = useRef(0);
 
     const handleBack = () => {
         onBack();
@@ -20,6 +23,43 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
     const handleCloseShare = () => {
         setShareModalOpen(false);
     };
+
+    // Auto-hide back button on idle
+    const scheduleHideButton = () => {
+        if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+        setBackButtonVisible(true);
+        hideTimeoutRef.current = setTimeout(() => {
+            setBackButtonVisible(false);
+        }, 3000);
+    };
+
+    // Handle click/interaction to show button
+    const handleInteraction = () => {
+        scheduleHideButton();
+    };
+
+    // Handle double tap on mobile
+    const handleTouchStart = () => {
+        const now = Date.now();
+        if (now - lastTapTimeRef.current < 300) {
+            // Double tap detected
+            handleInteraction();
+        }
+        lastTapTimeRef.current = now;
+    };
+
+    useEffect(() => {
+        scheduleHideButton();
+
+        document.addEventListener('click', handleInteraction);
+        document.addEventListener('touchstart', handleTouchStart);
+
+        return () => {
+            document.removeEventListener('click', handleInteraction);
+            document.removeEventListener('touchstart', handleTouchStart);
+            if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+        };
+    }, []);
 
     if (!article) {
         return (
@@ -49,10 +89,12 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
             <motion.button
                 onClick={handleBack}
                 whileHover={{ x: -2 }}
-                className="fixed top-32 left-6 flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border-2 border-amber-500 text-amber-600 dark:text-amber-400 rounded-lg shadow-md hover:shadow-lg transition-all z-40 font-semibold"
+                animate={{ opacity: backButtonVisible ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed top-32 left-6 flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border-2 border-amber-500 text-amber-600 dark:text-amber-400 rounded-lg shadow-md hover:shadow-lg transition-all z-40 font-semibold pointer-events-auto"
             >
                 <ChevronLeft size={20} />
-                Back
+                <span className="hidden xl:inline">Back</span>
             </motion.button>
 
             <div className="container mx-auto max-w-4xl px-4 py-12">

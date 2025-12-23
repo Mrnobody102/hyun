@@ -118,7 +118,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
             }
         });
 
-        return results.slice(0, 5);
+        return results.slice(0, 10);
     }, [aboutMe.paragraph1, aboutMe.paragraph2, aboutMe.paragraph3, articlesData, language, normalizedQuery, onArticleSelect, onNavigate]);
 
     const handleSearch = (e) => {
@@ -294,7 +294,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
                                     onClick={() => handleNavigate(item.key)}
                                     className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
                                 >
-                                    {item.icon && <item.icon size={18} />}
+                                    {item.icon ? <item.icon size={18} /> : <span className="text-lg">🐧</span>}
                                     {t(item.name, language)}
                                 </button>
                             ))}
