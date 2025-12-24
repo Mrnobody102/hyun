@@ -15,12 +15,19 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { DarkModeProvider } from '@/context/DarkModeContext';
-import { LanguageProvider } from '@/context/LanguageContext';
+import { LanguageProvider, useLanguage } from '@/context/LanguageContext';
 import { articles } from '@/data/portfolioData';
 
 // Home page component
 function HomePage() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Hyun - Home',
+    vi: 'Hyun - Trang chủ'
+  };
+
   const handleNavigate = (tab) => {
     const routes = {
       'home': '/',
@@ -35,6 +42,9 @@ function HomePage() {
 
   return (
     <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
       <Hero onNavigate={handleNavigate} />
       <About />
       <EducationExperience />
@@ -44,8 +54,18 @@ function HomePage() {
 
 // Skills page component
 function SkillsPage() {
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Skills & Certifications | Hyun',
+    vi: 'Kỹ năng & Chứng chỉ | Hyun'
+  };
+
   return (
     <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
       <Skills />
       <Certifications />
     </>
@@ -55,6 +75,13 @@ function SkillsPage() {
 // Articles page component
 function ArticlesPage() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Articles | Hyun',
+    vi: 'Bài viết | Hyun'
+  };
+
   const handleArticleClick = (articleId) => {
     const article = articles.find(a => a.id === articleId);
     if (article) {
@@ -63,13 +90,21 @@ function ArticlesPage() {
     }
   };
 
-  return <Articles onArticleClick={handleArticleClick} />;
+  return (
+    <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
+      <Articles onArticleClick={handleArticleClick} />
+    </>
+  );
 }
 
 // Article detail page component
 function ArticleDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { language } = useLanguage();
 
   // Get slug from URL and find article
   const slug = location.pathname.split('/articles/')[1];
@@ -96,12 +131,74 @@ function ArticleDetailPage() {
     return null;
   }
 
+  const articleTitles = {
+    en: `${article.title.en} - Articles | Hyun`,
+    vi: `${article.title.vi} - Bài viết | Hyun`
+  };
+
   return (
     <>
       <Helmet>
-        <title>{article.title.en} - Phạm Quang Huy</title>
+        <title>{articleTitles[language]}</title>
       </Helmet>
       <ArticleDetail articleId={article.id} slug={slug} onBack={handleBackToArticles} />
+    </>
+  );
+}
+
+// Company Projects page component
+function CompanyProjectsPage() {
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Main Projects | Hyun',
+    vi: 'Dự án Chính | Hyun'
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
+      <CompanyProjects />
+    </>
+  );
+}
+
+// Personal Projects page component
+function ProjectsPage() {
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Personal Projects | Hyun',
+    vi: 'Dự án Cá nhân | Hyun'
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
+      <Projects />
+    </>
+  );
+}
+
+// Contact page component
+function ContactPage() {
+  const { language } = useLanguage();
+
+  const titles = {
+    en: 'Contact | Hyun',
+    vi: 'Liên hệ | Hyun'
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>{titles[language]}</title>
+      </Helmet>
+      <Contact />
     </>
   );
 }
@@ -187,11 +284,11 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/skills" element={<SkillsPage />} />
-              <Route path="/projects" element={<CompanyProjects />} />
-              <Route path="/personal-projects" element={<Projects />} />
+              <Route path="/projects" element={<CompanyProjectsPage />} />
+              <Route path="/personal-projects" element={<ProjectsPage />} />
               <Route path="/articles" element={<ArticlesPage />} />
               <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact" element={<ContactPage />} />
             </Routes>
           </Layout>
         </DarkModeProvider>

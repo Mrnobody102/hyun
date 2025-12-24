@@ -33,30 +33,31 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
         }, 3000);
     };
 
-    // Handle click/interaction to show button
-    const handleInteraction = () => {
-        scheduleHideButton();
-    };
+    // Handle toggle button visibility
+    const handleContentClick = (e) => {
+        // Ignore clicks on back button
+        const isBackButtonClick = e.target.closest('motion')?.querySelector('button') === e.target ||
+            e.target.closest('button') === document.querySelector('[class*="top-32"]');
+        if (isBackButtonClick) return;
 
-    // Handle double tap on mobile
-    const handleTouchStart = () => {
-        const now = Date.now();
-        if (now - lastTapTimeRef.current < 300) {
-            // Double tap detected
-            handleInteraction();
+        // Toggle visibility
+        if (backButtonVisible) {
+            // Visible → hide
+            if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+            setBackButtonVisible(false);
+        } else {
+            // Hidden → show
+            setBackButtonVisible(true);
+            if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+            hideTimeoutRef.current = setTimeout(() => {
+                setBackButtonVisible(false);
+            }, 3000);
         }
-        lastTapTimeRef.current = now;
     };
 
     useEffect(() => {
         scheduleHideButton();
-
-        document.addEventListener('click', handleInteraction);
-        document.addEventListener('touchstart', handleTouchStart);
-
         return () => {
-            document.removeEventListener('click', handleInteraction);
-            document.removeEventListener('touchstart', handleTouchStart);
             if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
         };
     }, []);
@@ -84,10 +85,23 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 pt-24">
+        <div
+            className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 pt-24"
+            onClick={handleContentClick}
+        >
             {/* Back Button */}
             <motion.button
                 onClick={handleBack}
+                onMouseEnter={() => {
+                    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+                    setBackButtonVisible(true);
+                }}
+                onMouseLeave={() => {
+                    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+                    hideTimeoutRef.current = setTimeout(() => {
+                        setBackButtonVisible(false);
+                    }, 3000);
+                }}
                 whileHover={{ x: -2 }}
                 animate={{ opacity: backButtonVisible ? 1 : 0 }}
                 transition={{ duration: 0.3 }}

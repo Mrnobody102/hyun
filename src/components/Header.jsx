@@ -152,9 +152,9 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
 
     const navItems = useMemo(() => ([
         { name: { en: 'Home', vi: 'Trang chủ' }, key: 'home', icon: Home },
-        { name: { en: 'Skills & Expertise', vi: 'Kỹ năng & Chuyên môn' }, key: 'skills', icon: Zap },
+        { name: { en: 'Skills & Certifications', vi: 'Kỹ năng & Chứng chỉ' }, key: 'skills', icon: Zap },
         { name: { en: 'Projects', vi: 'Dự án' }, key: 'projects', icon: Briefcase },
-        { name: { en: 'My Little Startup', vi: 'Dự án cá nhân' }, key: 'personal-projects', icon: null },
+        { name: { en: 'My Little Startups', vi: 'Dự án cá nhân' }, key: 'personal-projects', icon: null },
         { name: { en: 'Articles', vi: 'Bài viết' }, key: 'articles', icon: BookOpen },
         { name: { en: 'Contact', vi: 'Liên hệ' }, key: 'contact', icon: Mail }
     ]), []);
@@ -294,7 +294,9 @@ const Header = ({ activeTab = 'home', onNavigate = () => { }, onArticleSelect = 
                                     onClick={() => handleNavigate(item.key)}
                                     className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
                                 >
-                                    {item.icon ? <item.icon size={18} /> : <span className="text-lg">🐧</span>}
+                                    <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                                        {item.icon ? <item.icon size={18} /> : <span className="text-lg leading-none">🐧</span>}
+                                    </span>
                                     {t(item.name, language)}
                                 </button>
                             ))}
