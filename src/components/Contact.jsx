@@ -4,8 +4,9 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-re
 import { useToast } from '@/components/ui/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
+import { contactInfo as contactInfoData, contactLabels, formspreeEndpoint } from '@/data';
 
-const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/mzdpjqby';
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || formspreeEndpoint;
 
 const Contact = () => {
     const { toast } = useToast();
@@ -17,25 +18,25 @@ const Contact = () => {
         message: ''
     });
 
-    const contactInfo = [
+    const contactItems = [
         {
             icon: Mail,
-            label: 'Email',
-            value: 'huypq1801@gmail.com',
-            href: 'mailto:huypq1801@gmail.com',
+            label: contactLabels.email,
+            value: contactInfoData.email,
+            href: `mailto:${contactInfoData.email}`,
             color: 'from-amber-500 to-yellow-500'
         },
         {
             icon: Phone,
-            label: 'Phone',
-            value: '0986865089',
-            href: 'tel:0986865089',
+            label: contactLabels.phone,
+            value: contactInfoData.phone,
+            href: `tel:${contactInfoData.phone}`,
             color: 'from-slate-600 to-amber-500'
         },
         {
             icon: MapPin,
-            label: 'Location',
-            value: 'Hanoi, Vietnam',
+            label: contactLabels.location,
+            value: contactInfoData.location,
             href: '#',
             color: 'from-yellow-500 to-amber-600'
         }
@@ -45,19 +46,19 @@ const Contact = () => {
         {
             icon: Github,
             label: 'GitHub',
-            href: 'https://github.com/Mrnobody102',
+            href: contactInfoData.social.github,
             color: 'hover:text-slate-800'
         },
         {
             icon: Linkedin,
             label: 'LinkedIn',
-            href: 'https://www.linkedin.com/in/huypham102',
+            href: contactInfoData.social.linkedin,
             color: 'hover:text-blue-600'
         },
         {
             icon: Facebook,
             label: 'Facebook',
-            href: 'https://www.facebook.com/antimarkzuckerberg/',
+            href: contactInfoData.social.facebook,
             color: 'hover:text-blue-500'
         }
     ];
@@ -119,7 +120,7 @@ const Contact = () => {
 
     const handleSocialClick = (href) => {
         if (href) {
-            window.open(href, '_blank');
+            window.open(href, '_blank', 'noopener,noreferrer');
         }
     };
 
@@ -156,7 +157,7 @@ const Contact = () => {
                         className="space-y-6"
                     >
                         <div className="space-y-4">
-                            {contactInfo.map((info, index) => (
+                            {contactItems.map((info, index) => (
                                 <motion.a
                                     key={info.label}
                                     href={info.href}
@@ -171,7 +172,7 @@ const Contact = () => {
                                         <info.icon className="text-white" size={24} />
                                     </div>
                                     <div>
-                                        <p className="text-sm text-slate-500 dark:text-slate-400">{info.label}</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400">{t(info.label, language)}</p>
                                         <p className="text-lg font-semibold text-slate-800 dark:text-slate-100">{info.value}</p>
                                     </div>
                                 </motion.a>
@@ -186,7 +187,7 @@ const Contact = () => {
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600`}
                         >
-                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{language === 'vi' ? 'Theo dõi tôi' : 'Follow Me'}</h3>
+                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{t(contactLabels.followMe, language)}</h3>
                             <div className="flex gap-4">
                                 {socialLinks.map((social) => (
                                     <motion.button

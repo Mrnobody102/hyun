@@ -1,7 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/lib/utils';
+import { footerData } from '@/data';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -18,23 +19,23 @@ const Footer = () => {
                     className="text-center"
                 >
                     <div className="flex items-center justify-center gap-2 mb-4">
-                        <span className="text-sm text-slate-300">{language === 'vi' ? 'Được tạo với' : 'Made with'}</span>
+                        <span className="text-sm text-slate-300">{t(footerData.madeWith, language)}</span>
                         <motion.div
                             animate={{ scale: [1, 1.2, 1] }}
                             transition={{ duration: 1, repeat: Infinity }}
                         >
                             <Heart className="text-amber-500" size={18} fill="currentColor" />
                         </motion.div>
-                        <span className="text-sm text-slate-300">{language === 'vi' ? 'bởi' : 'by'}</span>
+                        <span className="text-sm text-slate-300">{t(footerData.by, language)}</span>
                         <span className="text-sm font-bold bg-gradient-to-r from-amber-400 to-yellow-400 bg-clip-text text-transparent">
-                            Hyun
+                            {footerData.author}
                         </span>
                     </div>
 
                     <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto mb-4"></div>
 
                     <p className="text-sm text-slate-400">
-                        © {currentYear} {language === 'vi' ? 'Bảo lưu mọi quyền. Xây dựng với React, TailwindCSS & Framer Motion' : 'All rights reserved. Built with React, TailwindCSS & Framer Motion'}
+                        © {currentYear} {t(footerData.copyright, language)}
                     </p>
                 </motion.div>
             </div>

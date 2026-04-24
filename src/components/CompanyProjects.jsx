@@ -4,7 +4,7 @@ import { Calendar, Users, Briefcase, Code, CheckCircle } from 'lucide-react';
 import { getTechIcon } from '@/lib/techIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
-import { companyProjects } from '@/data/companyProjects';
+import { companyProjects } from '@/data';
 
 const CompanyProjects = ({ compact = false }) => {
     const { language } = useLanguage();
@@ -38,7 +38,7 @@ const CompanyProjects = ({ compact = false }) => {
                     <div className="grid md:grid-cols-2 gap-6">
                         {displayedProjects.map((project, index) => (
                             <motion.div
-                                key={index}
+                                key={`${project.name}-${project.duration}`}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
@@ -70,7 +70,7 @@ const CompanyProjects = ({ compact = false }) => {
                     <div className="space-y-12">
                         {displayedProjects.map((project, index) => (
                             <motion.div
-                                key={index}
+                                key={`${project.name}-${project.duration}`}
                                 initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}

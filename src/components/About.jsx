@@ -1,34 +1,34 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Briefcase, Heart, ChevronDown } from 'lucide-react';
-import { aboutMe, personalInfo } from '@/data/portfolioData';
+import { Briefcase, Calendar, ChevronDown, Heart, MapPin } from 'lucide-react';
+import { aboutMe, personalInfo } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
+
+const stats = [
+    { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
+    { icon: MapPin, label: { en: 'Location', vi: 'Địa điểm' }, value: personalInfo.location },
+    { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiệm' }, value: personalInfo.experience },
+    { icon: Heart, label: { en: 'Passion', vi: 'Sở thích' }, value: personalInfo.passion },
+];
 
 const About = () => {
     const sectionRef = useRef(null);
     const { language } = useLanguage();
 
-    useEffect(() => {
-        // No longer needed
-    }, []);
-
-    const stats = [
-        { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
-        { icon: MapPin, label: { en: 'Location', vi: 'Địa điểm' }, value: personalInfo.location },
-        { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiệm' }, value: personalInfo.experience },
-        { icon: Heart, label: { en: 'Passion', vi: 'Sở thích' }, value: personalInfo.passion }
-    ];
-
     const scrollToNext = () => {
-        const el = document.querySelector('#education-experience');
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
+        const element = document.querySelector('#education-experience');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
     return (
-        <section id="about" ref={sectionRef} className="py-20 px-4 bg-gradient-to-br from-white via-slate-50 to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section
+            id="about"
+            ref={sectionRef}
+            className="py-20 px-4 bg-gradient-to-br from-white via-slate-50 to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900"
+        >
             <div className="container mx-auto max-w-6xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -42,7 +42,7 @@ const About = () => {
                             {language === 'vi' ? 'Về tôi' : 'About Me'}
                         </span>
                     </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -53,15 +53,9 @@ const About = () => {
                         transition={{ duration: 0.6 }}
                         className="space-y-6"
                     >
-                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
-                            {t(aboutMe.paragraph1, language)}
-                        </p>
-                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
-                            {t(aboutMe.paragraph2, language)}
-                        </p>
-                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
-                            {t(aboutMe.paragraph3, language)}
-                        </p>
+                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{t(aboutMe.paragraph1, language)}</p>
+                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{t(aboutMe.paragraph2, language)}</p>
+                        <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{t(aboutMe.paragraph3, language)}</p>
                     </motion.div>
 
                     <motion.div
@@ -73,7 +67,7 @@ const About = () => {
                     >
                         {stats.map((stat, index) => (
                             <motion.div
-                                key={stat.label}
+                                key={t(stat.label, 'en')}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}

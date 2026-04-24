@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Facebook, MessageCircle, Copy, Check } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, Copy, Facebook, Share2, X } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
     const { language } = useLanguage();
     const [copied, setCopied] = useState(false);
+    const resolvedTitle =
+        articleTitle && typeof articleTitle === 'object'
+            ? articleTitle[language] || articleTitle.en || articleTitle.vi || ''
+            : articleTitle || '';
 
-    const handleCopyLink = () => {
-        navigator.clipboard.writeText(articleUrl);
+    const handleCopyLink = async () => {
+        await navigator.clipboard.writeText(articleUrl);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -16,32 +20,38 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
     const shareOptions = [
         {
             id: 'facebook',
-            label: language === 'vi' ? 'Facebook' : 'Facebook',
+            label: 'Facebook',
             icon: Facebook,
             color: 'from-blue-500 to-blue-600',
             onClick: () => {
                 const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`;
-                window.open(url, '_blank', 'width=600,height=400');
-            }
-        },
-        {
-            id: 'messenger',
-            label: language === 'vi' ? 'Messenger' : 'Messenger',
-            icon: MessageCircle,
-            color: 'from-blue-400 to-blue-500',
-            onClick: () => {
-                const url = `https://www.facebook.com/dialog/send?app_id=YOUR_APP_ID&link=${encodeURIComponent(articleUrl)}&redirect_uri=${encodeURIComponent(articleUrl)}`;
-                window.open(url, '_blank', 'width=600,height=400');
-            }
+                window.open(url, '_blank', 'width=600,height=400,noopener,noreferrer');
+            },
         },
         {
             id: 'copy',
             label: language === 'vi' ? 'Sao chép link' : 'Copy Link',
             icon: copied ? Check : Copy,
             color: 'from-green-500 to-emerald-600',
-            onClick: handleCopyLink
-        }
+            onClick: handleCopyLink,
+        },
     ];
+
+    if (navigator.share) {
+        shareOptions.splice(1, 0, {
+            id: 'native-share',
+            label: language === 'vi' ? 'Chia sẻ' : 'Share',
+            icon: Share2,
+            color: 'from-sky-500 to-cyan-500',
+            onClick: async () => {
+                try {
+                    await navigator.share({ title: resolvedTitle, url: articleUrl });
+                } catch {
+                    // User dismissed the native share sheet.
+                }
+            },
+        });
+    }
 
     return (
         <AnimatePresence>
@@ -59,22 +69,18 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
                         exit={{ scale: 0.9, y: 20 }}
                         transition={{ duration: 0.3 }}
                         className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(event) => event.stopPropagation()}
                     >
-                        {/* Header */}
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-                                {language === 'vi' ? 'Chia sẻ bài viết' : 'Share Article'}
-                            </h3>
-                            <button
-                                onClick={onClose}
-                                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                            >
+                        <div className="flex items-start justify-between mb-6">
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">{language === 'vi' ? 'Chia sẻ bài viết' : 'Share Article'}</h3>
+                                {resolvedTitle && <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{resolvedTitle}</p>}
+                            </div>
+                            <button onClick={onClose} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" aria-label="Close share modal">
                                 <X size={24} className="text-slate-600 dark:text-slate-400" />
                             </button>
                         </div>
 
-                        {/* Share Options Grid */}
                         <div className="grid grid-cols-3 gap-3 mb-6">
                             {shareOptions.map((option) => {
                                 const IconComponent = option.icon;
@@ -93,7 +99,6 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
                             })}
                         </div>
 
-                        {/* Copied Feedback */}
                         {copied && (
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
@@ -101,11 +106,10 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
                                 exit={{ opacity: 0, y: -10 }}
                                 className="text-center text-green-600 dark:text-green-400 text-sm font-semibold"
                             >
-                                {language === 'vi' ? '✓ Đã sao chép link' : '✓ Link copied!'}
+                                {language === 'vi' ? 'Đã sao chép link' : 'Link copied!'}
                             </motion.div>
                         )}
 
-                        {/* Close Button */}
                         {!copied && (
                             <button
                                 onClick={onClose}

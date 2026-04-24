@@ -1,27 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Download } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
+import { heroData } from '@/data';
 import CVFile from '@/assets/CV.pdf';
 const Hero = ({ onNavigate = () => { } }) => {
     const { language } = useLanguage();
-    // Greeting fixed in English only
-    const greetings = {
-        text1: 'Hi, I am Hyun!',
-        text2: 'Hi, I am a handsome guy!',
-        base: 'Hi, I am H'
-    };
-    const heroCopy = {
-        role: { en: 'Full Stack Developer', vi: 'Lập trình viên Full Stack' },
-        lead: {
-            en: 'Crafting innovative digital solutions with modern technologies. Passionate about creating seamless user experiences and scalable applications.',
-            vi: 'Tạo ra các giải pháp số hiện đại với công nghệ mới. Đam mê trải nghiệm mượt mà và hệ thống có thể mở rộng.'
-        },
-        ctaContact: { en: 'Get In Touch', vi: 'Liên hệ' },
-        ctaProjects: { en: 'View Projects', vi: 'Xem dự án' },
-        ctaDownload: { en: 'Download CV', vi: 'Tải CV' }
-    };
+    const { greetings, name, role, lead, imageUrl, imageAlt, ctaContact, ctaProjects, ctaDownload, cvFileName } = heroData;
     const [greetingText, setGreetingText] = useState(() => greetings.text1);
     const sectionRef = useRef(null);
 
@@ -89,12 +75,12 @@ const Hero = ({ onNavigate = () => { } }) => {
         animate();
 
         return () => clearTimeout(timeoutId);
-    }, []);
+    }, [greetings.base, greetings.text1, greetings.text2]);
 
     const handleDownloadCV = () => {
         const link = document.createElement('a');
         link.href = CVFile;
-        link.download = 'Pham_Quang_Huy_CV.pdf';
+        link.download = cvFileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -109,14 +95,6 @@ const Hero = ({ onNavigate = () => { } }) => {
         }
     };
 
-    const scrollBack = () => {
-        const element = document.querySelector('#hero');
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    };
     return <section id="hero" ref={sectionRef} className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -162,11 +140,11 @@ const Hero = ({ onNavigate = () => { } }) => {
                         <span className="inline-block px-4 py-2 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 rounded-full text-sm font-semibold mb-4">{greetingText}</span>
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
                             <span className="bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-amber-200 dark:via-yellow-200 dark:to-amber-300 bg-clip-text text-transparent">
-                                Phạm Quang Huy
+                                {name}
                             </span>
                         </h1>
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            {t(heroCopy.role, language)}
+                            {t(role, language)}
                         </h2>
                     </motion.div>
 
@@ -180,7 +158,7 @@ const Hero = ({ onNavigate = () => { } }) => {
                         delay: 0.4,
                         duration: 0.8
                     }} className="text-lg text-slate-600 dark:text-slate-200 leading-relaxed">
-                        {t(heroCopy.lead, language)}
+                        {t(lead, language)}
                     </motion.p>
 
                     <motion.div initial={{
@@ -194,14 +172,14 @@ const Hero = ({ onNavigate = () => { } }) => {
                         duration: 0.8
                     }} className="flex flex-wrap gap-4">
                         <button onClick={() => onNavigate('contact')} className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
-                            {t(heroCopy.ctaContact, language)}
+                            {t(ctaContact, language)}
                         </button>
                         <button onClick={() => onNavigate('projects')} className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
-                            {t(heroCopy.ctaProjects, language)}
+                            {t(ctaProjects, language)}
                         </button>
                         <button onClick={handleDownloadCV} className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2">
                             <Download size={18} />
-                            {t(heroCopy.ctaDownload, language)}
+                            {t(ctaDownload, language)}
                         </button>
                     </motion.div>
                 </motion.div>
@@ -224,7 +202,7 @@ const Hero = ({ onNavigate = () => { } }) => {
                             repeat: Infinity,
                             ease: "linear"
                         }} className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full blur-2xl opacity-20" />
-                        <img src="https://horizons-cdn.hostinger.com/0840079b-7f92-4535-b740-5fb19b216fc9/img_3010-SQxak.JPG" alt="Phạm Quang Huy - Full Stack Developer" className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl" style={{ objectPosition: 'center 70%' }} />
+                        <img src={imageUrl} alt={imageAlt} className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl" style={{ objectPosition: 'center 70%' }} />
                         <motion.div animate={{
                             scale: [1, 1.05, 1]
                         }} transition={{

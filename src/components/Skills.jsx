@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Database, Layers, Zap, Cloud, Server, ChevronDown } from 'lucide-react';
-import { getTechIcon } from '@/lib/techIcons';
+import { ChevronDown, Cloud, Code2, Database, Layers, Server, Zap } from 'lucide-react';
+import { skills as skillsData } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
+import { getTechIcon } from '@/lib/techIcons';
 import { t } from '@/lib/utils';
-import { skills as skillsData } from '@/data/portfolioData';
 
 const Skills = () => {
     const sectionRef = useRef(null);
@@ -16,18 +16,22 @@ const Skills = () => {
         { title: skillsData.database.title, icon: Database, color: 'from-yellow-500 to-amber-600', skills: skillsData.database.skills },
         { title: skillsData.cloudServices.title, icon: Cloud, color: 'from-amber-400 to-yellow-400', skills: skillsData.cloudServices.skills },
         { title: skillsData.toolsDevOps.title, icon: Zap, color: 'from-slate-500 to-amber-500', skills: skillsData.toolsDevOps.skills },
-        { title: skillsData.apiOS.title, icon: Server, color: 'from-yellow-600 to-amber-700', skills: skillsData.apiOS.skills }
+        { title: skillsData.apiOS.title, icon: Server, color: 'from-yellow-600 to-amber-700', skills: skillsData.apiOS.skills },
     ];
 
     const scrollToCertifications = () => {
-        const el = document.querySelector('#certifications');
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
+        const element = document.querySelector('#certifications');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
     return (
-        <section id="skills" ref={sectionRef} className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section
+            id="skills"
+            ref={sectionRef}
+            className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900"
+        >
             <div className="container mx-auto max-w-6xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -43,16 +47,18 @@ const Skills = () => {
                             </span>
                         </h2>
                     </div>
-                    <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">
-                        {language === 'vi' ? 'Bộ công cụ toàn diện để xây dựng ứng dụng hiện đại có thể mở rộng' : 'A comprehensive toolkit for building modern, scalable applications'}
+                        {language === 'vi'
+                            ? 'Bộ công cụ toàn diện để xây dựng ứng dụng hiện đại có thể mở rộng'
+                            : 'A comprehensive toolkit for building modern, scalable applications'}
                     </p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {skillCategories.map((category, index) => (
                         <motion.div
-                            key={category.title}
+                            key={t(category.title, 'en')}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -75,7 +81,9 @@ const Skills = () => {
                                         whileHover={{ scale: 1.1 }}
                                         className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-700 dark:to-slate-600 text-amber-700 dark:text-amber-200 rounded-full text-sm font-medium hover:from-amber-100 hover:to-yellow-100 dark:hover:from-slate-600 dark:hover:to-slate-500 transition-all cursor-default"
                                     >
-                                        <span aria-hidden className="text-base">{getTechIcon(skill)}</span>
+                                        <span aria-hidden className="text-base">
+                                            {getTechIcon(skill)}
+                                        </span>
                                         <span>{skill}</span>
                                     </motion.span>
                                 ))}
