@@ -160,7 +160,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                             }}
                             aria-label="Go to home"
                         >
-                            <img alt="Profile avatar" className="w-full h-full object-cover" src={kimImage} />
+                            <img alt="Profile avatar" className="w-full h-full object-cover object-center" src={kimImage} loading="eager" decoding="async" />
                         </motion.button>
 
                         <div className="hidden md:flex items-center gap-8">
@@ -176,7 +176,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     }`}
                                     title={t(item.name, language)}
                                 >
-                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">•</span>}
+                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || '•'}</span>}
                                     <span className="hidden xl:inline">{t(item.name, language)}</span>
                                     <span
                                         className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-amber-600 to-yellow-500 transition-all duration-300 ${
@@ -277,7 +277,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
                                 >
                                     <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">•</span>}
+                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || '•'}</span>}
                                     </span>
                                     {t(item.name, language)}
                                 </button>

@@ -70,7 +70,7 @@ const Projects = ({ compact = false }) => {
                             className={`bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group flex flex-col h-full ${compact ? 'p-4' : ''}`}
                         >
                             <div className={`relative overflow-hidden bg-slate-100 ${compact ? 'h-44' : 'h-64'}`}>
-                                <img alt={project.imageAlt} src={project.imageUrl} className="w-full h-full object-cover" />
+                                <img alt={project.imageAlt} src={project.imageUrl} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                                 <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                                 <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/80 backdrop-blur-sm p-2 rounded-full text-slate-700 dark:text-slate-100 shadow-md">
                                     {project.icon}

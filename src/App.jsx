@@ -1,23 +1,28 @@
-import { useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import EducationExperience from '@/components/EducationExperience';
 import About from '@/components/About';
-import Certifications from '@/components/Certifications';
-import Skills from '@/components/Skills';
-import CompanyProjects from '@/components/CompanyProjects';
-import Projects from '@/components/Projects';
-import Articles from '@/components/Articles';
-import ArticleDetail from '@/components/ArticleDetail';
-import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
 import { DarkModeProvider } from '@/context/DarkModeContext';
 import { LanguageProvider, useLanguage } from '@/context/LanguageContext';
 import { getArticleById, getArticleBySlug, getArticlePath } from '@/lib/articles';
 import { getRouteByTab, routesByTab } from '@/lib/routes';
+
+const Certifications = lazy(() => import('@/components/Certifications'));
+const Skills = lazy(() => import('@/components/Skills'));
+const CompanyProjects = lazy(() => import('@/components/CompanyProjects'));
+const Projects = lazy(() => import('@/components/Projects'));
+const Articles = lazy(() => import('@/components/Articles'));
+const ArticleDetail = lazy(() => import('@/components/ArticleDetail'));
+const Contact = lazy(() => import('@/components/Contact'));
+
+function PageFallback() {
+    return <div className="min-h-[40vh]" aria-hidden="true" />;
+}
 
 function HomePage() {
     const navigate = useNavigate();
@@ -53,8 +58,10 @@ function SkillsPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Skills />
-            <Certifications />
+            <Suspense fallback={<PageFallback />}>
+                <Skills />
+                <Certifications />
+            </Suspense>
         </>
     );
 }
@@ -73,14 +80,16 @@ function ArticlesPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Articles
-                onArticleClick={(articleId) => {
-                    const article = getArticleById(articleId);
-                    if (article) {
-                        navigate(getArticlePath(article));
-                    }
-                }}
-            />
+            <Suspense fallback={<PageFallback />}>
+                <Articles
+                    onArticleClick={(articleId) => {
+                        const article = getArticleById(articleId);
+                        if (article) {
+                            navigate(getArticlePath(article));
+                        }
+                    }}
+                />
+            </Suspense>
         </>
     );
 }
@@ -109,21 +118,23 @@ function ArticleDetailPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <ArticleDetail
-                articleId={article.id}
-                slug={article.slug}
-                onBack={(nextArticleId = null) => {
-                    if (nextArticleId !== null && nextArticleId !== undefined) {
-                        const nextArticle = getArticleById(nextArticleId);
-                        if (nextArticle) {
-                            navigate(getArticlePath(nextArticle));
-                            return;
+            <Suspense fallback={<PageFallback />}>
+                <ArticleDetail
+                    articleId={article.id}
+                    slug={article.slug}
+                    onBack={(nextArticleId = null) => {
+                        if (nextArticleId !== null && nextArticleId !== undefined) {
+                            const nextArticle = getArticleById(nextArticleId);
+                            if (nextArticle) {
+                                navigate(getArticlePath(nextArticle));
+                                return;
+                            }
                         }
-                    }
 
-                    navigate(routesByTab.articles);
-                }}
-            />
+                        navigate(routesByTab.articles);
+                    }}
+                />
+            </Suspense>
         </>
     );
 }
@@ -141,7 +152,9 @@ function CompanyProjectsPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <CompanyProjects />
+            <Suspense fallback={<PageFallback />}>
+                <CompanyProjects />
+            </Suspense>
         </>
     );
 }
@@ -159,7 +172,9 @@ function ProjectsPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Projects />
+            <Suspense fallback={<PageFallback />}>
+                <Projects />
+            </Suspense>
         </>
     );
 }
@@ -177,7 +192,9 @@ function ContactPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Contact />
+            <Suspense fallback={<PageFallback />}>
+                <Contact />
+            </Suspense>
         </>
     );
 }

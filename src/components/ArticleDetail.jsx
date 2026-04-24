@@ -99,7 +99,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                     transition={{ duration: 0.6, delay: 0.1 }}
                     className="mb-12 rounded-xl overflow-hidden shadow-2xl h-96"
                 >
-                    <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover" />
+                    <img src={article.imageUrl} alt={article.title} loading="eager" decoding="async" className="w-full h-full object-cover" />
                 </motion.div>
 
                 <motion.article
@@ -199,7 +199,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                                     className="bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all cursor-pointer border border-slate-100 dark:border-slate-700"
                                 >
                                     <div className="h-48 overflow-hidden">
-                                        <img src={content.imageUrl} alt={content.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                                        <img src={content.imageUrl} alt={content.title} loading="lazy" decoding="async" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
                                     </div>
                                     <div className="p-4">
                                         <h4 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2 mb-2">{content.title}</h4>

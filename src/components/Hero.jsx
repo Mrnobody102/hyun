@@ -7,7 +7,7 @@ import { heroData } from '@/data';
 import CVFile from '@/assets/CV.pdf';
 const Hero = ({ onNavigate = () => { } }) => {
     const { language } = useLanguage();
-    const { greetings, name, role, lead, imageUrl, imageAlt, ctaContact, ctaProjects, ctaDownload, cvFileName } = heroData;
+    const { greetings, name, role, lead, imageUrl, imageAlt, imagePosition, ctaContact, ctaProjects, ctaDownload, cvFileName } = heroData;
     const [greetingText, setGreetingText] = useState(() => greetings.text1);
     const sectionRef = useRef(null);
 
@@ -202,7 +202,15 @@ const Hero = ({ onNavigate = () => { } }) => {
                             repeat: Infinity,
                             ease: "linear"
                         }} className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full blur-2xl opacity-20" />
-                        <img src={imageUrl} alt={imageAlt} className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl" style={{ objectPosition: 'center 70%' }} />
+                        <img
+                            src={imageUrl}
+                            alt={imageAlt}
+                            loading="eager"
+                            fetchPriority="high"
+                            decoding="async"
+                            className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl"
+                            style={{ objectPosition: imagePosition || 'center center' }}
+                        />
                         <motion.div animate={{
                             scale: [1, 1.05, 1]
                         }} transition={{
