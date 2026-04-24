@@ -71,13 +71,13 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
         const translatedHomeSnippet = t(homeSnippet, language);
         if (translatedHomeSnippet.toLowerCase().includes(normalizedQuery)) {
-            addSuggestion(language === 'vi' ? 'Trang chá»§' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
+            addSuggestion(language === 'vi' ? 'Trang chủ' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
         }
 
         [aboutMe.paragraph1, aboutMe.paragraph2, aboutMe.paragraph3].forEach((paragraph) => {
             const text = t(paragraph, language);
             if (text.toLowerCase().includes(normalizedQuery)) {
-                addSuggestion(language === 'vi' ? 'Giá»›i thiá»‡u' : 'About', text, () => onNavigate('home'));
+                addSuggestion(language === 'vi' ? 'Giới thiệu' : 'About', text, () => onNavigate('home'));
             }
         });
 
@@ -87,7 +87,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
             if (title.toLowerCase().includes(normalizedQuery) || excerpt.toLowerCase().includes(normalizedQuery)) {
                 addSuggestion(
-                    language === 'vi' ? 'BĂ i viáº¿t' : 'Articles',
+                    language === 'vi' ? 'Bài viết' : 'Articles',
                     title.toLowerCase().includes(normalizedQuery) ? title : excerpt,
                     () => onArticleSelect?.(article.id),
                     article.id,
@@ -182,7 +182,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     }`}
                                     title={t(item.name, language)}
                                 >
-                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || 'â€¢'}</span>}
+                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || '•'}</span>}
                                     <span className="hidden xl:inline">{t(item.name, language)}</span>
                                     <span
                                         className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-amber-600 to-yellow-500 transition-all duration-300 ${
@@ -200,7 +200,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 whileHover={{ scale: 1.06 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'TĂ¬m kiáº¿m (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
                             >
                                 <Search size={20} />
                             </motion.button>
@@ -220,7 +220,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 whileHover={{ scale: 1.06 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="p-1.5 rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-base flex items-center justify-center min-w-[2.5rem]"
-                                title={language === 'vi' ? 'Chuyá»ƒn sang English' : 'Switch to Vietnamese'}
+                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
                             >
                                 {language.toUpperCase()}
                             </motion.button>
@@ -235,7 +235,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 whileHover={{ scale: 1.06 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'TĂ¬m kiáº¿m (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
                             >
                                 <Search size={20} />
                             </motion.button>
@@ -255,7 +255,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 className={`rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-sm ${
                                     language === 'en' ? 'px-2 py-2' : 'px-3 py-2'
                                 }`}
-                                title={language === 'vi' ? 'Chuyá»ƒn sang English' : 'Switch to Vietnamese'}
+                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
                             >
                                 {language.toUpperCase()}
                             </motion.button>
@@ -283,7 +283,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
                                 >
                                     <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || 'â€¢'}</span>}
+                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || '•'}</span>}
                                     </span>
                                     {t(item.name, language)}
                                 </button>

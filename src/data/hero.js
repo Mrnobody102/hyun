@@ -20,6 +20,6 @@ export const heroData = {
     imagePosition: 'center center',
     ctaContact: { en: 'Get In Touch', vi: 'Liên hệ' },
     ctaProjects: { en: 'View Projects', vi: 'Xem dự án' },
-    ctaDownload: { en: 'Download Resume', vi: 'Tải Resume' },
+    ctaDownload: { en: 'Download CV', vi: 'Tải CV' },
     resumeFileName: 'Pham_Quang_Huy_Resume.pdf',
 };

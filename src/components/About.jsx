@@ -6,10 +6,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 
 const stats = [
-    { icon: Calendar, label: { en: 'Born', vi: 'NgĂ y sinh' }, value: personalInfo.birthDate },
-    { icon: MapPin, label: { en: 'Location', vi: 'Äá»‹a Ä‘iá»ƒm' }, value: personalInfo.location },
-    { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiá»‡m' }, value: personalInfo.experience },
-    { icon: Heart, label: { en: 'Passion', vi: 'Sá»Ÿ thĂ­ch' }, value: personalInfo.passion },
+    { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
+    { icon: MapPin, label: { en: 'Location', vi: 'Địa điểm' }, value: personalInfo.location },
+    { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiệm' }, value: personalInfo.experience },
+    { icon: Heart, label: { en: 'Passion', vi: 'Sở thích' }, value: personalInfo.passion },
 ];
 
 const About = () => {
@@ -39,7 +39,7 @@ const About = () => {
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            {language === 'vi' ? 'Vá» tĂ´i' : 'About Me'}
+                            {language === 'vi' ? 'Về tôi' : 'About Me'}
                         </span>
                     </h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
