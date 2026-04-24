@@ -20,23 +20,18 @@ const Footer = () => {
                 >
                     <div className="flex items-center justify-center gap-2 mb-4">
                         <span className="text-sm text-slate-300">{t(footerData.madeWith, language)}</span>
-                        <motion.div
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                        >
+                        <div>
                             <Heart className="text-amber-500" size={18} fill="currentColor" />
-                        </motion.div>
+                        </div>
                         <span className="text-sm text-slate-300">{t(footerData.by, language)}</span>
                         <span className="text-sm font-bold bg-gradient-to-r from-amber-400 to-yellow-400 bg-clip-text text-transparent">
                             {footerData.author}
                         </span>
                     </div>
 
-                    <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto mb-4"></div>
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto mb-4" />
 
-                    <p className="text-sm text-slate-400">
-                        © {currentYear} {t(footerData.copyright, language)}
-                    </p>
+                    <p className="text-sm text-slate-400">© {currentYear} {t(footerData.copyright, language)}</p>
                 </motion.div>
             </div>
         </footer>

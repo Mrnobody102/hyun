@@ -6,10 +6,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 
 const stats = [
-    { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
-    { icon: MapPin, label: { en: 'Location', vi: 'Địa điểm' }, value: personalInfo.location },
-    { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiệm' }, value: personalInfo.experience },
-    { icon: Heart, label: { en: 'Passion', vi: 'Sở thích' }, value: personalInfo.passion },
+    { icon: Calendar, label: { en: 'Born', vi: 'NgĂ y sinh' }, value: personalInfo.birthDate },
+    { icon: MapPin, label: { en: 'Location', vi: 'Äá»‹a Ä‘iá»ƒm' }, value: personalInfo.location },
+    { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiá»‡m' }, value: personalInfo.experience },
+    { icon: Heart, label: { en: 'Passion', vi: 'Sá»Ÿ thĂ­ch' }, value: personalInfo.passion },
 ];
 
 const About = () => {
@@ -39,7 +39,7 @@ const About = () => {
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            {language === 'vi' ? 'Về tôi' : 'About Me'}
+                            {language === 'vi' ? 'Vá» tĂ´i' : 'About Me'}
                         </span>
                     </h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
@@ -72,7 +72,7 @@ const About = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                                whileHover={{ scale: 1.05, y: -5 }}
+                                whileHover={{ y: -5 }}
                                 className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-slate-400 dark:border-slate-600"
                             >
                                 <div className="inline-flex p-3 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg mb-4">
@@ -86,15 +86,9 @@ const About = () => {
                 </div>
             </div>
 
-            <motion.button
-                onClick={scrollToNext}
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors"
-                aria-label="Scroll to Education & Experience"
-            >
+            <button onClick={scrollToNext} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors" aria-label="Scroll to Education & Experience">
                 <ChevronDown size={32} />
-            </motion.button>
+            </button>
         </section>
     );
 };

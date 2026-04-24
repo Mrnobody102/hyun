@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpen, Briefcase, Home, Mail, Menu, Moon, Search, Sun, X, Zap } from 'lucide-react';
-import kimImage from '@/assets/kim.jpg';
+import kimAvatar from '@/assets/kim-avatar.jpg';
 import { useDarkMode } from '@/context/DarkModeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { aboutMe, articles, homeSnippet, navItems, searchCopy } from '@/data';
@@ -27,8 +27,14 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
     const { language, toggleLanguage } = useLanguage();
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            const nextIsScrolled = window.scrollY > 50;
+            setIsScrolled((prev) => (prev === nextIsScrolled ? prev : nextIsScrolled));
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -65,13 +71,13 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
         const translatedHomeSnippet = t(homeSnippet, language);
         if (translatedHomeSnippet.toLowerCase().includes(normalizedQuery)) {
-            addSuggestion(language === 'vi' ? 'Trang chủ' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
+            addSuggestion(language === 'vi' ? 'Trang chá»§' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
         }
 
         [aboutMe.paragraph1, aboutMe.paragraph2, aboutMe.paragraph3].forEach((paragraph) => {
             const text = t(paragraph, language);
             if (text.toLowerCase().includes(normalizedQuery)) {
-                addSuggestion(language === 'vi' ? 'Giới thiệu' : 'About', text, () => onNavigate('home'));
+                addSuggestion(language === 'vi' ? 'Giá»›i thiá»‡u' : 'About', text, () => onNavigate('home'));
             }
         });
 
@@ -81,7 +87,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
             if (title.toLowerCase().includes(normalizedQuery) || excerpt.toLowerCase().includes(normalizedQuery)) {
                 addSuggestion(
-                    language === 'vi' ? 'Bài viết' : 'Articles',
+                    language === 'vi' ? 'BĂ i viáº¿t' : 'Articles',
                     title.toLowerCase().includes(normalizedQuery) ? title : excerpt,
                     () => onArticleSelect?.(article.id),
                     article.id,
@@ -141,7 +147,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
             <motion.header
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.35 }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
                     isScrolled ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent dark:bg-slate-900/50'
                 }`}
@@ -149,7 +155,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                 <nav className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <motion.button
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.03 }}
                             className="w-12 h-12 relative overflow-hidden rounded-full border-2 border-amber-500 shadow-md bg-white"
                             onClick={() => {
                                 if (activeTab === 'home') {
@@ -160,23 +166,23 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                             }}
                             aria-label="Go to home"
                         >
-                            <img alt="Profile avatar" className="w-full h-full object-cover object-center" src={kimImage} loading="eager" decoding="async" />
+                            <img alt="Profile avatar" className="w-full h-full object-cover object-center" src={kimAvatar} loading="eager" decoding="async" width="48" height="48" />
                         </motion.button>
 
                         <div className="hidden md:flex items-center gap-8">
                             {navItems.map((item, index) => (
                                 <motion.button
                                     key={item.key}
-                                    initial={{ opacity: 0, y: -20 }}
+                                    initial={{ opacity: 0, y: -16 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    transition={{ duration: 0.35, delay: index * 0.05 }}
                                     onClick={() => handleNavigate(item.key)}
                                     className={`flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium transition-colors relative group ${
                                         activeTab === item.key ? 'text-amber-600 dark:text-amber-400' : ''
                                     }`}
                                     title={t(item.name, language)}
                                 >
-                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || '•'}</span>}
+                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || 'â€¢'}</span>}
                                     <span className="hidden xl:inline">{t(item.name, language)}</span>
                                     <span
                                         className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-amber-600 to-yellow-500 transition-all duration-300 ${
@@ -191,18 +197,18 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     setIsSearchOpen(true);
                                     setShowEmptyHint(false);
                                 }}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                title={language === 'vi' ? 'TĂ¬m kiáº¿m (Ctrl+K)' : 'Search (Ctrl+K)'}
                             >
                                 <Search size={20} />
                             </motion.button>
 
                             <motion.button
                                 onClick={toggleDarkMode}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:shadow-lg"
                                 title={isDarkMode ? 'Light mode' : 'Dark mode'}
                             >
@@ -211,10 +217,10 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
                             <motion.button
                                 onClick={toggleLanguage}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.97 }}
                                 className="p-1.5 rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-base flex items-center justify-center min-w-[2.5rem]"
-                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
+                                title={language === 'vi' ? 'Chuyá»ƒn sang English' : 'Switch to Vietnamese'}
                             >
                                 {language.toUpperCase()}
                             </motion.button>
@@ -226,17 +232,17 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     setIsSearchOpen(true);
                                     setShowEmptyHint(false);
                                 }}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                title={language === 'vi' ? 'TĂ¬m kiáº¿m (Ctrl+K)' : 'Search (Ctrl+K)'}
                             >
                                 <Search size={20} />
                             </motion.button>
                             <motion.button
                                 onClick={toggleDarkMode}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.06 }}
+                                whileTap={{ scale: 0.97 }}
                                 className="p-2 rounded-lg transition-all bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:shadow-lg"
                                 title={isDarkMode ? 'Light mode' : 'Dark mode'}
                             >
@@ -244,12 +250,12 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                             </motion.button>
                             <motion.button
                                 onClick={toggleLanguage}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
                                 className={`rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-sm ${
                                     language === 'en' ? 'px-2 py-2' : 'px-3 py-2'
                                 }`}
-                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
+                                title={language === 'vi' ? 'Chuyá»ƒn sang English' : 'Switch to Vietnamese'}
                             >
                                 {language.toUpperCase()}
                             </motion.button>
@@ -277,7 +283,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
                                 >
                                     <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || '•'}</span>}
+                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || 'â€¢'}</span>}
                                     </span>
                                     {t(item.name, language)}
                                 </button>

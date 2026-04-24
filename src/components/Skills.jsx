@@ -12,12 +12,12 @@ const Skills = () => {
 
     const skillCategories = [
         { title: skillsData.programmingLanguages.title, icon: Code2, color: 'from-amber-500 to-yellow-500', skills: skillsData.programmingLanguages.skills },
-        { title: skillsData.frameworks.title, icon: Layers, color: 'from-slate-600 to-slate-800', skills: skillsData.frameworks.skills },
-        { title: skillsData.database.title, icon: Database, color: 'from-yellow-500 to-amber-600', skills: skillsData.database.skills },
-        { title: skillsData.cloudServices.title, icon: Cloud, color: 'from-amber-400 to-yellow-400', skills: skillsData.cloudServices.skills },
-        { title: skillsData.toolsDevOps.title, icon: Zap, color: 'from-slate-500 to-amber-500', skills: skillsData.toolsDevOps.skills },
-        { title: skillsData.apiOS.title, icon: Server, color: 'from-yellow-600 to-amber-700', skills: skillsData.apiOS.skills },
-    ];
+        { title: skillsData.backendMiddleware.title, icon: Server, color: 'from-slate-600 to-slate-800', skills: skillsData.backendMiddleware.skills },
+        { title: skillsData.frontendUi.title, icon: Layers, color: 'from-yellow-500 to-amber-600', skills: skillsData.frontendUi.skills },
+        { title: skillsData.databasesCaching.title, icon: Database, color: 'from-amber-400 to-yellow-400', skills: skillsData.databasesCaching.skills },
+        { title: skillsData.cloudDevOps.title, icon: Cloud, color: 'from-slate-500 to-amber-500', skills: skillsData.cloudDevOps.skills },
+        { title: skillsData.toolsEnvironments.title, icon: Zap, color: 'from-yellow-600 to-amber-700', skills: skillsData.toolsEnvironments.skills },
+    ].filter((category) => Array.isArray(category.skills) && category.skills.length > 0);
 
     const scrollToCertifications = () => {
         const element = document.querySelector('#certifications');
@@ -50,7 +50,7 @@ const Skills = () => {
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">
                         {language === 'vi'
-                            ? 'Bộ công cụ toàn diện để xây dựng ứng dụng hiện đại có thể mở rộng'
+                            ? 'Bộ kỹ năng phục vụ cả nền tảng web quy mô lớn lẫn các hệ thống AI thời gian thực.'
                             : 'A comprehensive toolkit for building modern, scalable applications'}
                     </p>
                 </motion.div>
@@ -62,8 +62,8 @@ const Skills = () => {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                            whileHover={{ y: -10, scale: 1.02 }}
+                            transition={{ duration: 0.6, delay: index * 0.08 }}
+                            whileHover={{ y: -6 }}
                             className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border-2 border-slate-400 dark:border-slate-600"
                         >
                             <div className={`inline-flex p-4 bg-gradient-to-r ${category.color} rounded-lg mb-4`}>
@@ -71,21 +71,16 @@ const Skills = () => {
                             </div>
                             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">{t(category.title, language)}</h3>
                             <div className="flex flex-wrap gap-2 md:max-w-md">
-                                {category.skills.map((skill, skillIndex) => (
-                                    <motion.span
+                                {category.skills.map((skill) => (
+                                    <span
                                         key={skill}
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.3, delay: index * 0.1 + skillIndex * 0.05 }}
-                                        whileHover={{ scale: 1.1 }}
-                                        className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-700 dark:to-slate-600 text-amber-700 dark:text-amber-200 rounded-full text-sm font-medium hover:from-amber-100 hover:to-yellow-100 dark:hover:from-slate-600 dark:hover:to-slate-500 transition-all cursor-default"
+                                        className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-700 dark:to-slate-600 text-amber-700 dark:text-amber-200 rounded-full text-sm font-medium transition-all cursor-default"
                                     >
                                         <span aria-hidden className="text-base">
                                             {getTechIcon(skill)}
                                         </span>
                                         <span>{skill}</span>
-                                    </motion.span>
+                                    </span>
                                 ))}
                             </div>
                         </motion.div>
@@ -93,15 +88,9 @@ const Skills = () => {
                 </div>
             </div>
 
-            <motion.button
-                onClick={scrollToCertifications}
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors"
-                aria-label="Scroll to Certifications"
-            >
+            <button onClick={scrollToCertifications} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors" aria-label="Scroll to Certifications">
                 <ChevronDown size={32} />
-            </motion.button>
+            </button>
         </section>
     );
 };

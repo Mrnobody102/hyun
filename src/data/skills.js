@@ -1,26 +1,26 @@
 export const skills = {
     programmingLanguages: {
         title: { en: 'Programming Languages', vi: 'Ngôn ngữ lập trình' },
-        skills: ['Java', 'JavaScript', 'TypeScript', 'HTML/CSS'],
+        skills: ['Java', 'TypeScript', 'JavaScript', 'Erlang', 'C++17', 'Golang'],
     },
-    frameworks: {
-        title: { en: 'Frameworks & Libraries', vi: 'Framework & Thư viện' },
-        skills: ['Spring Boot', 'Java OSGi', 'ReactJS', 'NextJS', 'Angular'],
+    backendMiddleware: {
+        title: { en: 'Backend & Middleware', vi: 'Backend & Middleware' },
+        skills: ['Spring Boot', 'Nest.js', 'Node.js', 'Quarkus', 'OSGi', 'Apache Kafka', 'ActiveMQ'],
     },
-    database: {
-        title: { en: 'Database', vi: 'Cơ sở dữ liệu' },
-        skills: ['MongoDB', 'PostgreSQL', 'MySQL', 'MSSQL'],
+    frontendUi: {
+        title: { en: 'Frontend Frameworks & UI', vi: 'Frontend Frameworks & UI' },
+        skills: ['React.js', 'Next.js', 'Angular.js', 'Tailwind CSS', 'Bootstrap', 'MUI'],
     },
-    cloudServices: {
-        title: { en: 'Cloud Services', vi: 'Dịch vụ đám mây' },
-        skills: ['AWS Services'],
+    databasesCaching: {
+        title: { en: 'Databases & Caching', vi: 'Cơ sở dữ liệu & Caching' },
+        skills: ['PostgreSQL', 'MySQL', 'MSSQL', 'MongoDB', 'Redis', 'Qdrant'],
     },
-    toolsDevOps: {
-        title: { en: 'Tools & DevOps', vi: 'Công cụ & DevOps' },
-        skills: ['Git', 'Docker', 'Jenkins', 'Kubernetes', 'SVN'],
+    cloudDevOps: {
+        title: { en: 'Cloud & DevOps', vi: 'Cloud & DevOps' },
+        skills: ['AWS (EC2, ECS/EKS, S3, RDS)', 'Docker', 'Jenkins', 'GitHub Actions'],
     },
-    apiOS: {
-        title: { en: 'API & OS', vi: 'API & Hệ điều hành' },
-        skills: ['RESTful', 'GraphQL', 'Linux (Ubuntu/Rocky)', 'Windows'],
+    toolsEnvironments: {
+        title: { en: 'Tools & Environments', vi: 'Công cụ & Môi trường' },
+        skills: ['Git', 'SVN', 'SonarLint', 'Postman', 'Figma', 'DBeaver', 'Linux', 'Power BI', 'SoapUI'],
     },
 };

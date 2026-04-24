@@ -24,11 +24,11 @@ const Certifications = () => {
                             </span>
                         </h2>
                     </div>
-                    <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full"></div>
-                    <p className="text-slate-600 dark:text-slate-300 mt-4">{language === 'vi' ? 'Chứng minh kỹ năng và học tập liên tục' : 'Proof of skills and continuous learning'}</p>
+                    <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
+                    <p className="text-slate-600 dark:text-slate-300 mt-4">{language === 'vi' ? 'Thể hiện năng lực chuyên môn và quá trình học tập liên tục' : 'Proof of skills and continuous learning'}</p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
                     {certifications.map((cert, index) => (
                         <motion.div
                             key={cert.title}
@@ -59,11 +59,13 @@ const Certifications = () => {
                             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end">
                                 <div>
                                     <p className="text-slate-600 dark:text-slate-300 font-medium">{cert.issuer}</p>
-                                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Code: {cert.code}</p>
+                                    {cert.code && <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Code: {cert.code}</p>}
                                 </div>
-                                <span className="w-fit text-sm font-semibold bg-amber-50 dark:bg-slate-800 text-amber-700 dark:text-amber-200 px-3 py-1 rounded-full border border-amber-100 dark:border-slate-700">
-                                    {cert.date}
-                                </span>
+                                {cert.date && (
+                                    <span className="w-fit text-sm font-semibold bg-amber-50 dark:bg-slate-800 text-amber-700 dark:text-amber-200 px-3 py-1 rounded-full border border-amber-100 dark:border-slate-700">
+                                        {cert.date}
+                                    </span>
+                                )}
                             </div>
                         </motion.div>
                     ))}

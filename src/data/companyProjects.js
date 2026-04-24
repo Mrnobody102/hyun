@@ -1,118 +1,77 @@
-// Company projects data with bilingual descriptions
 export const companyProjects = [
     {
-        name: 'Internal Management System',
-        duration: '01/2023 - 11/2023',
-        teamSize: 10,
-        position: 'Fullstack Developer',
+        name: 'Telecommunications Core Routing System',
+        company: 'Viettel Hightech',
+        duration: '03/2026 - 05/2026',
+        position: { en: 'Onsite Developer', vi: 'Lập trình viên onsite' },
         description: {
-            en: 'Korean client internal management system featuring comprehensive user, language, settings, zone, and time management capabilities.',
-            vi: 'Hệ thống quản lý nội bộ khách hàng Hàn Quốc với quản lý người dùng, ngôn ngữ, cài đặt, múi giờ toàn diện.'
+            en: 'Optimized real-time communication flows and core business logic for a high-concurrency telecom system using Erlang and Java. Managed distributed data with Mnesia and MySQL, and simulated Linux environments to verify routing logic and fault tolerance.',
+            vi: 'Tối ưu luồng giao tiếp thời gian thực và logic nghiệp vụ cốt lõi cho hệ thống viễn thông chịu tải cao bằng Erlang và Java. Quản lý dữ liệu phân tán với Mnesia và MySQL, đồng thời mô phỏng môi trường Linux để kiểm thử logic định tuyến và khả năng chịu lỗi.',
         },
-        responsibilities: {
-            en: [
-                'Developed React components and designed RESTful APIs.',
-                'Implemented OAuth2/JWT authentication for secure access.',
-                'Integrated caching, mail services, and file compression features.'
-            ],
-            vi: [
-                'Phát triển React component và thiết kế RESTful API.',
-                'Triển khai xác thực OAuth2/JWT cho truy cập an toàn.',
-                'Tích hợp cache, dịch vụ email và nén file.'
-            ]
-        },
-        technologies: ['Spring Boot', 'PostgreSQL', 'MongoDB', 'Redis', 'JavaScript', 'TypeScript', 'ReactJS', 'Jenkins', 'Docker', 'Git', 'ActiveMQ']
+        technologies: ['Erlang', 'Java', 'Quarkus', 'Mnesia', 'MySQL', 'Linux'],
     },
     {
-        name: 'Device-Web Server Bridge',
-        duration: '11/2023 - 08/2024',
-        teamSize: 4,
-        position: 'Developer',
+        name: 'Honda Digital User Manual Redesign',
+        company: 'FPT Software',
+        duration: '02/2026 - 03/2026',
+        position: { en: 'Developer', vi: 'Lập trình viên' },
         description: {
-            en: 'A critical bridge system connecting timekeeping devices with the web server, ensuring seamless data synchronization and device management.',
-            vi: 'Hệ thống cầu nối quan trọng kết nối thiết bị chấm công với web server, đảm bảo đồng bộ dữ liệu và quản lý thiết bị liền mạch.'
+            en: "Modernized Honda's digital documentation platform with React.js, turning legacy manuals into a responsive and intuitive web experience that improves discoverability and usability.",
+            vi: 'Hiện đại hóa nền tảng tài liệu số của Honda bằng React.js, chuyển các manual cũ sang trải nghiệm web trực quan, responsive và dễ tra cứu hơn.',
         },
-        responsibilities: {
-            en: [
-                'Designed project structure and handled network configuration.',
-                'Implemented facial recognition module and C++ interface via JNA.',
-                'Managed Ubuntu setup, user management, data sync, and error analysis.'
-            ],
-            vi: [
-                'Thiết kế cấu trúc dự án và cấu hình mạng.',
-                'Triển khai module nhận diện khuôn mặt và giao tiếp C++ qua JNA.',
-                'Quản lý Ubuntu, người dùng, đồng bộ dữ liệu và phân tích lỗi.'
-            ]
-        },
-        technologies: ['Java OSGi', 'MySQL', 'ActiveMQ', 'Linux', 'Docker', 'SVN', 'AWS', 'C++']
+        technologies: ['React.js', 'JavaScript', 'Tailwind CSS'],
     },
     {
-        name: 'Employee Management & Timekeeping Server',
-        duration: '08/2024 - 04/2025',
-        teamSize: 7,
-        position: 'Full Stack Developer',
+        name: 'Project KPI Analytics Platform',
+        company: 'FPT Software',
+        duration: '01/2026 - 02/2026',
+        position: { en: 'Developer', vi: 'Lập trình viên' },
         description: {
-            en: 'Web server component for the timekeeping system, managing employee authentication, working time, holidays, and connected devices.',
-            vi: 'Thành phần web server cho hệ thống chấm công, quản lý xác thực nhân viên, giờ làm việc, ngày lễ và thiết bị kết nối.'
+            en: 'Designed interactive Power BI dashboards and semantic models to monitor departmental KPIs in real time, with data preparation and transformation handled through Power Query and Data Lake integration.',
+            vi: 'Thiết kế dashboard Power BI tương tác và semantic model để theo dõi KPI dự án theo thời gian thực, kết hợp Power Query và tích hợp Data Lake cho luồng dữ liệu.',
         },
-        responsibilities: {
-            en: [
-                'Developed and integrated facial recognition module and error detection systems.',
-                'Modified and optimized core business logic.',
-                'Performed Angular framework upgrades and maintenance.'
-            ],
-            vi: [
-                'Phát triển và tích hợp module nhận diện khuôn mặt và hệ thống phát hiện lỗi.',
-                'Sửa đổi và tối ưu logic nghiệp vụ cốt lõi.',
-                'Nâng cấp và bảo trì Angular framework.'
-            ]
-        },
-        technologies: ['Spring Boot', 'PostgreSQL', 'MongoDB', 'Redis', 'JavaScript', 'TypeScript', 'Angular', 'Git', 'Jenkins', 'ActiveMQ']
+        technologies: ['Power BI', 'DAX', 'Power Query', 'Data Lake Integration'],
     },
     {
-        name: 'Document Management System',
-        duration: '04/2025 - 11/2025',
-        teamSize: 7,
-        position: 'Frontend Developer',
+        name: 'SecuxperDP',
+        company: 'LG CNS',
+        duration: '09/2025 - 12/2025',
+        position: { en: 'Full-stack Developer', vi: 'Lập trình viên full-stack' },
         description: {
-            en: 'Enterprise document management system facilitating efficient search, file management, uploading, and downloading of company documents.',
-            vi: 'Hệ thống quản lý tài liệu doanh nghiệp hỗ trợ tìm kiếm, quản lý file, tải lên/xuống tài liệu công ty hiệu quả.'
+            en: 'Led the full-stack architecture for the LGCNS ecosystem, building core backend modules with Spring Boot and high-performance frontend interfaces with Next.js. Delivered user management, dynamic localization, and strong CI/CD quality gates.',
+            vi: 'Dẫn dắt kiến trúc full-stack cho hệ sinh thái LGCNS, xây dựng các module backend cốt lõi bằng Spring Boot và giao diện hiệu năng cao với Next.js. Triển khai quản lý người dùng, đa ngôn ngữ động và quy trình kiểm soát chất lượng qua CI/CD.',
         },
-        responsibilities: {
-            en: [
-                'Provided critical feedback on UI design and user experience.',
-                'Coded and optimized ReactJS components for the interface.',
-                'Implemented Excel file processing and optimization features.'
-            ],
-            vi: [
-                'Góp ý quan trọng về thiết kế UI và trải nghiệm người dùng.',
-                'Lập trình và tối ưu ReactJS component cho giao diện.',
-                'Triển khai xử lý file Excel và tính năng tối ưu hóa.'
-            ]
-        },
-        technologies: ['Spring Boot', 'PostgreSQL', 'MongoDB', 'Redis', 'JavaScript', 'TypeScript', 'ReactJS', 'Jenkins', 'Docker', 'Git', 'Elasticsearch']
+        technologies: ['Java', 'Spring Boot', 'Next.js', 'PostgreSQL', 'MongoDB', 'Jenkins', 'SonarLint', 'Docker'],
     },
     {
-        name: 'Building Access Control System',
-        duration: '04/2025 - 11/2025',
-        teamSize: 7,
-        position: 'Full Stack Developer',
+        name: 'Smart Connect',
+        company: 'LG CNS',
+        duration: '04/2024 - 09/2025',
+        position: { en: 'Developer', vi: 'Lập trình viên' },
         description: {
-            en: 'Comprehensive building access control system managing entry permissions for people, objects, and vehicles.',
-            vi: 'Hệ thống kiểm soát ra vào tòa nhà toàn diện quản lý quyền truy cập cho người, đồ vật và phương tiện.'
+            en: 'Built a resilient middleware layer using Java and ActiveMQ to bridge web platforms with biometric authentication devices, enabling reliable real-time, bi-directional synchronization.',
+            vi: 'Xây dựng middleware ổn định bằng Java và ActiveMQ để kết nối nền tảng web với thiết bị xác thực sinh trắc học, hỗ trợ đồng bộ hai chiều theo thời gian thực.',
         },
-        responsibilities: {
-            en: [
-                'Developed the vehicle access control interface and screens.',
-                'Created technical documentation in English.',
-                'Modified business logic and UI components; performed rigorous bug testing.'
-            ],
-            vi: [
-                'Phát triển giao diện kiểm soát phương tiện và màn hình.',
-                'Soạn tài liệu kỹ thuật bằng tiếng Anh.',
-                'Sửa đổi logic nghiệp vụ và UI component; kiểm thử lỗi nghiêm ngặt.'
-            ]
+        technologies: ['Java', 'OSGi', 'ActiveMQ', 'Docker', 'Linux'],
+    },
+    {
+        name: 'IDP Plus',
+        company: 'LG CNS',
+        duration: '12/2023 - 03/2024',
+        position: { en: 'Developer', vi: 'Lập trình viên' },
+        description: {
+            en: "Developed scalable REST APIs with Spring Boot to manage LG Group's organizational data, including employee records and global facility information.",
+            vi: 'Phát triển REST API có khả năng mở rộng bằng Spring Boot để quản lý dữ liệu tổ chức của LG Group, bao gồm hồ sơ nhân sự và cơ sở vật chất toàn cầu.',
         },
-        technologies: ['Spring Boot', 'PostgreSQL', 'MongoDB', 'Redis', 'JavaScript', 'TypeScript', 'ReactJS', 'Jenkins', 'Docker', 'Git']
-    }
+        technologies: ['Java', 'Spring Boot', 'Angular.js', 'PostgreSQL', 'MongoDB', 'Redis', 'Jenkins', 'SonarLint'],
+    },
+    {
+        name: 'Camera AI Surveillance System',
+        duration: '06/2025 - 05/2026',
+        description: {
+            en: 'Engineered a high-performance, real-time face recognition system for IP cameras using C++17, NVIDIA DeepStream, and Triton. Built a scalable RTSP processing pipeline with Kafka for event streaming, Qdrant for vector search, and Kubernetes for orchestration.',
+            vi: 'Xây dựng hệ thống nhận diện khuôn mặt thời gian thực hiệu năng cao cho camera IP bằng C++17, NVIDIA DeepStream và Triton. Thiết kế pipeline xử lý RTSP có khả năng mở rộng với Kafka cho event streaming, Qdrant cho vector search và Kubernetes cho orchestration.',
+        },
+        technologies: ['C++17', 'NVIDIA DeepStream', 'Triton', 'Kafka', 'Qdrant', 'Docker', 'Kubernetes', 'Golang'],
+    },
 ];
