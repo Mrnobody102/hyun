@@ -30,7 +30,7 @@ const Skills = () => {
         <section
             id="skills"
             ref={sectionRef}
-            className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900"
+            className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900"
         >
             <div className="container mx-auto max-w-6xl">
                 <motion.div

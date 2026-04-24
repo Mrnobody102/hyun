@@ -56,12 +56,12 @@ const Certifications = () => {
                             </div>
 
                             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">{cert.title}</h3>
-                            <div className="flex justify-between items-end">
+                            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-end">
                                 <div>
                                     <p className="text-slate-600 dark:text-slate-300 font-medium">{cert.issuer}</p>
                                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Code: {cert.code}</p>
                                 </div>
-                                <span className="text-sm font-semibold bg-amber-50 dark:bg-slate-800 text-amber-700 dark:text-amber-200 px-3 py-1 rounded-full border border-amber-100 dark:border-slate-700">
+                                <span className="w-fit text-sm font-semibold bg-amber-50 dark:bg-slate-800 text-amber-700 dark:text-amber-200 px-3 py-1 rounded-full border border-amber-100 dark:border-slate-700">
                                     {cert.date}
                                 </span>
                             </div>

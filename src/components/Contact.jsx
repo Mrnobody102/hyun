@@ -125,7 +125,7 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="py-20 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section id="contact" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -166,14 +166,14 @@ const Contact = () => {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     whileHover={{ x: 10, scale: 1.02 }}
-                                    className={`flex items-center gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600`}
+                                    className={`flex items-start gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600`}
                                 >
                                     <div className={`p-3 bg-gradient-to-r ${info.color} rounded-lg`}>
                                         <info.icon className="text-white" size={24} />
                                     </div>
-                                    <div>
+                                    <div className="min-w-0">
                                         <p className="text-sm text-slate-500 dark:text-slate-400">{t(info.label, language)}</p>
-                                        <p className="text-lg font-semibold text-slate-800 dark:text-slate-100">{info.value}</p>
+                                        <p className="text-base md:text-lg font-semibold text-slate-800 dark:text-slate-100 break-all sm:break-normal">{info.value}</p>
                                     </div>
                                 </motion.a>
                             ))}

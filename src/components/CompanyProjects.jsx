@@ -12,7 +12,7 @@ const CompanyProjects = ({ compact = false }) => {
     const displayedProjects = compact ? projects.slice(0, 2) : projects;
 
     return (
-        <section id="company-projects" className="py-20 px-4 bg-white dark:bg-slate-950">
+        <section id="company-projects" className="pt-32 pb-20 md:pt-36 px-4 bg-white dark:bg-slate-950">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
