@@ -1,17 +1,19 @@
-import { article1 } from './article-1';
-import { article2 } from './article-2';
-import { article3 } from './article-3';
-import { article4 } from './article-4';
-import { article5 } from './article-5';
-
 export const allArticles = {
-    1: article1,
-    2: article2,
-    3: article3,
-    4: article4,
-    5: article5,
+    1: () => import('./article-1'),
+    2: () => import('./article-2'),
+    3: () => import('./article-3'),
+    4: () => import('./article-4'),
+    5: () => import('./article-5'),
 };
 
-export function getArticleById(id) {
-    return allArticles[id] || null;
+export async function getArticleById(id) {
+    const loader = allArticles[id];
+    if (!loader) return null;
+    const module = await loader();
+    // Assuming each article file has a named export like 'article1', 'article2' etc.
+    // or we can standardize them to 'default' or a specific name.
+    // Based on original code, they were imported as { article1 } etc.
+    const key = `article${id}`;
+    return module[key] || module.default || null;
 }
+

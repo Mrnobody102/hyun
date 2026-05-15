@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Facebook } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { contactInfo as contactInfoData, contactLabels, formspreeEndpoint } from '@/data';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT || formspreeEndpoint;
 
@@ -18,7 +19,7 @@ const Contact = () => {
         message: ''
     });
 
-    const contactItems = [
+    const contactItems = useMemo(() => [
         {
             icon: Mail,
             label: contactLabels.email,
@@ -40,9 +41,9 @@ const Contact = () => {
             href: '#',
             color: 'from-yellow-500 to-amber-600'
         }
-    ];
+    ], []);
 
-    const socialLinks = [
+    const socialLinks = useMemo(() => [
         {
             icon: Github,
             label: 'GitHub',
@@ -61,9 +62,9 @@ const Contact = () => {
             href: contactInfoData.social.facebook,
             color: 'hover:text-blue-500'
         }
-    ];
+    ], []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
 
         if (!FORMSPREE_ENDPOINT || FORMSPREE_ENDPOINT.includes('your-id')) {
@@ -83,12 +84,7 @@ const Contact = () => {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
                 },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    subject: formData.subject,
-                    message: formData.message,
-                }),
+                body: JSON.stringify(formData),
             });
 
             if (!res.ok) {
@@ -109,29 +105,29 @@ const Contact = () => {
                 duration: 4000,
             });
         }
-    };
+    }, [formData, language, toast]);
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
+    const handleChange = useCallback((e) => {
+        setFormData(prev => ({
+            ...prev,
             [e.target.name]: e.target.value
-        });
-    };
+        }));
+    }, []);
 
-    const handleSocialClick = (href) => {
+    const handleSocialClick = useCallback((href) => {
         if (href) {
             window.open(href, '_blank', 'noopener,noreferrer');
         }
-    };
+    }, []);
 
     return (
-        <section id="contact" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section id="contact" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 overflow-hidden">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={fadeInUp}
+                    initial="initial"
+                    whileInView="animate"
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
                     <div className="flex items-center justify-center gap-4 mb-4">
@@ -148,23 +144,19 @@ const Contact = () => {
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 gap-12">
-                    {/* Contact Information */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        variants={staggerContainer}
+                        initial="initial"
+                        whileInView="animate"
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
                         className="space-y-6"
                     >
                         <div className="space-y-4">
-                            {contactItems.map((info, index) => (
+                            {contactItems.map((info) => (
                                 <motion.a
-                                    key={info.label}
+                                    key={t(info.label, 'en')}
                                     href={info.href}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                                    variants={fadeInUp}
                                     whileHover={{ x: 10, scale: 1.02 }}
                                     className={`flex items-start gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600`}
                                 >
@@ -179,12 +171,8 @@ const Contact = () => {
                             ))}
                         </div>
 
-                        {/* Social Links */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
+                            variants={fadeInUp}
                             className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600`}
                         >
                             <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{t(contactLabels.followMe, language)}</h3>
@@ -205,16 +193,15 @@ const Contact = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Contact Form */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        variants={fadeInUp}
+                        initial="initial"
+                        whileInView="animate"
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
                     >
                         <form onSubmit={handleSubmit} className="space-y-4 p-8 rounded-xl shadow-xl border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600">
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
+                            <div className="space-y-2">
+                                <label htmlFor="name" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     {language === 'vi' ? 'Tên của bạn' : 'Your Name'}
                                 </label>
                                 <input
@@ -229,8 +216,8 @@ const Contact = () => {
                                 />
                             </div>
 
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     {language === 'vi' ? 'Địa chỉ Email' : 'Email Address'}
                                 </label>
                                 <input
@@ -245,8 +232,8 @@ const Contact = () => {
                                 />
                             </div>
 
-                            <div>
-                                <label htmlFor="subject" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
+                            <div className="space-y-2">
+                                <label htmlFor="subject" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     {language === 'vi' ? 'Chủ đề' : 'Subject'}
                                 </label>
                                 <input
@@ -261,8 +248,8 @@ const Contact = () => {
                                 />
                             </div>
 
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">
+                            <div className="space-y-2">
+                                <label htmlFor="message" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     {language === 'vi' ? 'Tin nhắn' : 'Message'}
                                 </label>
                                 <textarea
@@ -294,4 +281,4 @@ const Contact = () => {
     );
 };
 
-export default Contact;
+export default React.memo(Contact);

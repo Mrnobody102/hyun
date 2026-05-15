@@ -1,26 +1,34 @@
 export const skills = {
     programmingLanguages: {
         title: { en: 'Programming Languages', vi: 'Ngôn ngữ lập trình' },
-        skills: ['Java', 'TypeScript', 'JavaScript', 'Erlang', 'C++17', 'Golang'],
+        skills: ['Java', 'C++17', 'TypeScript', 'JavaScript', 'Erlang', 'Basic Python', 'Basic Golang'],
+    },
+    aiVideoStreaming: {
+        title: { en: 'AI / Video / Streaming', vi: 'AI / Video / Streaming' },
+        skills: ['NVIDIA DeepStream', 'Triton Inference Server', 'GStreamer', 'RTSP', 'OpenCV'],
     },
     backendMiddleware: {
         title: { en: 'Backend & Middleware', vi: 'Backend & Middleware' },
-        skills: ['Spring Boot', 'Nest.js', 'Node.js', 'Quarkus', 'OSGi', 'Apache Kafka', 'ActiveMQ'],
+        skills: ['Spring Boot', 'NestJS', 'Node.js', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ'],
+    },
+    databasesVectorSearch: {
+        title: { en: 'Databases & Vector Search', vi: 'Cơ sở dữ liệu & Vector Search' },
+        skills: ['PostgreSQL', 'MySQL', 'MSSQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'],
     },
     frontendUi: {
         title: { en: 'Frontend Frameworks & UI', vi: 'Frontend Frameworks & UI' },
-        skills: ['React.js', 'Next.js', 'Angular.js', 'Tailwind CSS', 'Bootstrap', 'MUI'],
+        skills: ['ReactJS', 'Next.js', 'AngularJS', 'Tailwind CSS', 'Bootstrap', 'MUI'],
     },
-    databasesCaching: {
-        title: { en: 'Databases & Caching', vi: 'Cơ sở dữ liệu & Caching' },
-        skills: ['PostgreSQL', 'MySQL', 'MSSQL', 'MongoDB', 'Redis', 'Qdrant'],
+    devOpsSystems: {
+        title: { en: 'DevOps & Systems', vi: 'DevOps & Hệ thống' },
+        skills: ['Linux', 'Docker', 'Kubernetes', 'Jenkins', 'GitHub Actions', 'Basic AWS'],
     },
-    cloudDevOps: {
-        title: { en: 'Cloud & DevOps', vi: 'Cloud & DevOps' },
-        skills: ['AWS (EC2, ECS/EKS, S3, RDS)', 'Docker', 'Jenkins', 'GitHub Actions'],
+    tools: {
+        title: { en: 'Tools', vi: 'Công cụ' },
+        skills: ['Git', 'SVN', 'SonarLint', 'Postman', 'DBeaver', 'Power BI', 'SoapUI'],
     },
-    toolsEnvironments: {
-        title: { en: 'Tools & Environments', vi: 'Công cụ & Môi trường' },
-        skills: ['Git', 'SVN', 'SonarLint', 'Postman', 'Figma', 'DBeaver', 'Linux', 'Power BI', 'SoapUI'],
-    },
+    languages: {
+        title: { en: 'Languages', vi: 'Ngôn ngữ' },
+        skills: ['English (Intermediate)', 'Korean (TOPIK 4)'],
+    }
 };

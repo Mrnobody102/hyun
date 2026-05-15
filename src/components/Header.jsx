@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { BookOpen, Briefcase, Home, Mail, Menu, Moon, Search, Sun, X, Zap } from 'lucide-react';
 import kimAvatar from '@/assets/kim-avatar.jpg';
 import { useDarkMode } from '@/context/DarkModeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { aboutMe, articles, homeSnippet, navItems, searchCopy } from '@/data';
 import { t } from '@/lib/utils';
+import { fadeIn, fadeInUp, staggerContainer } from '@/lib/animations';
 
 const iconMap = { Home, Zap, Briefcase, BookOpen, Mail };
 
@@ -17,26 +18,27 @@ function scrollToSection(selector) {
 }
 
 const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = null }) => {
-    const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
     const [showEmptyHint, setShowEmptyHint] = useState(false);
+    const [isPending, startTransition] = useTransition();
     const inputRef = useRef(null);
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const { language, toggleLanguage } = useLanguage();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const nextIsScrolled = window.scrollY > 50;
-            setIsScrolled((prev) => (prev === nextIsScrolled ? prev : nextIsScrolled));
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll();
-
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    const { scrollY } = useScroll();
+    const headerBg = useTransform(
+        scrollY,
+        [0, 50],
+        ['rgba(255, 255, 255, 0)', isDarkMode ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)']
+    );
+    const headerShadow = useTransform(
+        scrollY,
+        [0, 50],
+        ['none', '0 10px 15px -3px rgb(0 0 0 / 0.1)']
+    );
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -59,51 +61,54 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
-    const suggestions = useMemo(() => {
+    useEffect(() => {
         if (!normalizedQuery) {
-            return [];
+            setFilteredSuggestions([]);
+            return;
         }
 
-        const results = [];
-        const addSuggestion = (section, snippet, onClick, articleId = null) => {
-            results.push({ section, snippet, onClick, articleId });
-        };
+        startTransition(() => {
+            const results = [];
+            const addSuggestion = (section, snippet, onClick, articleId = null) => {
+                results.push({ section, snippet, onClick, articleId });
+            };
 
-        const translatedHomeSnippet = t(homeSnippet, language);
-        if (translatedHomeSnippet.toLowerCase().includes(normalizedQuery)) {
-            addSuggestion(language === 'vi' ? 'Trang chủ' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
-        }
-
-        [aboutMe.paragraph1, aboutMe.paragraph2, aboutMe.paragraph3].forEach((paragraph) => {
-            const text = t(paragraph, language);
-            if (text.toLowerCase().includes(normalizedQuery)) {
-                addSuggestion(language === 'vi' ? 'Giới thiệu' : 'About', text, () => onNavigate('home'));
+            const translatedHomeSnippet = t(homeSnippet, language);
+            if (translatedHomeSnippet.toLowerCase().includes(normalizedQuery)) {
+                addSuggestion(language === 'vi' ? 'Trang chủ' : 'Home', translatedHomeSnippet, () => onNavigate('home'));
             }
+
+            [aboutMe.paragraph1, aboutMe.paragraph2, aboutMe.paragraph3].forEach((paragraph) => {
+                const text = t(paragraph, language);
+                if (text.toLowerCase().includes(normalizedQuery)) {
+                    addSuggestion(language === 'vi' ? 'Giới thiệu' : 'About', text, () => onNavigate('home'));
+                }
+            });
+
+            articles.forEach((article) => {
+                const title = t(article.title, language);
+                const excerpt = t(article.excerpt, language);
+
+                if (title.toLowerCase().includes(normalizedQuery) || excerpt.toLowerCase().includes(normalizedQuery)) {
+                    addSuggestion(
+                        language === 'vi' ? 'Bài viết' : 'Articles',
+                        title.toLowerCase().includes(normalizedQuery) ? title : excerpt,
+                        () => onArticleSelect?.(article.id),
+                        article.id,
+                    );
+                }
+            });
+
+            setFilteredSuggestions(results.slice(0, 10));
         });
-
-        articles.forEach((article) => {
-            const title = t(article.title, language);
-            const excerpt = t(article.excerpt, language);
-
-            if (title.toLowerCase().includes(normalizedQuery) || excerpt.toLowerCase().includes(normalizedQuery)) {
-                addSuggestion(
-                    language === 'vi' ? 'Bài viết' : 'Articles',
-                    title.toLowerCase().includes(normalizedQuery) ? title : excerpt,
-                    () => onArticleSelect?.(article.id),
-                    article.id,
-                );
-            }
-        });
-
-        return results.slice(0, 10);
     }, [language, normalizedQuery, onArticleSelect, onNavigate]);
 
-    const closeSearch = () => {
+    const closeSearch = useCallback(() => {
         setIsSearchOpen(false);
         setShowEmptyHint(false);
-    };
+    }, []);
 
-    const handleSearchSubmit = (event) => {
+    const handleSearchSubmit = useCallback((event) => {
         event.preventDefault();
 
         if (!normalizedQuery) {
@@ -111,20 +116,16 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
             return;
         }
 
-        const firstSuggestion = suggestions[0];
+        const firstSuggestion = filteredSuggestions[0];
         firstSuggestion?.onClick?.();
         closeSearch();
-    };
+    }, [normalizedQuery, filteredSuggestions, closeSearch]);
 
-    const highlightText = (text) => {
-        if (!normalizedQuery) {
-            return text;
-        }
+    const highlightText = useCallback((text) => {
+        if (!normalizedQuery) return text;
 
         const startIndex = text.toLowerCase().indexOf(normalizedQuery);
-        if (startIndex < 0) {
-            return text;
-        }
+        if (startIndex < 0) return text;
 
         const endIndex = startIndex + normalizedQuery.length;
         return (
@@ -134,23 +135,22 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                 {text.slice(endIndex)}
             </>
         );
-    };
+    }, [normalizedQuery]);
 
-    const handleNavigate = (key) => {
+    const handleNavigate = useCallback((key) => {
         onNavigate(key);
         setIsMobileMenuOpen(false);
         closeSearch();
-    };
+    }, [onNavigate, closeSearch]);
 
     return (
         <>
             <motion.header
+                style={{ backgroundColor: headerBg, boxShadow: headerShadow }}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.35 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                    isScrolled ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent dark:bg-slate-900/50'
-                }`}
+                className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-colors duration-300"
             >
                 <nav className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
@@ -192,184 +192,151 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 </motion.button>
                             ))}
 
-                            <motion.button
-                                onClick={() => {
-                                    setIsSearchOpen(true);
-                                    setShowEmptyHint(false);
-                                }}
-                                whileHover={{ scale: 1.06 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
-                            >
-                                <Search size={20} />
-                            </motion.button>
+                            <div className="flex items-center gap-3">
+                                <motion.button
+                                    onClick={() => {
+                                        setIsSearchOpen(true);
+                                        setShowEmptyHint(false);
+                                    }}
+                                    whileHover={{ scale: 1.06 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="p-2 rounded-lg transition-all bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white dark:text-blue-400 border border-blue-500/20"
+                                    title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                >
+                                    <Search size={20} />
+                                </motion.button>
 
-                            <motion.button
-                                onClick={toggleDarkMode}
-                                whileHover={{ scale: 1.06 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="p-2 rounded-lg transition-all bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:shadow-lg"
-                                title={isDarkMode ? 'Light mode' : 'Dark mode'}
-                            >
-                                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                            </motion.button>
+                                <motion.button
+                                    onClick={toggleDarkMode}
+                                    whileHover={{ scale: 1.06 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="p-2 rounded-lg transition-all bg-amber-500/10 hover:bg-amber-500 text-amber-600 hover:text-white dark:text-amber-400 border border-amber-500/20"
+                                >
+                                    {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                                </motion.button>
 
-                            <motion.button
-                                onClick={toggleLanguage}
-                                whileHover={{ scale: 1.06 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="p-1.5 rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-base flex items-center justify-center min-w-[2.5rem]"
-                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
-                            >
-                                {language.toUpperCase()}
-                            </motion.button>
+                                <motion.button
+                                    onClick={toggleLanguage}
+                                    whileHover={{ scale: 1.06 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="p-1.5 rounded-lg transition-all bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 hover:text-white dark:text-emerald-400 border border-emerald-500/20 font-bold min-w-[2.5rem]"
+                                >
+                                    {language.toUpperCase()}
+                                </motion.button>
+                            </div>
                         </div>
 
-                        <div className="md:hidden flex items-center gap-4">
-                            <motion.button
-                                onClick={() => {
-                                    setIsSearchOpen(true);
-                                    setShowEmptyHint(false);
-                                }}
-                                whileHover={{ scale: 1.06 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="p-2 rounded-lg transition-all bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg"
-                                title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
+                        <div className="md:hidden flex items-center gap-3">
+                            <button
+                                onClick={() => setIsSearchOpen(true)}
+                                className="p-2 text-slate-700 dark:text-slate-200"
                             >
                                 <Search size={20} />
-                            </motion.button>
-                            <motion.button
-                                onClick={toggleDarkMode}
-                                whileHover={{ scale: 1.06 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="p-2 rounded-lg transition-all bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:shadow-lg"
-                                title={isDarkMode ? 'Light mode' : 'Dark mode'}
-                            >
-                                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-                            </motion.button>
-                            <motion.button
-                                onClick={toggleLanguage}
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                                className={`rounded-lg transition-all bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg font-semibold text-sm ${
-                                    language === 'en' ? 'px-2 py-2' : 'px-3 py-2'
-                                }`}
-                                title={language === 'vi' ? 'Chuyển sang English' : 'Switch to Vietnamese'}
-                            >
-                                {language.toUpperCase()}
-                            </motion.button>
+                            </button>
                             <button
                                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-                                className="text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-                                aria-label="Toggle mobile menu"
+                                className="p-2 text-slate-700 dark:text-slate-200"
                             >
                                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                             </button>
                         </div>
                     </div>
 
-                    {isMobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="md:hidden mt-4 pb-4 rounded-lg shadow-lg bg-white/95 dark:bg-slate-800/95"
-                        >
-                            {navItems.map((item) => (
-                                <button
-                                    key={item.key}
-                                    onClick={() => handleNavigate(item.key)}
-                                    className="flex items-center gap-3 w-full text-left py-3 px-4 transition-all border-b last:border-0 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-700 border-slate-100 dark:border-slate-700"
-                                >
-                                    <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg leading-none">{item.emoji || '•'}</span>}
-                                    </span>
-                                    {t(item.name, language)}
-                                </button>
-                            ))}
-                        </motion.div>
-                    )}
+                    <AnimatePresence>
+                        {isMobileMenuOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="md:hidden mt-4 overflow-hidden rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-100 dark:border-slate-700"
+                            >
+                                {navItems.map((item) => (
+                                    <button
+                                        key={item.key}
+                                        onClick={() => handleNavigate(item.key)}
+                                        className="flex items-center gap-3 w-full p-4 text-left border-b last:border-0 border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                    >
+                                        {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span>{item.emoji}</span>}
+                                        {t(item.name, language)}
+                                    </button>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </nav>
             </motion.header>
 
             <AnimatePresence>
                 {isSearchOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-16 px-4"
+                        variants={fadeIn}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        className="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm flex items-start justify-center pt-16 md:pt-24 px-4"
                         onClick={closeSearch}
                     >
                         <motion.div
-                            initial={{ y: -16, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -16, opacity: 0 }}
-                            className="w-full max-w-2xl bg-white/95 dark:bg-slate-900/95 rounded-2xl shadow-2xl p-6 border border-white/50 dark:border-slate-800"
+                            variants={fadeInUp}
+                            className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
                             onClick={(event) => event.stopPropagation()}
                         >
-                            <form onSubmit={handleSearchSubmit} className="flex flex-col gap-4">
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{t(searchCopy.title, language)}</p>
-                                        <p className="text-xs text-slate-500">{t(searchCopy.hint, language)}</p>
+                            <form onSubmit={handleSearchSubmit} className="p-4 md:p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex items-center gap-2">
+                                        <Search size={18} className="text-amber-500" />
+                                        <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{t(searchCopy.title, language)}</span>
                                     </div>
-                                    <button type="button" onClick={closeSearch} className="text-slate-500 hover:text-amber-600" aria-label="Close search">
-                                        <X size={20} />
+                                    <button type="button" onClick={closeSearch} className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                                        <X size={20} className="text-slate-500" />
                                     </button>
                                 </div>
 
-                                <div className="flex items-center gap-3 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3 focus-within:ring-2 focus-within:ring-amber-400">
-                                    <Search size={20} className="text-amber-600" />
+                                <div className="relative flex items-center">
                                     <input
                                         ref={inputRef}
                                         type="text"
                                         placeholder={t(searchCopy.placeholder, language)}
                                         value={searchQuery}
-                                        onChange={(event) => {
-                                            setSearchQuery(event.target.value.slice(0, 50));
-                                            setShowEmptyHint(false);
-                                        }}
-                                        className="flex-1 bg-transparent text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none"
+                                        onChange={(event) => setSearchQuery(event.target.value)}
+                                        className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 outline-none transition-all"
                                     />
-                                    {searchQuery && (
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setSearchQuery('');
-                                                setShowEmptyHint(false);
-                                                inputRef.current?.focus();
-                                            }}
-                                            className="text-xs font-medium text-slate-500 hover:text-amber-600"
-                                        >
-                                            {t(searchCopy.clear, language)}
-                                        </button>
+                                    {isPending && (
+                                        <div className="absolute right-4 w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
                                     )}
                                 </div>
 
-                                {showEmptyHint && !normalizedQuery && <div className="text-sm text-amber-600">{t(searchCopy.empty, language)}</div>}
-                                {normalizedQuery && suggestions.length === 0 && <div className="text-sm text-slate-500">{t(searchCopy.noResults, language)}</div>}
-
-                                {suggestions.length > 0 && (
-                                    <div className="max-h-64 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-xl divide-y divide-slate-200 dark:divide-slate-700">
-                                        {suggestions.map((suggestion, index) => (
+                                <div className="mt-6 max-h-[60vh] overflow-y-auto">
+                                    {normalizedQuery && filteredSuggestions.length === 0 && !isPending && (
+                                        <p className="text-center py-8 text-slate-500">{t(searchCopy.noResults, language)}</p>
+                                    )}
+                                    
+                                    <div className="grid gap-2">
+                                        {filteredSuggestions.map((suggestion, index) => (
                                             <button
-                                                key={`${suggestion.section}-${index}`}
+                                                key={index}
                                                 onClick={() => {
                                                     suggestion.onClick?.();
                                                     closeSearch();
                                                 }}
-                                                className="w-full text-left px-4 py-3 bg-white/80 dark:bg-slate-900/80 hover:bg-amber-50 dark:hover:bg-slate-800 transition-colors"
+                                                className="w-full text-left p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
                                             >
-                                                <div className="text-xs font-semibold text-amber-600 mb-1">{suggestion.section}</div>
-                                                <div className="text-sm text-slate-700 dark:text-slate-200">
-                                                    {highlightText(suggestion.snippet.length > 120 ? `${suggestion.snippet.slice(0, 117)}...` : suggestion.snippet)}
+                                                <div className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">{suggestion.section}</div>
+                                                <div className="text-sm text-slate-700 dark:text-slate-300 line-clamp-2">
+                                                    {highlightText(suggestion.snippet)}
                                                 </div>
                                             </button>
                                         ))}
                                     </div>
-                                )}
+                                </div>
+                                
+                                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[10px] uppercase tracking-widest text-slate-400 font-bold">
+                                    <span>{t(searchCopy.hint, language)}</span>
+                                    <div className="flex gap-2">
+                                        <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">ESC</span>
+                                        <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded">ENTER</span>
+                                    </div>
+                                </div>
                             </form>
                         </motion.div>
                     </motion.div>
@@ -379,4 +346,5 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
     );
 };
 
-export default Header;
+export default React.memo(Header);
+

@@ -1,6 +1,6 @@
 export const personalInfo = {
     fullName: {
-        en: 'Phạm Quang Huy',
+        en: 'Pham Quang Huy',
         vi: 'Phạm Quang Huy',
     },
     nickname: {
@@ -8,8 +8,8 @@ export const personalInfo = {
         vi: 'Hyun',
     },
     title: {
-        en: 'Full Stack Developer',
-        vi: 'Lập trình viên Full Stack',
+        en: 'Software Engineer (AI Systems & Web Platforms)',
+        vi: 'Kỹ sư phần mềm (Hệ thống AI & Nền tảng Web)',
     },
     birthDate: {
         en: 'February 10, 2001',
@@ -20,15 +20,15 @@ export const personalInfo = {
         vi: 'Hà Nội, Việt Nam',
     },
     experience: {
-        en: '3+ Years',
-        vi: 'Hơn 3 năm',
+        en: 'Nearly 3 Years',
+        vi: 'Gần 3 năm',
     },
     passion: {
-        en: 'Building useful products and oddly cute things',
-        vi: 'Xây sản phẩm hữu ích và những thứ kỳ quặc nhưng dễ thương',
+        en: 'Building scalable web platforms and real-time AI systems',
+        vi: 'Xây dựng nền tảng web mở rộng và hệ thống AI thời gian thực',
     },
     shortDescription: {
-        en: 'Crafting digital products with modern technologies, thoughtful UX, and maintainable engineering.',
-        vi: 'Xây dựng sản phẩm số với công nghệ hiện đại, trải nghiệm tốt và nền tảng kỹ thuật dễ bảo trì.',
+        en: 'Specializing in Java backend, AI pipelines, and distributed middleware with a focus on reliability and real-time processing.',
+        vi: 'Chuyên về Java backend, pipeline AI và middleware phân tán với trọng tâm là độ tin cậy và xử lý thời gian thực.',
     },
 };

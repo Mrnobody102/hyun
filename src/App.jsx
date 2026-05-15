@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { AnimatePresence, motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import EducationExperience from '@/components/EducationExperience';
@@ -11,6 +12,9 @@ import { DarkModeProvider } from '@/context/DarkModeContext';
 import { LanguageProvider, useLanguage } from '@/context/LanguageContext';
 import { getArticleById, getArticleBySlug, getArticlePath } from '@/lib/articles';
 import { getRouteByTab, routesByTab } from '@/lib/routes';
+import { pageTransition } from '@/lib/animations';
+
+import { ArticleSkeleton, ProjectSkeleton, ArticleDetailSkeleton } from '@/components/Skeletons';
 
 const Certifications = lazy(() => import('@/components/Certifications'));
 const Skills = lazy(() => import('@/components/Skills'));
@@ -20,11 +24,8 @@ const Articles = lazy(() => import('@/components/Articles'));
 const ArticleDetail = lazy(() => import('@/components/ArticleDetail'));
 const Contact = lazy(() => import('@/components/Contact'));
 
-function PageFallback() {
-    return <div className="min-h-[40vh]" aria-hidden="true" />;
-}
 
-function HomePage() {
+const HomePage = memo(function HomePage() {
     const navigate = useNavigate();
     const { language } = useLanguage();
 
@@ -33,19 +34,21 @@ function HomePage() {
         vi: 'Hyun - Trang chủ',
     };
 
+    const handleNavigate = useCallback((tab) => navigate(getRouteByTab(tab)), [navigate]);
+
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Hero onNavigate={(tab) => navigate(getRouteByTab(tab))} />
+            <Hero onNavigate={handleNavigate} />
             <About />
             <EducationExperience />
-        </>
+        </motion.div>
     );
-}
+});
 
-function SkillsPage() {
+const SkillsPage = memo(function SkillsPage() {
     const { language } = useLanguage();
 
     const titles = {
@@ -54,7 +57,7 @@ function SkillsPage() {
     };
 
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
@@ -62,11 +65,11 @@ function SkillsPage() {
                 <Skills />
                 <Certifications />
             </Suspense>
-        </>
+        </motion.div>
     );
-}
+});
 
-function ArticlesPage() {
+const ArticlesPage = memo(function ArticlesPage() {
     const navigate = useNavigate();
     const { language } = useLanguage();
 
@@ -75,26 +78,27 @@ function ArticlesPage() {
         vi: 'Bài viết | Hyun',
     };
 
+    const handleArticleClick = useCallback((articleId) => {
+        const article = getArticleById(articleId);
+        if (article) {
+            navigate(getArticlePath(article));
+        }
+    }, [navigate]);
+
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
-                <Articles
-                    onArticleClick={(articleId) => {
-                        const article = getArticleById(articleId);
-                        if (article) {
-                            navigate(getArticlePath(article));
-                        }
-                    }}
-                />
+            <Suspense fallback={<ArticleSkeleton />}>
+                <Articles onArticleClick={handleArticleClick} />
             </Suspense>
-        </>
-    );
-}
+        </motion.div>
 
-function ArticleDetailPage() {
+    );
+});
+
+const ArticleDetailPage = memo(function ArticleDetailPage() {
     const navigate = useNavigate();
     const { slug } = useParams();
     const { language } = useLanguage();
@@ -103,6 +107,18 @@ function ArticleDetailPage() {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'auto' });
     }, [slug]);
+
+    const handleBack = useCallback((nextArticleId = null) => {
+        if (nextArticleId !== null && nextArticleId !== undefined) {
+            const nextArticle = getArticleById(nextArticleId);
+            if (nextArticle) {
+                navigate(getArticlePath(nextArticle));
+                return;
+            }
+        }
+
+        navigate(routesByTab.articles);
+    }, [navigate]);
 
     if (!article) {
         return <Navigate to={routesByTab.articles} replace />;
@@ -114,32 +130,23 @@ function ArticleDetailPage() {
     };
 
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
+            <Suspense fallback={<ArticleDetailSkeleton />}>
                 <ArticleDetail
                     articleId={article.id}
                     slug={article.slug}
-                    onBack={(nextArticleId = null) => {
-                        if (nextArticleId !== null && nextArticleId !== undefined) {
-                            const nextArticle = getArticleById(nextArticleId);
-                            if (nextArticle) {
-                                navigate(getArticlePath(nextArticle));
-                                return;
-                            }
-                        }
-
-                        navigate(routesByTab.articles);
-                    }}
+                    onBack={handleBack}
                 />
             </Suspense>
-        </>
-    );
-}
+        </motion.div>
 
-function CompanyProjectsPage() {
+    );
+});
+
+const CompanyProjectsPage = memo(function CompanyProjectsPage() {
     const { language } = useLanguage();
 
     const titles = {
@@ -148,18 +155,19 @@ function CompanyProjectsPage() {
     };
 
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
+            <Suspense fallback={<ProjectSkeleton />}>
                 <CompanyProjects />
             </Suspense>
-        </>
-    );
-}
+        </motion.div>
 
-function ProjectsPage() {
+    );
+});
+
+const ProjectsPage = memo(function ProjectsPage() {
     const { language } = useLanguage();
 
     const titles = {
@@ -168,18 +176,19 @@ function ProjectsPage() {
     };
 
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
+            <Suspense fallback={<ProjectSkeleton />}>
                 <Projects />
             </Suspense>
-        </>
-    );
-}
+        </motion.div>
 
-function ContactPage() {
+    );
+});
+
+const ContactPage = memo(function ContactPage() {
     const { language } = useLanguage();
 
     const titles = {
@@ -188,14 +197,33 @@ function ContactPage() {
     };
 
     return (
-        <>
+        <motion.div variants={pageTransition} initial="initial" animate="animate" exit="exit">
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
             <Suspense fallback={<PageFallback />}>
                 <Contact />
             </Suspense>
-        </>
+        </motion.div>
+    );
+});
+
+function AnimatedRoutes() {
+    const location = useLocation();
+    
+    return (
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+                <Route path={routesByTab.home} element={<HomePage />} />
+                <Route path={routesByTab.skills} element={<SkillsPage />} />
+                <Route path={routesByTab.projects} element={<CompanyProjectsPage />} />
+                <Route path={routesByTab['personal-projects']} element={<ProjectsPage />} />
+                <Route path={routesByTab.articles} element={<ArticlesPage />} />
+                <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+                <Route path={routesByTab.contact} element={<ContactPage />} />
+                <Route path="*" element={<Navigate to={routesByTab.home} replace />} />
+            </Routes>
+        </AnimatePresence>
     );
 }
 
@@ -209,13 +237,22 @@ function Layout({ children }) {
         const previousPath = previousPathRef.current;
         scrollPositions.current[previousPath] = window.scrollY;
 
+        // Reset scroll for new routes or restore for back navigation
         const savedPosition = scrollPositions.current[location.pathname];
-        window.scrollTo({ top: savedPosition ?? 0, behavior: 'auto' });
+        
+        // Use a small delay to ensure DOM is ready after transition
+        const timeoutId = window.setTimeout(() => {
+            window.scrollTo({ top: savedPosition ?? 0, behavior: 'auto' });
+            // Move focus to main for accessibility
+            document.querySelector('main')?.focus();
+        }, 50);
 
         previousPathRef.current = location.pathname;
+        return () => window.clearTimeout(timeoutId);
     }, [location.pathname]);
 
-    const activeTab = (() => {
+
+    const activeTab = useMemo(() => {
         if (location.pathname === routesByTab.home) return 'home';
         if (location.pathname.startsWith('/articles')) return 'articles';
         if (location.pathname === routesByTab.skills) return 'skills';
@@ -223,9 +260,17 @@ function Layout({ children }) {
         if (location.pathname === routesByTab['personal-projects']) return 'personal-projects';
         if (location.pathname === routesByTab.contact) return 'contact';
         return 'home';
-    })();
+    }, [location.pathname]);
 
     const isArticleDetail = location.pathname.startsWith('/articles/') && location.pathname !== routesByTab.articles;
+
+    const handleHeaderNavigate = useCallback((tab) => navigate(getRouteByTab(tab)), [navigate]);
+    const handleArticleSelect = useCallback((articleId) => {
+        const article = getArticleById(articleId);
+        if (article) {
+            navigate(getArticlePath(article));
+        }
+    }, [navigate]);
 
     return (
         <>
@@ -239,16 +284,12 @@ function Layout({ children }) {
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
                 <Header
                     activeTab={activeTab}
-                    onNavigate={(tab) => navigate(getRouteByTab(tab))}
-                    onArticleSelect={(articleId) => {
-                        const article = getArticleById(articleId);
-                        if (article) {
-                            navigate(getArticlePath(article));
-                        }
-                    }}
+                    onNavigate={handleHeaderNavigate}
+                    onArticleSelect={handleArticleSelect}
                 />
-                <main>{children}</main>
+                <main tabIndex="-1" className="outline-none">{children}</main>
                 {!isArticleDetail && <Footer />}
+
                 <Toaster />
             </div>
         </>
@@ -261,16 +302,7 @@ function App() {
             <LanguageProvider>
                 <DarkModeProvider>
                     <Layout>
-                        <Routes>
-                            <Route path={routesByTab.home} element={<HomePage />} />
-                            <Route path={routesByTab.skills} element={<SkillsPage />} />
-                            <Route path={routesByTab.projects} element={<CompanyProjectsPage />} />
-                            <Route path={routesByTab['personal-projects']} element={<ProjectsPage />} />
-                            <Route path={routesByTab.articles} element={<ArticlesPage />} />
-                            <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-                            <Route path={routesByTab.contact} element={<ContactPage />} />
-                            <Route path="*" element={<Navigate to={routesByTab.home} replace />} />
-                        </Routes>
+                        <AnimatedRoutes />
                     </Layout>
                 </DarkModeProvider>
             </LanguageProvider>

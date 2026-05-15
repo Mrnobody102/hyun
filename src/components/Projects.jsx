@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Database, ExternalLink, Github, Layers, Smartphone, Zap } from 'lucide-react';
 import { personalProjects as personalProjectsData } from '@/data';
@@ -6,6 +6,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/components/ui/use-toast';
 import { getTechIcon } from '@/lib/techIcons';
 import { t } from '@/lib/utils';
+import SafeImage from './SafeImage';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const palette = ['from-amber-500 to-orange-500', 'from-blue-500 to-indigo-500', 'from-emerald-500 to-teal-500', 'from-purple-500 to-pink-500'];
 const icons = [<Zap size={20} key="z" />, <Layers size={20} key="l" />, <Database size={20} key="d" />, <Smartphone size={20} key="s" />];
@@ -14,15 +16,17 @@ const Projects = ({ compact = false }) => {
     const { toast } = useToast();
     const { language } = useLanguage();
 
-    const personalProjects = personalProjectsData.map((project, index) => ({
+    const personalProjects = useMemo(() => personalProjectsData.map((project, index) => ({
         ...project,
-        color: palette[index],
-        icon: icons[index],
-    }));
+        color: palette[index % palette.length],
+        icon: icons[index % icons.length],
+    })), []);
 
-    const displayedProjects = compact ? personalProjects.slice(0, 2) : personalProjects;
+    const displayedProjects = useMemo(() => 
+        compact ? personalProjects.slice(0, 2) : personalProjects
+    , [compact, personalProjects]);
 
-    const handleLinkClick = (link) => {
+    const handleLinkClick = useCallback((link) => {
         if (!link || link === '#') {
             toast({
                 title: language === 'vi' ? 'Link chưa được cấu hình' : 'Link not configured',
@@ -33,16 +37,16 @@ const Projects = ({ compact = false }) => {
         }
 
         window.open(link, '_blank', 'noopener,noreferrer');
-    };
+    }, [language, toast]);
 
     return (
-        <section id="projects" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-white via-amber-50 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section id="projects" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-white via-amber-50 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 overflow-hidden">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={fadeInUp}
+                    initial="initial"
+                    whileInView="animate"
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
                     <div className="flex items-center justify-center gap-4 mb-4">
@@ -58,21 +62,28 @@ const Projects = ({ compact = false }) => {
                     </p>
                 </motion.div>
 
-                <div className={compact ? 'grid md:grid-cols-2 gap-6' : 'grid md:grid-cols-2 gap-8'}>
-                    {displayedProjects.map((project, index) => (
+                <motion.div 
+                    variants={staggerContainer}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className={compact ? 'grid md:grid-cols-2 gap-6' : 'grid md:grid-cols-2 gap-8'}
+                >
+                    {displayedProjects.map((project) => (
                         <motion.div
                             key={project.title}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                            variants={fadeInUp}
                             whileHover={{ y: -5 }}
                             className={`bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group flex flex-col h-full ${compact ? 'p-4' : ''}`}
                         >
                             <div className={`relative overflow-hidden bg-slate-100 ${compact ? 'h-44' : 'h-64'}`}>
-                                <img alt={project.imageAlt} src={project.imageUrl} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                                <SafeImage 
+                                    src={project.imageUrl} 
+                                    alt={project.imageAlt} 
+                                    className="w-full h-full"
+                                />
                                 <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                                <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/80 backdrop-blur-sm p-2 rounded-full text-slate-700 dark:text-slate-100 shadow-md">
+                                <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/80 backdrop-blur-sm p-2 rounded-full text-slate-700 dark:text-slate-100 shadow-md z-20">
                                     {project.icon}
                                 </div>
                             </div>
@@ -91,9 +102,9 @@ const Projects = ({ compact = false }) => {
                                     {(compact ? project.tags.slice(0, 6) : project.tags).map((tag) => (
                                         <span
                                             key={tag}
-                                            className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded-md text-xs font-semibold border border-slate-200 dark:border-slate-600"
+                                            className="flex items-center gap-2 px-2.5 py-1 bg-slate-50 dark:bg-slate-700 text-slate-600 dark:text-slate-200 rounded-md text-[10px] font-bold uppercase tracking-wider border border-slate-200 dark:border-slate-600"
                                         >
-                                            <span aria-hidden>{getTechIcon(tag)}</span>
+                                            <span aria-hidden className="text-xs">{getTechIcon(tag)}</span>
                                             <span>{tag}</span>
                                         </span>
                                     ))}
@@ -102,32 +113,37 @@ const Projects = ({ compact = false }) => {
                                 {!compact && (
                                     <div className="mt-auto flex gap-3">
                                         {project.githubLink && (
-                                            <button
+                                            <motion.button
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
                                                 onClick={() => handleLinkClick(project.githubLink)}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 dark:bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-700 dark:hover:bg-slate-600 transition-all duration-300 text-sm"
                                             >
                                                 <Github size={16} />
                                                 {language === 'vi' ? 'Mã nguồn' : 'Code'}
-                                            </button>
+                                            </motion.button>
                                         )}
                                         {project.liveLink && (
-                                            <button
+                                            <motion.button
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
                                                 onClick={() => handleLinkClick(project.liveLink)}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-medium hover:shadow-lg hover:from-amber-600 hover:to-yellow-600 transition-all duration-300 text-sm"
                                             >
                                                 <ExternalLink size={16} />
                                                 {language === 'vi' ? 'Xem demo' : 'Live Demo'}
-                                            </button>
+                                            </motion.button>
                                         )}
                                     </div>
                                 )}
                             </div>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
 };
 
-export default Projects;
+export default React.memo(Projects);
+

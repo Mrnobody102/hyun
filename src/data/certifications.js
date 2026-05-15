@@ -8,9 +8,16 @@ export const certifications = [
     },
     {
         title: 'TOPIK II - Level 4',
-        issuer: 'NIIED',
+        issuer: 'National Institute for International Education',
         code: 'Korean Proficiency',
         date: '08/2024',
+        link: null
+    },
+    {
+        title: '100% Scholarship - Korean Bridge SE Program',
+        issuer: 'FPT Software Academy',
+        code: 'Honor / scholarship',
+        date: '2022 - 2023',
         link: null
     }
 ];

@@ -20,12 +20,17 @@ export function DarkModeProvider({ children }) {
         localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     }, [isDarkMode]);
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(prev => !prev);
-    };
+    const toggleDarkMode = React.useCallback(() => {
+        setIsDarkMode((prev) => !prev);
+    }, []);
+
+    const value = React.useMemo(() => ({ 
+        isDarkMode, 
+        toggleDarkMode 
+    }), [isDarkMode, toggleDarkMode]);
 
     return (
-        <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+        <DarkModeContext.Provider value={value}>
             {children}
         </DarkModeContext.Provider>
     );

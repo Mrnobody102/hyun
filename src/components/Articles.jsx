@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, Share2, User } from 'lucide-react';
 import { articles } from '@/data';
@@ -6,30 +6,99 @@ import { useLanguage } from '@/context/LanguageContext';
 import { getArticleUrl } from '@/lib/articles';
 import { t } from '@/lib/utils';
 import ShareModal from './ShareModal';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const Articles = ({ onArticleClick }) => {
     const { language } = useLanguage();
     const [shareModalOpen, setShareModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
 
-    const handleOpenShareModal = (article) => {
+    const handleOpenShareModal = useCallback((article) => {
         setSelectedArticle({ ...article, link: getArticleUrl(article) });
         setShareModalOpen(true);
-    };
+    }, []);
 
-    const handleCloseShareModal = () => {
+    const handleCloseShareModal = useCallback(() => {
         setShareModalOpen(false);
         setSelectedArticle(null);
-    };
+    }, []);
+
+    const renderedArticles = useMemo(() => articles.map((article, index) => (
+        <motion.article
+            key={article.id}
+            variants={fadeInUp}
+            whileHover={{ y: -6 }}
+            className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row h-full group"
+        >
+            <button
+                onClick={() => onArticleClick?.(article.id)}
+                className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden bg-gradient-to-br from-amber-200 to-yellow-200 dark:from-amber-900 dark:to-yellow-900 flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+            >
+                <img
+                    src={article.imageUrl}
+                    alt={t(article.title, language)}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute top-4 right-4 md:bottom-4 md:right-4 md:top-auto">
+                    <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-semibold">{t(article.category, language)}</span>
+                </div>
+            </button>
+
+            <div className="p-6 flex flex-col flex-1 justify-between">
+                <div>
+                    <button
+                        onClick={() => onArticleClick?.(article.id)}
+                        className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors text-left hover:underline cursor-pointer"
+                    >
+                        {t(article.title, language)}
+                    </button>
+
+                    <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4 line-clamp-3">{t(article.excerpt, language)}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200 dark:border-slate-700 items-center justify-between">
+                    <div className="flex flex-wrap gap-4">
+                        <div className="flex items-center gap-1">
+                            <User size={14} />
+                            {t(article.author, language)}
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Calendar size={14} />
+                            {t(article.date, language)}
+                        </div>
+                    </div>
+                    <motion.button
+                        onClick={() => handleOpenShareModal(article)}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-colors"
+                        title={language === 'vi' ? 'Chia sẻ' : 'Share'}
+                    >
+                        <Share2 size={16} />
+                    </motion.button>
+                </div>
+
+                <button
+                    onClick={() => onArticleClick?.(article.id)}
+                    className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold hover:gap-3 transition-all duration-300 text-sm cursor-pointer w-fit"
+                >
+                    {language === 'vi' ? 'Xem bài viết' : 'Read Article'}
+                    <ArrowRight size={16} />
+                </button>
+            </div>
+        </motion.article>
+    )), [language, onArticleClick, handleOpenShareModal]);
 
     return (
         <section id="articles" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-white via-amber-50 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
             <div className="container mx-auto max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                    variants={fadeInUp}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, margin: "-100px" }}
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -45,78 +114,15 @@ const Articles = ({ onArticleClick }) => {
                     </p>
                 </motion.div>
 
-                <div className="grid gap-6">
-                    {articles.map((article, index) => (
-                        <motion.article
-                            key={article.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.05 }}
-                            whileHover={{ y: -6 }}
-                            className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row h-full group"
-                        >
-                            <button
-                                onClick={() => onArticleClick?.(article.id)}
-                                className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden bg-gradient-to-br from-amber-200 to-yellow-200 dark:from-amber-900 dark:to-yellow-900 flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
-                            >
-                                <img
-                                    src={article.imageUrl}
-                                    alt={t(article.title, language)}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                />
-                                <div className="absolute top-4 right-4 md:bottom-4 md:right-4 md:top-auto">
-                                    <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-semibold">{t(article.category, language)}</span>
-                                </div>
-                            </button>
-
-                            <div className="p-6 flex flex-col flex-1 justify-between">
-                                <div>
-                                    <button
-                                        onClick={() => onArticleClick?.(article.id)}
-                                        className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors text-left hover:underline cursor-pointer"
-                                    >
-                                        {t(article.title, language)}
-                                    </button>
-
-                                    <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">{t(article.excerpt, language)}</p>
-                                </div>
-
-                                <div className="flex flex-wrap gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200 dark:border-slate-700 items-center justify-between">
-                                    <div className="flex flex-wrap gap-4">
-                                        <div className="flex items-center gap-1">
-                                            <User size={14} />
-                                            {t(article.author, language)}
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            <Calendar size={14} />
-                                            {t(article.date, language)}
-                                        </div>
-                                    </div>
-                                    <motion.button
-                                        onClick={() => handleOpenShareModal(article)}
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="p-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-colors"
-                                        title={language === 'vi' ? 'Chia sẻ' : 'Share'}
-                                    >
-                                        <Share2 size={16} />
-                                    </motion.button>
-                                </div>
-
-                                <button
-                                    onClick={() => onArticleClick?.(article.id)}
-                                    className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold hover:gap-3 transition-all duration-300 text-sm cursor-pointer w-fit"
-                                >
-                                    {language === 'vi' ? 'Xem bài viết' : 'Read Article'}
-                                    <ArrowRight size={16} />
-                                </button>
-                            </div>
-                        </motion.article>
-                    ))}
-                </div>
+                <motion.div 
+                    variants={staggerContainer}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="grid gap-6"
+                >
+                    {renderedArticles}
+                </motion.div>
             </div>
 
             <ShareModal isOpen={shareModalOpen} onClose={handleCloseShareModal} articleUrl={selectedArticle?.link || ''} articleTitle={selectedArticle?.title || ''} />
@@ -124,4 +130,5 @@ const Articles = ({ onArticleClick }) => {
     );
 };
 
-export default Articles;
+export default React.memo(Articles);
+

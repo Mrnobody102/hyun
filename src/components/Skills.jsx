@@ -1,23 +1,24 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Cloud, Code2, Database, Layers, Server, Zap } from 'lucide-react';
 import { skills as skillsData } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { getTechIcon } from '@/lib/techIcons';
 import { t } from '@/lib/utils';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const Skills = () => {
     const sectionRef = useRef(null);
     const { language } = useLanguage();
 
-    const skillCategories = [
+    const skillCategories = useMemo(() => [
         { title: skillsData.programmingLanguages.title, icon: Code2, color: 'from-amber-500 to-yellow-500', skills: skillsData.programmingLanguages.skills },
         { title: skillsData.backendMiddleware.title, icon: Server, color: 'from-slate-600 to-slate-800', skills: skillsData.backendMiddleware.skills },
         { title: skillsData.frontendUi.title, icon: Layers, color: 'from-yellow-500 to-amber-600', skills: skillsData.frontendUi.skills },
         { title: skillsData.databasesCaching.title, icon: Database, color: 'from-amber-400 to-yellow-400', skills: skillsData.databasesCaching.skills },
         { title: skillsData.cloudDevOps.title, icon: Cloud, color: 'from-slate-500 to-amber-500', skills: skillsData.cloudDevOps.skills },
         { title: skillsData.toolsEnvironments.title, icon: Zap, color: 'from-yellow-600 to-amber-700', skills: skillsData.toolsEnvironments.skills },
-    ].filter((category) => Array.isArray(category.skills) && category.skills.length > 0);
+    ].filter((category) => Array.isArray(category.skills) && category.skills.length > 0), []);
 
     const scrollToCertifications = () => {
         const element = document.querySelector('#certifications');
@@ -34,10 +35,10 @@ const Skills = () => {
         >
             <div className="container mx-auto max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={fadeInUp}
+                    initial="initial"
+                    whileInView="animate"
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
                     <div className="flex items-center justify-center gap-4 mb-4">
@@ -55,14 +56,17 @@ const Skills = () => {
                     </p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {skillCategories.map((category, index) => (
+                <motion.div 
+                    variants={staggerContainer}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
+                >
+                    {skillCategories.map((category) => (
                         <motion.div
                             key={t(category.title, 'en')}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.08 }}
+                            variants={fadeInUp}
                             whileHover={{ y: -6 }}
                             className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border-2 border-slate-400 dark:border-slate-600"
                         >
@@ -85,7 +89,7 @@ const Skills = () => {
                             </div>
                         </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
 
             <button onClick={scrollToCertifications} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors" aria-label="Scroll to Certifications">
@@ -95,4 +99,5 @@ const Skills = () => {
     );
 };
 
-export default Skills;
+export default React.memo(Skills);
+

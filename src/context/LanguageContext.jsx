@@ -14,12 +14,18 @@ export function LanguageProvider({ children }) {
         localStorage.setItem('language', language);
     }, [language]);
 
-    const toggleLanguage = () => {
+    const toggleLanguage = React.useCallback(() => {
         setLanguage((prev) => (prev === 'en' ? 'vi' : 'en'));
-    };
+    }, []);
+
+    const value = React.useMemo(() => ({ 
+        language, 
+        setLanguage, 
+        toggleLanguage 
+    }), [language, toggleLanguage]);
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage }}>
+        <LanguageContext.Provider value={value}>
             {children}
         </LanguageContext.Provider>
     );

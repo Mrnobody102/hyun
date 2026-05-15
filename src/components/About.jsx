@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, Calendar, ChevronDown, Heart, MapPin } from 'lucide-react';
 import { aboutMe, personalInfo } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const stats = [
     { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
@@ -16,25 +17,25 @@ const About = () => {
     const sectionRef = useRef(null);
     const { language } = useLanguage();
 
-    const scrollToNext = () => {
+    const scrollToNext = useCallback(() => {
         const element = document.querySelector('#education-experience');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
-    };
+    }, []);
 
     return (
         <section
             id="about"
             ref={sectionRef}
-            className="py-20 px-4 bg-gradient-to-br from-white via-slate-50 to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900"
+            className="py-20 px-4 bg-gradient-to-br from-white via-slate-50 to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 overflow-hidden"
         >
             <div className="container mx-auto max-w-6xl">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={fadeInUp}
+                    initial="initial"
+                    whileInView="animate"
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -47,10 +48,10 @@ const About = () => {
 
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        variants={fadeInUp}
+                        initial="initial"
+                        whileInView="animate"
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
                         className="space-y-6"
                     >
                         <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">{t(aboutMe.paragraph1, language)}</p>
@@ -59,24 +60,21 @@ const About = () => {
                     </motion.div>
 
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        variants={staggerContainer}
+                        initial="initial"
+                        whileInView="animate"
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
                         className="grid grid-cols-2 gap-4"
                     >
-                        {stats.map((stat, index) => (
+                        {stats.map((stat) => (
                             <motion.div
                                 key={t(stat.label, 'en')}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
-                                whileHover={{ y: -5 }}
-                                className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-slate-400 dark:border-slate-600"
+                                variants={fadeInUp}
+                                whileHover={{ y: -5, scale: 1.02 }}
+                                className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-slate-400 dark:border-slate-600 group"
                             >
-                                <div className="inline-flex p-3 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg mb-4">
-                                    <stat.icon className="text-amber-600" size={24} />
+                                <div className="inline-flex p-3 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-500/10 dark:to-yellow-500/10 rounded-lg mb-4 group-hover:from-amber-500 group-hover:to-yellow-500 transition-all duration-300">
+                                    <stat.icon className="text-amber-600 dark:text-amber-400 group-hover:text-white transition-colors" size={24} />
                                 </div>
                                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">{t(stat.label, language)}</p>
                                 <p className="text-lg font-bold text-slate-800 dark:text-slate-100">{t(stat.value, language)}</p>
@@ -86,11 +84,12 @@ const About = () => {
                 </div>
             </div>
 
-            <button onClick={scrollToNext} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors" aria-label="Scroll to Education & Experience">
+            <button onClick={scrollToNext} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors animate-bounce" aria-label="Scroll to Education & Experience">
                 <ChevronDown size={32} />
             </button>
         </section>
     );
 };
 
-export default About;
+export default React.memo(About);
+

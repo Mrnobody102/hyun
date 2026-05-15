@@ -9,9 +9,18 @@ export function cn(...inputs) {
 export function t(value, language = 'en') {
 	if (value === null || value === undefined) return '';
 	if (typeof value === 'string') return value;
+	
 	if (typeof value === 'object') {
-		if (value[language]) return value[language];
-		return value.en || value.vi || '';
+		const target = value[language] || value.en || value.vi;
+		if (target !== undefined && target !== null) {
+			return typeof target === 'string' ? target : JSON.stringify(target);
+		}
+		
+		// If it's a plain object but no lang keys, just stringify it
+		if (Object.keys(value).length > 0 && !value.en && !value.vi) {
+			return JSON.stringify(value);
+		}
 	}
-	return String(value);
-}
+	
+	return String(value || '');
+}
