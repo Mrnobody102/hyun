@@ -13,7 +13,7 @@ export function t(value, language = 'en') {
 	if (typeof value === 'object') {
 		const target = value[language] || value.en || value.vi;
 		if (target !== undefined && target !== null) {
-			return typeof target === 'string' ? target : JSON.stringify(target);
+			return target;
 		}
 		
 		// If it's a plain object but no lang keys, just stringify it

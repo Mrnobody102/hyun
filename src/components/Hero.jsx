@@ -4,7 +4,6 @@ import { ChevronDown, Download } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { heroData } from '@/data';
-import ResumeFile from '@/assets/Resume.pdf';
 import SafeImage from './SafeImage';
 import { fadeInUp, fadeIn } from '@/lib/animations';
 
@@ -31,14 +30,6 @@ const Hero = ({ onNavigate = () => {} }) => {
         return () => window.clearInterval(intervalId);
     }, [greetingOptions]);
 
-    const handleDownloadResume = useCallback(() => {
-        const link = document.createElement('a');
-        link.href = ResumeFile;
-        link.download = resumeFileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }, [resumeFileName]);
 
     const scrollToAbout = useCallback(() => {
         const element = document.querySelector('#about');
@@ -76,7 +67,7 @@ const Hero = ({ onNavigate = () => {} }) => {
                                     {name}
                                 </span>
                             </h1>
-                            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
+                            <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent pb-4 pt-2 leading-[1.4] inline-block">
                                 {t(role, language)}
                             </h2>
                         </div>
@@ -102,15 +93,16 @@ const Hero = ({ onNavigate = () => {} }) => {
                             >
                                 {t(ctaProjects, language)}
                             </motion.button>
-                            <motion.button 
+                            <motion.a 
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                onClick={handleDownloadResume} 
-                                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                href="/Resume.pdf"
+                                download="Pham_Quang_Huy_Resume.pdf"
+                                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
                             >
                                 <Download size={18} />
                                 {t(ctaDownload, language)}
-                            </motion.button>
+                            </motion.a>
                         </div>
                     </motion.div>
 

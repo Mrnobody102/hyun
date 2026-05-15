@@ -19,50 +19,49 @@ const Contact = () => {
         message: ''
     });
 
-    const contactItems = useMemo(() => [
-        {
-            icon: Mail,
-            label: contactLabels.email,
-            value: contactInfoData.email,
-            href: `mailto:${contactInfoData.email}`,
-            color: 'from-amber-500 to-yellow-500'
-        },
-        {
-            icon: Phone,
-            label: contactLabels.phone,
-            value: contactInfoData.phone,
-            href: `tel:${contactInfoData.phone}`,
-            color: 'from-slate-600 to-amber-500'
-        },
-        {
-            icon: MapPin,
-            label: contactLabels.location,
-            value: contactInfoData.location,
-            href: '#',
-            color: 'from-yellow-500 to-amber-600'
-        }
-    ], []);
+    const contactItems = useMemo(() => {
+        if (!contactInfoData || !contactLabels) return [];
+        
+        return [
+            {
+                icon: Mail,
+                label: contactLabels.email,
+                value: contactInfoData.email,
+                href: contactInfoData.email ? `mailto:${contactInfoData.email}` : '#',
+                color: 'from-amber-500 to-yellow-500'
+            },
+            {
+                icon: Phone,
+                label: contactLabels.phone,
+                value: contactInfoData.phone,
+                href: contactInfoData.phone ? `tel:${contactInfoData.phone}` : '#',
+                color: 'from-slate-600 to-amber-500'
+            },
+            {
+                icon: MapPin,
+                label: contactLabels.location,
+                value: contactInfoData.location,
+                href: '#',
+                color: 'from-yellow-500 to-amber-600'
+            }
+        ].filter(item => item.value);
+    }, []);
 
-    const socialLinks = useMemo(() => [
-        {
-            icon: Github,
-            label: 'GitHub',
-            href: contactInfoData.social.github,
-            color: 'hover:text-slate-800'
-        },
-        {
-            icon: Linkedin,
-            label: 'LinkedIn',
-            href: contactInfoData.social.linkedin,
-            color: 'hover:text-blue-600'
-        },
-        {
-            icon: Facebook,
-            label: 'Facebook',
-            href: contactInfoData.social.facebook,
-            color: 'hover:text-blue-500'
+    const socialLinks = useMemo(() => {
+        if (!contactInfoData || !contactInfoData.social) return [];
+        
+        const links = [];
+        if (contactInfoData.social.github) {
+            links.push({ icon: Github, label: 'GitHub', href: contactInfoData.social.github, color: 'hover:text-slate-800' });
         }
-    ], []);
+        if (contactInfoData.social.linkedin) {
+            links.push({ icon: Linkedin, label: 'LinkedIn', href: contactInfoData.social.linkedin, color: 'hover:text-blue-600' });
+        }
+        if (contactInfoData.social.facebook) {
+            links.push({ icon: Facebook, label: 'Facebook', href: contactInfoData.social.facebook, color: 'hover:text-blue-500' });
+        }
+        return links;
+    }, []);
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -161,7 +160,7 @@ const Contact = () => {
                                     className={`flex items-start gap-4 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 bg-white dark:bg-slate-800 border-slate-400 dark:border-slate-600`}
                                 >
                                     <div className={`p-3 bg-gradient-to-r ${info.color} rounded-lg`}>
-                                        <info.icon className="text-white" size={24} />
+                                        {info.icon && <info.icon className="text-white" size={24} />}
                                     </div>
                                     <div className="min-w-0">
                                         <p className="text-sm text-slate-500 dark:text-slate-400">{t(info.label, language)}</p>
@@ -171,26 +170,28 @@ const Contact = () => {
                             ))}
                         </div>
 
-                        <motion.div
-                            variants={fadeInUp}
-                            className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600`}
-                        >
-                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{t(contactLabels.followMe, language)}</h3>
-                            <div className="flex gap-4">
-                                {socialLinks.map((social) => (
-                                    <motion.button
-                                        key={social.label}
-                                        onClick={() => handleSocialClick(social.href)}
-                                        whileHover={{ scale: 1.1, y: -5 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className={`p-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-400 dark:hover:border-amber-400 ${social.color}`}
-                                        title={social.label}
-                                    >
-                                        <social.icon size={24} />
-                                    </motion.button>
-                                ))}
-                            </div>
-                        </motion.div>
+                        {socialLinks.length > 0 && (
+                            <motion.div
+                                variants={fadeInUp}
+                                className={`bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-slate-800 p-6 rounded-xl border-2 border-slate-400 dark:border-slate-600`}
+                            >
+                                <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{t(contactLabels?.followMe, language)}</h3>
+                                <div className="flex gap-4">
+                                    {socialLinks.map((social) => (
+                                        <motion.button
+                                            key={social.label}
+                                            onClick={() => handleSocialClick(social.href)}
+                                            whileHover={{ scale: 1.1, y: -5 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className={`p-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-400 dark:hover:border-amber-400 ${social.color}`}
+                                            title={social.label}
+                                        >
+                                            <social.icon size={24} />
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
                     </motion.div>
 
                     <motion.div

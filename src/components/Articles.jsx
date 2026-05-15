@@ -6,6 +6,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { getArticleUrl } from '@/lib/articles';
 import { t } from '@/lib/utils';
 import ShareModal from './ShareModal';
+import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const Articles = ({ onArticleClick }) => {
@@ -23,7 +24,7 @@ const Articles = ({ onArticleClick }) => {
         setSelectedArticle(null);
     }, []);
 
-    const renderedArticles = useMemo(() => articles.map((article, index) => (
+    const renderedArticles = useMemo(() => articles.map((article) => (
         <motion.article
             key={article.id}
             variants={fadeInUp}
@@ -34,11 +35,9 @@ const Articles = ({ onArticleClick }) => {
                 onClick={() => onArticleClick?.(article.id)}
                 className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden bg-gradient-to-br from-amber-200 to-yellow-200 dark:from-amber-900 dark:to-yellow-900 flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
             >
-                <img
+                <SafeImage
                     src={article.imageUrl}
                     alt={t(article.title, language)}
-                    loading="lazy"
-                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 right-4 md:bottom-4 md:right-4 md:top-auto">

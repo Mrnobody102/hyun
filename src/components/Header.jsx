@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { BookOpen, Briefcase, Home, Mail, Menu, Moon, Search, Sun, X, Zap } from 'lucide-react';
 import kimAvatar from '@/assets/kim-avatar.jpg';
@@ -6,7 +6,7 @@ import { useDarkMode } from '@/context/DarkModeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { aboutMe, articles, homeSnippet, navItems, searchCopy } from '@/data';
 import { t } from '@/lib/utils';
-import { fadeIn, fadeInUp, staggerContainer } from '@/lib/animations';
+import { fadeIn, fadeInUp } from '@/lib/animations';
 
 const iconMap = { Home, Zap, Briefcase, BookOpen, Mail };
 
@@ -22,7 +22,6 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-    const [showEmptyHint, setShowEmptyHint] = useState(false);
     const [isPending, startTransition] = useTransition();
     const inputRef = useRef(null);
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -45,7 +44,6 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
             if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
                 event.preventDefault();
                 setIsSearchOpen(true);
-                setShowEmptyHint(false);
             }
         };
 
@@ -105,14 +103,12 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
     const closeSearch = useCallback(() => {
         setIsSearchOpen(false);
-        setShowEmptyHint(false);
     }, []);
 
     const handleSearchSubmit = useCallback((event) => {
         event.preventDefault();
 
         if (!normalizedQuery) {
-            setShowEmptyHint(true);
             return;
         }
 
@@ -196,7 +192,6 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 <motion.button
                                     onClick={() => {
                                         setIsSearchOpen(true);
-                                        setShowEmptyHint(false);
                                     }}
                                     whileHover={{ scale: 1.06 }}
                                     whileTap={{ scale: 0.97 }}

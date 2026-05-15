@@ -61,7 +61,8 @@ const SkillsPage = memo(function SkillsPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
+            <Suspense fallback={<ArticleSkeleton />}>
+
                 <Skills />
                 <Certifications />
             </Suspense>
@@ -201,7 +202,8 @@ const ContactPage = memo(function ContactPage() {
             <Helmet>
                 <title>{titles[language]}</title>
             </Helmet>
-            <Suspense fallback={<PageFallback />}>
+            <Suspense fallback={<ArticleDetailSkeleton />}>
+
                 <Contact />
             </Suspense>
         </motion.div>

@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Cloud, Code2, Database, Layers, Server, Zap } from 'lucide-react';
+import { ChevronDown, Cloud, Code2, Database, Layers, Server, Zap, Video, Languages as LanguagesIcon } from 'lucide-react';
 import { skills as skillsData } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { getTechIcon } from '@/lib/techIcons';
@@ -11,14 +11,38 @@ const Skills = () => {
     const sectionRef = useRef(null);
     const { language } = useLanguage();
 
-    const skillCategories = useMemo(() => [
-        { title: skillsData.programmingLanguages.title, icon: Code2, color: 'from-amber-500 to-yellow-500', skills: skillsData.programmingLanguages.skills },
-        { title: skillsData.backendMiddleware.title, icon: Server, color: 'from-slate-600 to-slate-800', skills: skillsData.backendMiddleware.skills },
-        { title: skillsData.frontendUi.title, icon: Layers, color: 'from-yellow-500 to-amber-600', skills: skillsData.frontendUi.skills },
-        { title: skillsData.databasesCaching.title, icon: Database, color: 'from-amber-400 to-yellow-400', skills: skillsData.databasesCaching.skills },
-        { title: skillsData.cloudDevOps.title, icon: Cloud, color: 'from-slate-500 to-amber-500', skills: skillsData.cloudDevOps.skills },
-        { title: skillsData.toolsEnvironments.title, icon: Zap, color: 'from-yellow-600 to-amber-700', skills: skillsData.toolsEnvironments.skills },
-    ].filter((category) => Array.isArray(category.skills) && category.skills.length > 0), []);
+    const skillCategories = useMemo(() => {
+        if (!skillsData) return [];
+        
+        const categories = [];
+        
+        if (skillsData.programmingLanguages) {
+            categories.push({ title: skillsData.programmingLanguages.title, icon: Code2, color: 'from-amber-500 to-yellow-500', skills: skillsData.programmingLanguages.skills });
+        }
+        if (skillsData.aiVideoStreaming) {
+            categories.push({ title: skillsData.aiVideoStreaming.title, icon: Video, color: 'from-blue-500 to-cyan-500', skills: skillsData.aiVideoStreaming.skills });
+        }
+        if (skillsData.backendMiddleware) {
+            categories.push({ title: skillsData.backendMiddleware.title, icon: Server, color: 'from-slate-600 to-slate-800', skills: skillsData.backendMiddleware.skills });
+        }
+        if (skillsData.databasesVectorSearch) {
+            categories.push({ title: skillsData.databasesVectorSearch.title, icon: Database, color: 'from-amber-400 to-yellow-400', skills: skillsData.databasesVectorSearch.skills });
+        }
+        if (skillsData.frontendUi) {
+            categories.push({ title: skillsData.frontendUi.title, icon: Layers, color: 'from-yellow-500 to-amber-600', skills: skillsData.frontendUi.skills });
+        }
+        if (skillsData.devOpsSystems) {
+            categories.push({ title: skillsData.devOpsSystems.title, icon: Cloud, color: 'from-slate-500 to-amber-500', skills: skillsData.devOpsSystems.skills });
+        }
+        if (skillsData.tools) {
+            categories.push({ title: skillsData.tools.title, icon: Zap, color: 'from-yellow-600 to-amber-700', skills: skillsData.tools.skills });
+        }
+        if (skillsData.languages) {
+            categories.push({ title: skillsData.languages.title, icon: LanguagesIcon, color: 'from-emerald-500 to-teal-500', skills: skillsData.languages.skills });
+        }
+        
+        return categories.filter((category) => category && category.skills && Array.isArray(category.skills) && category.skills.length > 0);
+    }, []);
 
     const scrollToCertifications = () => {
         const element = document.querySelector('#certifications');
@@ -68,12 +92,14 @@ const Skills = () => {
                             key={t(category.title, 'en')}
                             variants={fadeInUp}
                             whileHover={{ y: -6 }}
-                            className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border-2 border-slate-400 dark:border-slate-600"
+                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border-2 border-slate-100 dark:border-slate-700 h-full flex flex-col"
                         >
-                            <div className={`inline-flex p-4 bg-gradient-to-r ${category.color} rounded-lg mb-4`}>
-                                <category.icon className="text-white" size={28} />
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className={`p-2.5 bg-gradient-to-r ${category.color} rounded-xl shadow-lg shadow-amber-500/10`}>
+                                    {category.icon && <category.icon className="text-white" size={20} />}
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 leading-tight">{t(category.title, language)}</h3>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">{t(category.title, language)}</h3>
                             <div className="flex flex-wrap gap-2 md:max-w-md">
                                 {category.skills.map((skill) => (
                                     <span
@@ -100,4 +126,3 @@ const Skills = () => {
 };
 
 export default React.memo(Skills);
-

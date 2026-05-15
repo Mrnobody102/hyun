@@ -2,8 +2,10 @@ import React, { useEffect, useMemo, useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft, Share2, User, ArrowRight } from 'lucide-react';
 import { articles as articleMeta } from '@/data';
-import { getArticleUrl, getArticlePath } from '@/lib/articles';
+import { getArticleUrl } from '@/lib/articles';
 import { getArticleById as fetchArticleById } from '@/articles/index';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/lib/utils';
 import ShareModal from './ShareModal';
 import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
@@ -88,6 +90,7 @@ const ContentBlock = memo(({ block }) => {
 
 
 const ArticleDetail = ({ articleId, slug, onBack }) => {
+    const { language } = useLanguage();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -159,20 +162,19 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
             <div className="container mx-auto max-w-4xl px-4 py-12">
                 <motion.div variants={staggerContainer} initial="initial" animate="animate" className="mb-10 text-center md:text-left">
                     <motion.div variants={fadeInUp} className="flex justify-center md:justify-start items-center gap-2 mb-6">
-                        <span className="px-4 py-1.5 bg-amber-500 text-white rounded-full text-sm font-bold shadow-md">{article.category}</span>
+                        <span className="px-4 py-1.5 bg-amber-500 text-white rounded-full text-sm font-bold shadow-md">{t(article.category, language)}</span>
                     </motion.div>
                     <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-black mb-8 leading-tight bg-gradient-to-r from-slate-800 via-amber-700 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-100 bg-clip-text text-transparent">
-                        {article.title}
+                        {t(article.title, language)}
                     </motion.h1>
-
                     <motion.div variants={fadeInUp} className="flex flex-wrap justify-center md:justify-start items-center gap-8 text-slate-500 dark:text-slate-400 mb-8 font-medium">
                         <div className="flex items-center gap-2.5">
                             <User size={20} className="text-amber-500" />
-                            <span>{article.author}</span>
+                            <span>{t(article.author, language)}</span>
                         </div>
                         <div className="flex items-center gap-2.5">
                             <Calendar size={20} className="text-amber-500" />
-                            <span>{article.date}</span>
+                            <span>{t(article.date, language)}</span>
                         </div>
                     </motion.div>
                 </motion.div>
@@ -184,7 +186,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                     transition={{ delay: 0.2 }}
                     className="mb-16 rounded-2xl overflow-hidden shadow-2xl h-64 md:h-[450px] border-4 border-white dark:border-slate-800"
                 >
-                    <SafeImage src={article.imageUrl} alt={article.title} className="w-full h-full object-cover" />
+                    <SafeImage src={article.imageUrl} alt={t(article.title, language)} className="w-full h-full object-cover" />
                 </motion.div>
 
                 <motion.article
@@ -233,15 +235,15 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                                 className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all cursor-pointer border-2 border-slate-100 dark:border-slate-700 group flex flex-col h-full"
                             >
                                 <div className="h-52 overflow-hidden relative">
-                                    <SafeImage src={relatedArticle.imageUrl} alt={relatedArticle.title.en} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    <SafeImage src={relatedArticle.imageUrl} alt={t(relatedArticle.title, language)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     <div className="absolute top-4 right-4">
-                                        <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold shadow-lg">{relatedArticle.category.en}</span>
+                                        <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold shadow-lg">{t(relatedArticle.category, language)}</span>
                                     </div>
                                 </div>
                                 <div className="p-6 flex flex-col justify-between flex-1">
                                     <div>
-                                        <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 line-clamp-2 mb-3 group-hover:text-amber-600 transition-colors">{relatedArticle.title.en}</h4>
-                                        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{relatedArticle.date.en}</p>
+                                        <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 line-clamp-2 mb-3 group-hover:text-amber-600 transition-colors">{t(relatedArticle.title, language)}</h4>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t(relatedArticle.date, language)}</p>
                                     </div>
                                     <div className="mt-6 flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
                                         Read more <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
