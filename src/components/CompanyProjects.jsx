@@ -4,7 +4,7 @@ import { Building2, Briefcase, Calendar, CheckCircle, Code, Users } from 'lucide
 import { getTechIcon } from '@/lib/techIcons';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
-import { companyProjects } from '@/data';
+import { companyProjects, ui } from '@/data';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const CompanyProjects = ({ compact = false }) => {
@@ -132,7 +132,7 @@ const CompanyProjects = ({ compact = false }) => {
                                                         <div className="p-2 bg-amber-50 dark:bg-amber-500/10 rounded-lg">
                                                             <Users size={18} className="text-amber-600" />
                                                         </div>
-                                                        <span className="text-sm font-medium">Team Size: {project.teamSize}</span>
+                                                        <span className="text-sm font-medium">{t(ui.teamSize, language)}: {project.teamSize}</span>
                                                     </div>
                                                 )}
                                             </div>

@@ -114,12 +114,12 @@ export const companyProjects = [
         },
         responsibilities: {
             en: [
-                'Rebuilt legacy digital manual pages into a responsive React-based interface.',
-                'Developed NestJS APIs to serve structured documentation content and support frontend integration.',
+                'Developed modular UI components for documentation pages.',
+                'Designed NestJS controllers and services to handle dynamic content retrieval.',
             ],
             vi: [
-                'Xây dựng lại các trang hướng dẫn sử dụng cũ thành giao diện React tương thích nhiều thiết bị.',
-                'Phát triển API NestJS để cung cấp nội dung tài liệu có cấu trúc và hỗ trợ tích hợp với phía người dùng.',
+                'Phát triển các thành phần giao diện module cho các trang tài liệu.',
+                'Thiết kế các controller và service NestJS để xử lý việc truy xuất nội dung động.',
             ],
         },
         technologies: ['ReactJS', 'NestJS', 'Tailwind CSS'],
@@ -135,12 +135,12 @@ export const companyProjects = [
         },
         responsibilities: {
             en: [
-                'Built Power BI dashboards, semantic models, and DAX measures to monitor departmental project KPIs.',
-                'Integrated and transformed Data Lake sources with Power Query to support real-time reporting and performance analysis.',
+                'Implemented complex DAX measures for real-time KPI tracking.',
+                'Integrated and transformed Data Lake sources with Power Query to support reporting and performance analysis.',
             ],
             vi: [
-                'Xây dựng dashboard Power BI, mô hình ngữ nghĩa và các độ đo DAX để giám sát KPI dự án.',
-                'Tích hợp và chuyển đổi các nguồn Data Lake bằng Power Query để hỗ trợ báo cáo thời gian thực và phân tích hiệu suất.',
+                'Triển khai các thước đo DAX phức tạp để theo dõi KPI thời gian thực.',
+                'Tích hợp và chuyển đổi các nguồn Data Lake bằng Power Query để hỗ trợ báo cáo và phân tích hiệu suất.',
             ],
         },
         technologies: ['Power BI', 'DAX', 'Power Query', 'Data Lake Integration'],
@@ -156,12 +156,12 @@ export const companyProjects = [
         },
         responsibilities: {
             en: [
-                'Built internal enterprise features for employee and department data management.',
-                'Developed Java Spring Boot APIs and AngularJS admin interfaces.',
+                'Developed Java Spring Boot RESTful APIs for administrative operations.',
+                'Enhanced AngularJS admin interfaces for better data visibility and user management.',
             ],
             vi: [
-                'Xây dựng các tính năng nội bộ cho doanh nghiệp để quản lý dữ liệu nhân viên và phòng ban.',
-                'Phát triển API Java Spring Boot và giao diện quản trị AngularJS.',
+                'Phát triển các API RESTful Java Spring Boot cho các hoạt động quản trị.',
+                'Nâng cấp giao diện quản trị AngularJS để hiển thị dữ liệu và quản lý người dùng tốt hơn.',
             ],
         },
         technologies: ['Java Spring Boot', 'AngularJS', 'PostgreSQL', 'MongoDB', 'Redis', 'Jenkins', 'SonarLint'],

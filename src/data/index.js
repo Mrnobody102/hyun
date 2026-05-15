@@ -10,3 +10,4 @@ export { navItems, searchCopy, homeSnippet } from './header';
 export { personalInfo } from './personalInfo';
 export { personalProjects } from './personalProjects';
 export { skills } from './skills';
+export { ui } from './ui';

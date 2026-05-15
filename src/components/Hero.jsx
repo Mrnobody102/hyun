@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Download } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
-import { heroData } from '@/data';
+import { heroData, personalInfo } from '@/data';
 import SafeImage from './SafeImage';
 import { fadeInUp, fadeIn } from '@/lib/animations';
 
 const Hero = ({ onNavigate = () => {} }) => {
     const { language } = useLanguage();
-    const { greetings, name, role, lead, imageUrl, imageAlt, imagePosition, ctaContact, ctaProjects, ctaDownload, resumeFileName } = heroData;
+    const { greetings, role, lead, imageUrl, imageAlt, imagePosition, ctaContact, ctaProjects, ctaDownload } = heroData;
     const [greetingText, setGreetingText] = useState(() => greetings.text1);
     const sectionRef = useRef(null);
     const greetingOptions = useMemo(() => [greetings.text1, greetings.text2].filter(Boolean), [greetings.text1, greetings.text2]);
@@ -64,7 +64,7 @@ const Hero = ({ onNavigate = () => {} }) => {
                             </motion.span>
                             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
                                 <span className="bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-amber-200 dark:via-yellow-200 dark:to-amber-300 bg-clip-text text-transparent">
-                                    {name}
+                                    {t(personalInfo.fullName, language)}
                                 </span>
                             </h1>
                             <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent pb-4 pt-2 leading-[1.4] inline-block">

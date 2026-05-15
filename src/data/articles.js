@@ -4,7 +4,7 @@ export const articles = [
         slug: 'building-scalable-microservices-with-spring-boot-and-kafka',
         title: {
             en: 'Building Scalable Microservices with Spring Boot and Kafka',
-            vi: 'Xây microservices mở rộng với Spring Boot và Kafka',
+            vi: 'Xây dựng microservices mở rộng với Spring Boot và Kafka',
         },
         excerpt: {
             en: 'A practical guide to designing microservices with Spring Boot and event-driven communication through Kafka.',

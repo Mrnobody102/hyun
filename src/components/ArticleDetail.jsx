@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft, Share2, User, ArrowRight } from 'lucide-react';
-import { articles as articleMeta } from '@/data';
+import { articles as articleMeta, ui } from '@/data';
 import { getArticleUrl } from '@/lib/articles';
 import { getArticleById as fetchArticleById } from '@/articles/index';
 import { useLanguage } from '@/context/LanguageContext';
@@ -126,7 +126,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
             <div className="min-h-screen pt-24 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-6">
                     <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin shadow-lg" />
-                    <p className="text-slate-500 font-bold text-lg animate-pulse">Loading amazing content...</p>
+                    <p className="text-slate-500 font-bold text-lg animate-pulse">{t(ui.loading, language)}</p>
                 </div>
             </div>
         );
@@ -136,10 +136,10 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
                 <motion.div variants={fadeInUp} initial="initial" animate="animate" className="text-center p-8 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700">
-                    <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-6">Article Not Found</h1>
+                    <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-6">{t(ui.articleNotFound, language)}</h1>
                     <button onClick={() => onBack()} className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-xl font-bold hover:shadow-2xl transition-all active:scale-95 flex items-center gap-2 mx-auto">
                         <ChevronLeft size={20} />
-                        Back to Articles
+                        {t(ui.backToArticles, language)}
                     </button>
                 </motion.div>
             </div>
@@ -156,7 +156,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                 className="fixed top-32 left-8 hidden lg:flex items-center gap-2 px-5 py-2.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-2 border-amber-500 text-amber-600 dark:text-amber-400 rounded-xl shadow-xl hover:shadow-2xl transition-all z-40 font-bold"
             >
                 <ChevronLeft size={20} />
-                <span>Back</span>
+                <span>{t(ui.back, language)}</span>
             </motion.button>
 
             <div className="container mx-auto max-w-4xl px-4 py-12">
@@ -210,18 +210,18 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                     viewport={{ once: true }}
                     className="bg-gradient-to-r from-amber-500 to-yellow-500 rounded-3xl p-12 text-center text-white mb-20 shadow-2xl"
                 >
-                    <h3 className="text-3xl font-black mb-6">Enjoyed this article?</h3>
-                    <p className="mb-8 text-white/90 text-lg font-medium">Share it with your network and help others learn!</p>
+                    <h3 className="text-3xl font-black mb-6">{t(ui.enjoyedArticle, language)}</h3>
+                    <p className="mb-8 text-white/90 text-lg font-medium">{t(ui.sharePrompt, language)}</p>
                     <button onClick={handleShare} className="px-10 py-4 bg-white text-amber-600 rounded-2xl font-black hover:bg-slate-50 transition-all shadow-xl hover:shadow-white/20 active:scale-95 flex items-center gap-3 mx-auto">
                         <Share2 size={24} />
-                        Share Now
+                        {t(ui.shareNow, language)}
                     </button>
                 </motion.div>
 
                 <ShareModal isOpen={shareModalOpen} onClose={handleCloseShare} articleUrl={getArticleUrl(slug)} articleTitle={article.title} />
 
                 <motion.div initial="initial" whileInView="animate" viewport={{ once: true }} variants={staggerContainer} className="border-t pt-16 border-slate-200 dark:border-slate-800">
-                    <motion.h3 variants={fadeInUp} className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-10 text-center md:text-left">Continue Reading</motion.h3>
+                    <motion.h3 variants={fadeInUp} className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-10 text-center md:text-left">{t(ui.continueReading, language)}</motion.h3>
                     <div className="grid md:grid-cols-2 gap-8">
                         {relatedArticles.map((relatedArticle) => (
                             <motion.div

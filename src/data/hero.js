@@ -6,7 +6,6 @@ export const heroData = {
         text2: 'Hi, I build AI systems!',
         base: 'Hi, I ',
     },
-    name: 'Pham Quang Huy',
     role: {
         en: 'Software Engineer (AI Systems & Web Platforms)',
         vi: 'Kỹ sư phần mềm (Hệ thống AI & Nền tảng Web)',
