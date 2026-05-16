@@ -60,29 +60,85 @@ async function processFile(filePath) {
                 source: fileName,
                 type: 'article',
                 title: titleMatch[1],
-                text: `Article: ${titleMatch[1]}. Category: ${categoryMatch ? categoryMatch[1] : 'General'}. Content: ${cleanText(bodyMatch[1])}`
+                text: `Article titled "${titleMatch[1]}" in category "${categoryMatch ? categoryMatch[1] : 'General'}". Content summary: ${cleanText(bodyMatch[1])}`
             });
         }
     } else {
-        if (content.includes('[{') || content.includes(' = [')) {
-            const objectBlocks = content.match(/\{[\s\S]+?\}(?=\s*,|\s*\])/g) || [];
-            for (const block of objectBlocks) {
-                const cleaned = cleanText(block);
-                if (cleaned.length > 50) {
+        // Special handling for project-like files
+        if (content.includes('title:') && content.includes('description:')) {
+            // Match each object block in the array
+            const blocks = content.match(/\{[\s\S]+?\}(?=\s*,|\s*\])/g) || [];
+            for (const block of blocks) {
+                const title = (block.match(/title:\s*['"](.+?)['"]/) || [])[1];
+                const github = (block.match(/githubLink:\s*['"](.+?)['"]/) || [])[1];
+                const live = (block.match(/liveLink:\s*['"](.+?)['"]/) || [])[1];
+                const tags = (block.match(/tags:\s*\[(.+?)\]/s) || [])[1];
+                
+                if (title) {
+                    let text = `Project: ${title}. `;
+                    const descEn = (block.match(/en:\s*['"](.+?)['"]/) || [])[1];
+                    const descVi = (block.match(/vi:\s*['"](.+?)['"]/) || [])[1];
+                    
+                    if (descEn) text += `Description (EN): ${descEn}. `;
+                    if (descVi) text += `Description (VI): ${descVi}. `;
+                    if (tags) text += `Technologies: ${tags.replace(/['"\s]/g, '')}. `;
+                    if (github) text += `GitHub Repository: ${github}. `;
+                    if (live) text += `Live Demo Link: ${live}. `;
+                    
                     chunks.push({
                         source: fileName,
-                        type: 'data-entry',
-                        text: `${fileName}: ${cleaned}`
+                        type: 'project-detail',
+                        text: text.trim()
                     });
                 }
             }
         } 
+        
+        // Special handling for skills.js
+        if (fileName === 'skills.js') {
+            const categories = content.match(/\w+:\s*\{[\s\S]+?\}\s*(?=,\s*\w+:|\s*\})/g) || [];
+            for (const cat of categories) {
+                const titleEn = (cat.match(/en:\s*['"](.+?)['"]/) || [])[1];
+                const skillsList = (cat.match(/skills:\s*\[(.+?)\]/s) || [])[1];
+                if (titleEn && skillsList) {
+                    chunks.push({
+                        source: fileName,
+                        type: 'skill-category',
+                        text: `Huy's skills in ${titleEn}: ${skillsList.replace(/['"\s]/g, '')}`
+                    });
+                }
+            }
+        }
+
+        // Special handling for about.js
+        if (fileName === 'about.js') {
+            const paragraphs = content.match(/paragraph\d+:\s*\{[\s\S]+?\}/g) || [];
+            for (const p of paragraphs) {
+                const en = (p.match(/en:\s*['"](.+?)['"]/) || [])[1];
+                const vi = (p.match(/vi:\s*['"](.+?)['"]/) || [])[1];
+                if (en || vi) {
+                    chunks.push({
+                        source: fileName,
+                        type: 'about-paragraph',
+                        text: `About Huy: ${en || ''} ${vi ? '(Vietnamese: ' + vi + ')' : ''}`
+                    });
+                }
+            }
+        }
+
         if (chunks.length === 0) {
-            chunks.push({
-                source: fileName,
-                type: 'data-file',
-                text: `${fileName}: ${cleanText(content)}`
-            });
+            // Fallback for other data files
+            const objectBlocks = content.match(/\{[\s\S]+?\}(?=\s*,|\s*\])/g) || [];
+            for (const block of objectBlocks) {
+                const cleaned = cleanText(block);
+                if (cleaned.length > 40) {
+                    chunks.push({
+                        source: fileName,
+                        type: 'data-entry',
+                        text: `Information from ${fileName}: ${cleaned}`
+                    });
+                }
+            }
         }
     }
     return chunks;

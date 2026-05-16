@@ -8,6 +8,7 @@ import { getTechIcon } from '@/lib/techIcons';
 import { t } from '@/lib/utils';
 import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import ProjectDetailModal from './ProjectDetailModal';
 
 const palette = ['from-amber-500 to-orange-500', 'from-blue-500 to-indigo-500', 'from-emerald-500 to-teal-500', 'from-purple-500 to-pink-500'];
 const icons = [<Zap size={20} key="z" />, <Layers size={20} key="l" />, <Database size={20} key="d" />, <Smartphone size={20} key="s" />];
@@ -15,6 +16,8 @@ const icons = [<Zap size={20} key="z" />, <Layers size={20} key="l" />, <Databas
 const Projects = ({ compact = false }) => {
     const { toast } = useToast();
     const { language } = useLanguage();
+    const [selectedProject, setSelectedProject] = React.useState(null);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
 
     const personalProjects = useMemo(() => personalProjectsData.map((project, index) => ({
         ...project,
@@ -26,7 +29,13 @@ const Projects = ({ compact = false }) => {
         compact ? personalProjects.slice(0, 2) : personalProjects
     , [compact, personalProjects]);
 
-    const handleLinkClick = useCallback((link) => {
+    const handleProjectClick = (project) => {
+        setSelectedProject(project);
+        setIsModalOpen(true);
+    };
+
+    const handleLinkClick = useCallback((e, link) => {
+        e.stopPropagation();
         if (!link || link === '#') {
             toast({
                 title: language === 'vi' ? 'Link chưa được cấu hình' : 'Link not configured',
@@ -58,7 +67,7 @@ const Projects = ({ compact = false }) => {
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
                     <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">
-                        {language === 'vi' ? 'Giới thiệu các sản phẩm cá nhân và kỹ năng triển khai thực tế' : 'Showcasing personal products and hands-on technical execution'}
+                        {language === 'vi' ? 'Nhấn vào dự án để xem chi tiết, tính năng và video demo' : 'Click on a project to view details, features, and video demos'}
                     </p>
                 </motion.div>
 
@@ -74,7 +83,8 @@ const Projects = ({ compact = false }) => {
                             key={project.title}
                             variants={fadeInUp}
                             whileHover={{ y: -5 }}
-                            className={`bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group flex flex-col h-full ${compact ? 'p-4' : ''}`}
+                            onClick={() => handleProjectClick(project)}
+                            className={`bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group flex flex-col h-full cursor-pointer relative ${compact ? 'p-4' : ''}`}
                         >
                             <div className={`relative overflow-hidden bg-slate-100 ${compact ? 'h-44' : 'h-64'}`}>
                                 <SafeImage 
@@ -82,6 +92,12 @@ const Projects = ({ compact = false }) => {
                                     alt={project.imageAlt} 
                                     className="w-full h-full"
                                 />
+                                {/* View Detail Overlay */}
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10 backdrop-blur-sm">
+                                    <span className="px-6 py-2.5 bg-white text-slate-900 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                        {language === 'vi' ? 'Xem chi tiết' : 'View Details'}
+                                    </span>
+                                </div>
                                 <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                                 <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/80 backdrop-blur-sm p-2 rounded-full text-slate-700 dark:text-slate-100 shadow-md z-20">
                                     {project.icon}
@@ -111,12 +127,18 @@ const Projects = ({ compact = false }) => {
                                 </div>
 
                                 {!compact && (
-                                    <div className="mt-auto flex gap-3">
+                                    <div 
+                                        className="mt-auto flex gap-3 relative z-30"
+                                        onClick={(e) => e.stopPropagation()} 
+                                    >
                                         {project.githubLink && (
                                             <motion.button
                                                 whileHover={{ scale: 1.02 }}
                                                 whileTap={{ scale: 0.98 }}
-                                                onClick={() => handleLinkClick(project.githubLink)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleLinkClick(e, project.githubLink);
+                                                }}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 dark:bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-700 dark:hover:bg-slate-600 transition-all duration-300 text-sm"
                                             >
                                                 <Github size={16} />
@@ -127,7 +149,10 @@ const Projects = ({ compact = false }) => {
                                             <motion.button
                                                 whileHover={{ scale: 1.02 }}
                                                 whileTap={{ scale: 0.98 }}
-                                                onClick={() => handleLinkClick(project.liveLink)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleLinkClick(e, project.liveLink);
+                                                }}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-medium hover:shadow-lg hover:from-amber-600 hover:to-yellow-600 transition-all duration-300 text-sm"
                                             >
                                                 <ExternalLink size={16} />
@@ -141,6 +166,13 @@ const Projects = ({ compact = false }) => {
                     ))}
                 </motion.div>
             </div>
+
+            {/* Project Detail Modal */}
+            <ProjectDetailModal 
+                project={selectedProject}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </section>
     );
 };
