@@ -1,10 +1,12 @@
+import imageUrl from '../assets/articles/fullstack-bridging.png';
+
 export const article5 = {
     id: 5,
     title: 'Full Stack Development: Bridging Frontend and Backend Technologies',
     category: 'Full Stack',
     author: 'Phạm Quang Huy',
     date: 'Nov 20, 2024',
-    imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=800&q=80',
+    imageUrl: imageUrl,
     excerpt: 'Insights on becoming a proficient full-stack developer, understanding the entire application lifecycle, and best practices for seamless integration between frontend and backend.',
     content: `
 ## Full Stack Development: Bridging Frontend and Backend Technologies

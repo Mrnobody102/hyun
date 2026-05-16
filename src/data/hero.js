@@ -11,8 +11,8 @@ export const heroData = {
         vi: 'Kỹ sư phần mềm (Hệ thống AI & Nền tảng Web)',
     },
     lead: {
-        en: 'Software Engineer with nearly 3 years of experience in scalable web platforms, real-time middleware, and AI/Computer Vision systems.',
-        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm trong các nền tảng web mở rộng, middleware thời gian thực và hệ thống AI/Computer Vision.',
+        en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.',
+        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và các nền tảng web doanh nghiệp.',
     },
     imageUrl: hyunImage,
     imageAlt: 'Pham Quang Huy - Software Engineer',

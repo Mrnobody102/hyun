@@ -1,10 +1,12 @@
+import imageUrl from '../assets/articles/spring-boot-kafka.png';
+
 export const article1 = {
     id: 1,
     title: 'Building Scalable Microservices with Spring Boot and Kafka',
     category: 'Backend',
     author: 'Phạm Quang Huy',
     date: 'Dec 15, 2024',
-    imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
+    imageUrl: imageUrl,
     excerpt: 'A comprehensive guide on designing and implementing microservices architecture using Spring Boot, with event-driven communication via Kafka for high-volume data processing.',
     content: `
 ## Building Scalable Microservices with Spring Boot and Kafka

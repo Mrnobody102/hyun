@@ -3,8 +3,8 @@ export const educationExperience = [
         type: 'education',
         title: 'FPT University',
         subtitle: {
-            en: 'Software Engineer | GPA: 3.5/4.0 - Very Good',
-            vi: 'Kỹ sư phần mềm | GPA: 3.5/4.0 - Xếp loại Giỏi',
+            en: 'Software Engineer | GPA: 3.5/4.0 – Very Good',
+            vi: 'Kỹ sư phần mềm | GPA: 3.5/4.0 – Xếp loại Giỏi',
         },
         period: '09/2019 – 12/2023',
         color: 'from-amber-500 to-yellow-500',
@@ -17,8 +17,8 @@ export const educationExperience = [
         type: 'education',
         title: 'FPT Software Academy',
         subtitle: {
-            en: 'Korean Bridge Software Engineer | GPA: 9.0/10 | 100% Scholarship recipient',
-            vi: 'Kỹ sư phần mềm cầu nối Hàn Quốc | GPA: 9.0/10 | Nhận học bổng 100%',
+            en: 'Korean Bridge Software Engineer | GPA: 9.0/10',
+            vi: 'Kỹ sư phần mềm cầu nối Hàn Quốc | GPA: 9.0/10',
         },
         period: '09/2022 – 12/2023',
         color: 'from-slate-600 to-amber-500',

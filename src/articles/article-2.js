@@ -1,10 +1,12 @@
+import imageUrl from '../assets/articles/react-performance.png';
+
 export const article2 = {
     id: 2,
     title: 'React Performance Optimization: From 5s to 1s Load Time',
     category: 'Frontend',
     author: 'Phạm Quang Huy',
     date: 'Dec 10, 2024',
-    imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
+    imageUrl: imageUrl,
     excerpt: 'Practical techniques to optimize React applications including code splitting, lazy loading, memoization, and leveraging modern bundling tools for better performance.',
     content: `
 ## React Performance Optimization: From 5s to 1s Load Time

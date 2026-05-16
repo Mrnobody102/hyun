@@ -1,19 +1,19 @@
 export const skills = {
     programmingLanguages: {
         title: { en: 'Programming Languages', vi: 'Ngôn ngữ lập trình' },
-        skills: ['Java', 'C++17', 'TypeScript', 'JavaScript', 'Erlang', 'Basic Python', 'Basic Golang'],
+        skills: ['Java', 'C++17', 'TypeScript/JavaScript', 'Erlang', 'Basic Python'],
     },
-    aiVideoStreaming: {
-        title: { en: 'AI / Video / Streaming', vi: 'AI / Video / Streaming' },
-        skills: ['NVIDIA DeepStream', 'Triton Inference Server', 'GStreamer', 'RTSP', 'OpenCV'],
+    computerVisionStreaming: {
+        title: { en: 'Computer Vision / Streaming', vi: 'Computer Vision / Streaming' },
+        skills: ['NVIDIA DeepStream', 'Triton Inference Server', 'GStreamer', 'RTSP'],
     },
     backendMiddleware: {
         title: { en: 'Backend & Middleware', vi: 'Backend & Middleware' },
-        skills: ['Spring Boot', 'NestJS', 'Node.js', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ'],
+        skills: ['Spring Boot', 'NestJS', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ'],
     },
     databasesVectorSearch: {
         title: { en: 'Databases & Vector Search', vi: 'Cơ sở dữ liệu & Vector Search' },
-        skills: ['PostgreSQL', 'MySQL', 'MSSQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'],
+        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'],
     },
     frontendUi: {
         title: { en: 'Frontend Frameworks & UI', vi: 'Frontend Frameworks & UI' },
@@ -21,7 +21,7 @@ export const skills = {
     },
     devOpsSystems: {
         title: { en: 'DevOps & Systems', vi: 'DevOps & Hệ thống' },
-        skills: ['Linux', 'Docker', 'Kubernetes', 'Jenkins', 'GitHub Actions', 'Basic AWS'],
+        skills: ['Linux', 'Docker', 'Jenkins', 'GitHub Actions', 'Basic AWS'],
     },
     tools: {
         title: { en: 'Tools', vi: 'Công cụ' },

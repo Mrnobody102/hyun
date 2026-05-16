@@ -1,10 +1,12 @@
+import imageUrl from '../assets/articles/docker-kubernetes.png';
+
 export const article4 = {
     id: 4,
     title: 'Docker & Kubernetes: Container Orchestration Best Practices',
     category: 'DevOps',
     author: 'Phạm Quang Huy',
     date: 'Nov 28, 2024',
-    imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
+    imageUrl: imageUrl,
     excerpt: 'Essential Docker and Kubernetes concepts, deployment strategies, and best practices for production-grade containerized applications and microservices.',
     content: `
 ## Docker & Kubernetes: Container Orchestration Best Practices

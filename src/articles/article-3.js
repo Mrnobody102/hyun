@@ -1,10 +1,12 @@
+import imageUrl from '../assets/articles/postgres-indexing.png';
+
 export const article3 = {
     id: 3,
     title: 'Mastering PostgreSQL Indexing Strategies for Large Databases',
     category: 'Database',
     author: 'Phạm Quang Huy',
     date: 'Dec 5, 2024',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+    imageUrl: imageUrl,
     excerpt: 'Deep dive into PostgreSQL indexing techniques, query optimization, and performance tuning strategies for handling millions of records efficiently.',
     content: `
 ## Mastering PostgreSQL Indexing Strategies for Large Databases

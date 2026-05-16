@@ -1,14 +1,14 @@
 export const aboutMe = {
     paragraph1: {
-        en: "Software Engineer with nearly 3 years of experience in scalable web platforms, real-time middleware, and AI/Computer Vision systems.",
-        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm trong các nền tảng web mở rộng, middleware thời gian thực và các hệ thống AI/Computer Vision.',
+        en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.',
+        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và các nền tảng web doanh nghiệp.',
     },
     paragraph2: {
-        en: 'I have a strong background in Java backend development, with hands-on experience in C++17-based AI camera systems, NVIDIA DeepStream/Triton pipelines, and streaming data processing.',
-        vi: 'Tôi có nền tảng vững chắc về phát triển backend Java, cùng kinh nghiệm thực tế với hệ thống camera AI dựa trên C++17, pipeline NVIDIA DeepStream/Triton và xử lý dữ liệu streaming.',
+        en: 'Experienced with C++17, NVIDIA DeepStream, Triton, GStreamer, Kafka, Redis, Docker, Linux, Java backend, and React/Next.js.',
+        vi: 'Có kinh nghiệm với C++17, NVIDIA DeepStream, Triton, GStreamer, Kafka, Redis, Docker, Linux, Java backend và React/Next.js.',
     },
     paragraph3: {
-        en: 'I am interested in building reliable software for real-time, edge, and server-side environments, ensuring high performance and system scalability.',
-        vi: 'Tôi quan tâm đến việc xây dựng phần mềm đáng tin cậy cho các môi trường thời gian thực, edge và server-side, đảm bảo hiệu suất cao và khả năng mở rộng hệ thống.',
+        en: 'Interested in Computer Vision, face recognition, video analytics, and high-performance streaming systems.',
+        vi: 'Quan tâm đến Computer Vision, nhận diện khuôn mặt, phân tích video và các hệ thống streaming hiệu suất cao.',
     },
 };

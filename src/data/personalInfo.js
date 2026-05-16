@@ -16,19 +16,19 @@ export const personalInfo = {
         vi: '10/02/2001',
     },
     location: {
-        en: 'Hanoi, Vietnam',
-        vi: 'Hà Nội, Việt Nam',
+        en: 'Hanoi',
+        vi: 'Hà Nội',
     },
     experience: {
         en: 'Nearly 3 Years',
         vi: 'Gần 3 năm',
     },
     passion: {
-        en: 'Building scalable web platforms and real-time AI systems',
-        vi: 'Xây dựng nền tảng web mở rộng và hệ thống AI thời gian thực',
+        en: 'Computer Vision, Face Recognition, and High-Performance Streaming Systems',
+        vi: 'Computer Vision, Nhận diện khuôn mặt và Hệ thống streaming hiệu suất cao',
     },
     shortDescription: {
-        en: 'Specializing in Java backend, AI pipelines, and distributed middleware with a focus on reliability and real-time processing.',
-        vi: 'Chuyên về Java backend, pipeline AI và middleware phân tán với trọng tâm là độ tin cậy và xử lý thời gian thực.',
+        en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.',
+        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và nền tảng web doanh nghiệp.',
     },
 };

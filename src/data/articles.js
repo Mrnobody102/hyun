@@ -1,3 +1,9 @@
+import springBootKafkaImage from '../assets/articles/spring-boot-kafka.png';
+import reactPerformanceImage from '../assets/articles/react-performance.png';
+import postgresIndexingImage from '../assets/articles/postgres-indexing.png';
+import dockerKubernetesImage from '../assets/articles/docker-kubernetes.png';
+import fullstackBridgingImage from '../assets/articles/fullstack-bridging.png';
+
 export const articles = [
     {
         id: 1,
@@ -22,7 +28,7 @@ export const articles = [
             en: 'Backend',
             vi: 'Backend',
         },
-        imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        imageUrl: springBootKafkaImage,
     },
     {
         id: 2,
@@ -47,7 +53,7 @@ export const articles = [
             en: 'Frontend',
             vi: 'Frontend',
         },
-        imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
+        imageUrl: reactPerformanceImage,
     },
     {
         id: 3,
@@ -72,7 +78,7 @@ export const articles = [
             en: 'Database',
             vi: 'Cơ sở dữ liệu',
         },
-        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+        imageUrl: postgresIndexingImage,
     },
     {
         id: 4,
@@ -97,7 +103,7 @@ export const articles = [
             en: 'DevOps',
             vi: 'DevOps',
         },
-        imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
+        imageUrl: dockerKubernetesImage,
     },
     {
         id: 5,
@@ -122,6 +128,6 @@ export const articles = [
             en: 'Full Stack',
             vi: 'Full Stack',
         },
-        imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97',
+        imageUrl: fullstackBridgingImage,
     },
 ];
