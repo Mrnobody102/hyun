@@ -4,20 +4,6 @@ import { MessageCircle, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-rea
 import { marked } from 'marked';
 import { useLanguage } from '@/context/LanguageContext';
 import { useToast } from '@/components/ui/use-toast';
-import { CHATBOT_CONFIG } from '@/config/chatbot';
-
-// Cosine similarity for client-side fallback
-function cosineSimilarity(vecA, vecB) {
-    let dotProduct = 0;
-    let normA = 0;
-    let normB = 0;
-    for (let i = 0; i < vecA.length; i++) {
-        dotProduct += vecA[i] * vecB[i];
-        normA += vecA[i] * vecA[i];
-        normB += vecB[i] * vecB[i];
-    }
-    return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-}
 
 const ChatBot = () => {
     const { language } = useLanguage();
@@ -28,14 +14,14 @@ const ChatBot = () => {
             greeting: "Hi! I'm Huy's AI assistant. How can I help you today?",
             error: 'Sorry, something went wrong. Please try again.',
             title: 'Hyun AI Assistant',
-            suggested: ['Show me projects', 'What are Huy\'s skills?', 'Tell me about the AI Camera system']
+            suggested: ['Show me projects', 'What are Huy\'s skills?', 'How does the Camera AI system work?']
         },
         vi: {
             placeholder: 'Hỏi tôi bất cứ điều gì về Huy...',
             greeting: 'Chào bạn! Tôi là trợ lý AI của Huy. Tôi có thể giúp gì cho bạn?',
             error: 'Rất tiếc, đã có lỗi xảy ra. Vui lòng thử lại.',
             title: 'Trợ lý AI Hyun',
-            suggested: ['Xem các dự án', 'Kỹ năng của Huy là gì?', 'Hệ thống AI Camera hoạt động thế nào?']
+            suggested: ['Xem các dự án', 'Kỹ năng của Huy là gì?', 'Hệ thống Camera AI hoạt động thế nào?']
         }
     };
 
@@ -59,8 +45,9 @@ const ChatBot = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    const handleSend = async (text = input) => {
-        if (!text || !text.trim() || isLoading) return;
+    const handleSend = async (textToSend) => {
+        const text = textToSend || input;
+        if (!text.trim() || isLoading) return;
 
         const userMessage = { role: 'user', content: text };
         setMessages(prev => [...prev, userMessage]);
@@ -68,89 +55,30 @@ const ChatBot = () => {
         setIsLoading(true);
 
         try {
-            let data;
-            let usedFallback = false;
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: text,
+                    history: messages,
+                    language: language
+                })
+            });
 
-            // 1. Try to call the real backend (for Production)
-            // Skip if we are on localhost and want to use direct API for speed/reliability
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            
-            if (!isLocal) {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: text,
-                        history: messages,
-                        language: language
-                    })
-                });
+            if (!response.ok) throw new Error('Failed to connect to chatbot server');
 
-                if (response.ok) {
-                    data = await response.json();
-                } else {
-                    usedFallback = true;
-                }
-            } else {
-                usedFallback = true;
-            }
-            
-            if (usedFallback) {
-                console.log('Using client-side AI fallback...');
-                const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-                if (!apiKey) throw new Error('VITE_GEMINI_API_KEY is missing in .env');
-
-                // Get embedding for query
-                const embedResp = await fetch(`https://generativelanguage.googleapis.com/${CHATBOT_CONFIG.apiVersion}/models/${CHATBOT_CONFIG.embeddingModel}:embedContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: { parts: [{ text }] } })
-                });
-                const embedData = await embedResp.json();
-                if (embedData.error) throw new Error(`Embedding Error: ${embedData.error.message}`);
-                
-                const userVector = embedData.embedding.values;
-
-                // Load knowledge base
-                const kbResp = await fetch('/chatbot/knowledge-base.json');
-                const kbData = await kbResp.json();
-
-                // Find context
-                const context = kbData
-                    .map(item => ({ ...item, sim: cosineSimilarity(userVector, item.embedding) }))
-                    .sort((a, b) => b.sim - a.sim)
-                    .slice(0, 5)
-                    .map(item => item.text)
-                    .join('\n\n');
-
-                // Generate answer
-                const prompt = `Context about Huy: ${context}\n\nUser Question: ${text}\n\nAnswer concisely in ${language === 'vi' ? 'Vietnamese' : 'English'}:`;
-                const genResp = await fetch(`https://generativelanguage.googleapis.com/${CHATBOT_CONFIG.apiVersion}/models/${CHATBOT_CONFIG.chatModel}:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        system_instruction: { parts: [{ text: "You are Huy's professional AI assistant. Use the provided context to answer questions about Huy (Pham Quang Huy/Hyun)." }] }
-                    })
-                });
-                data = await genResp.json();
-                if (data.error) throw new Error(`Generation Error: ${data.error.message}`);
-                
-                const botText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!botText) throw new Error('No response generated by AI');
-                
-                setMessages(prev => [...prev, { role: 'bot', content: botText }]);
-            } else if (data) {
-                setMessages(prev => [...prev, { role: 'bot', content: data.response || '' }]);
-            }
+            const data = await response.json();
+            setMessages(prev => [...prev, { role: 'bot', content: data.response || '' }]);
 
         } catch (error) {
+            console.error('Chat Error:', error);
             toast({
                 variant: "destructive",
                 title: t.error,
-                description: error.message
+                description: language === 'vi' 
+                    ? "Có lỗi xảy ra khi kết nối với AI. Vui lòng thử lại sau." 
+                    : "An error occurred while connecting to AI. Please try again later."
             });
-            console.error('Chat Error:', error);
         } finally {
             setIsLoading(false);
         }

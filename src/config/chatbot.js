@@ -1,12 +1,21 @@
-// Centralized configuration for the ChatBot
 export const CHATBOT_CONFIG = {
-    // The model used for semantic search (RAG)
-    embeddingModel: 'gemini-embedding-2',
+    // Ưu tiên: gemini -> groq -> openai
     
-    // The model used for generating conversational responses
-    // Using 2.5-flash as it has available quota in your account
-    chatModel: 'gemini-2.5-flash',
-    
-    // API Version to use
-    apiVersion: 'v1beta'
+    // Cấu hình Gemini (Mặc định - Miễn phí)
+    gemini: {
+        chatModel: 'gemini-1.5-flash',
+        embeddingModel: 'embedding-001',
+        apiVersion: 'v1beta',
+    },
+
+    // Cấu hình Groq (Dự phòng 1 - Siêu nhanh & Miễn phí)
+    groq: {
+        chatModel: 'llama-3.3-70b-versatile',
+    },
+
+    // Cấu hình OpenAI (Dự phòng cuối - Trả phí)
+    openai: {
+        chatModel: 'gpt-4o-mini',
+        embeddingModel: 'text-embedding-3-small',
+    }
 };

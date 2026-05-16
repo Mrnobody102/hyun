@@ -48,7 +48,7 @@ const SafeImage = ({
                     alt={alt}
                     loading={loading}
                     decoding={decoding}
-                    fetchPriority={fetchPriority}
+                    fetchpriority={fetchPriority}
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ 
                         opacity: isLoaded ? 1 : 0, 

@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function listModels() {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    const genAI = new GoogleGenerativeAI(API_KEY);
     // There is no direct listModels in the client SDK, we usually use the REST API for that
     // but we can try to guess or use the common ones.
     
