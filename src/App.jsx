@@ -7,6 +7,7 @@ import Hero from '@/components/Hero';
 import EducationExperience from '@/components/EducationExperience';
 import About from '@/components/About';
 import Footer from '@/components/Footer';
+import ChatBot from '@/components/ChatBot';
 import { Toaster } from '@/components/ui/toaster';
 import { DarkModeProvider } from '@/context/DarkModeContext';
 import { LanguageProvider, useLanguage } from '@/context/LanguageContext';
@@ -291,7 +292,7 @@ function Layout({ children }) {
                 />
                 <main tabIndex="-1" className="outline-none">{children}</main>
                 {!isArticleDetail && <Footer />}
-
+                <ChatBot />
                 <Toaster />
             </div>
         </>
