@@ -99,20 +99,20 @@ async function getContext(message, provider) {
 async function tryProvider(provider, message, history, language) {
     const context = await getContext(message, provider);
     const systemInstruction = `You are Huy's professional AI assistant. 
-DỮ LIỆU GỐC: ${context}. 
+Use the KNOWLEDGE BASE to answer questions about Huy, his projects, and skills: ${context}. 
 
-QUY TẮC BẮT BUỘC:
-1. Chỉ trả lời dựa trên DỮ LIỆU GỐC được cung cấp. Không tự ý thêm thắt thông tin ngoài luồng.
-2. Trả lời đúng trọng tâm, khuôn phép, chuyên nghiệp và nhất quán.
-3. Respond in the language the user is using.
-4. Tuyệt đối không trộn lẫn các bộ chữ cái (ví dụ: không dùng chữ Hán trong câu tiếng Việt).`;
+STRICT RULES:
+- Respond in the same language as the user.
+- You are ONLY authorized to provide information found in the KNOWLEDGE BASE.
+- For ANY topic or request NOT found in the KNOWLEDGE BASE (e.g., general knowledge, creative tasks, math, or translation), politely decline and state that you can only assist with information regarding Huy's professional portfolio.
+- Be professional, concise, and do not mix unrelated scripts.`;
 
     if (provider === 'openai') {
         const response = await openai.chat.completions.create({
             model: CHATBOT_CONFIG.openai.chatModel,
             messages: [{ role: 'system', content: systemInstruction }, ...history.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })), { role: 'user', content: message }],
             max_tokens: 1000,
-            temperature: 0, // Đảm bảo câu trả lời nhất quán
+            temperature: 0.2,
         });
         return response.choices[0].message.content;
     } else if (provider === 'groq') {
@@ -123,11 +123,15 @@ QUY TẮC BẮT BUỘC:
                 model: CHATBOT_CONFIG.groq.chatModel,
                 messages: [{ role: 'system', content: systemInstruction }, ...history.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })), { role: 'user', content: message }],
                 max_tokens: 1000,
-                temperature: 0, // Đảm bảo câu trả lời nhất quán
+                temperature: 0.2,
             })
         });
         const data = await response.json();
-        return data.choices?.[0]?.message?.content || "Groq Error";
+        if (data.error) {
+            console.error('❌ Groq API Error:', data.error);
+            throw new Error(`Groq API: ${data.error.message || 'Unknown Error'}`);
+        }
+        return data.choices?.[0]?.message?.content || "Groq Error: No content";
     } else {
         const chatModel = genAI.getGenerativeModel(
             { model: CHATBOT_CONFIG.gemini.chatModel },
@@ -146,7 +150,7 @@ QUY TẮC BẮT BUỘC:
         const chat = chatModel.startChat({ 
             history: geminiHistory,
             generationConfig: {
-                temperature: 0, // Đảm bảo câu trả lời nhất quán
+                temperature: 0.2,
                 maxOutputTokens: 1000,
             }
         });
@@ -155,9 +159,34 @@ QUY TẮC BẮT BUỘC:
     }
 }
 
+// Simple in-memory rate limiter
+const rateLimitMap = new Map();
+const RATE_LIMIT = 5; // 5 requests
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
     const { message, history, language } = req.body;
+
+    // Rate Limiting Logic
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'anonymous';
+    const now = Date.now();
+    const userLimit = rateLimitMap.get(ip) || { count: 0, startTime: now };
+
+    if (now - userLimit.startTime > RATE_LIMIT_WINDOW) {
+        userLimit.count = 1;
+        userLimit.startTime = now;
+    } else {
+        userLimit.count++;
+    }
+    rateLimitMap.set(ip, userLimit);
+
+    if (userLimit.count > RATE_LIMIT) {
+        const rateLimitMessage = language === 'vi' 
+            ? "Bạn đang gửi tin nhắn quá nhanh. Vui lòng đợi 1 phút rồi thử lại để tránh làm phiền hệ thống của Huy. 🙏"
+            : "You are sending messages too fast. Please wait 1 minute and try again to avoid overwhelming Huy's system. 🙏";
+        return res.status(200).json({ response: rateLimitMessage }); // Trả về thông báo mà không gọi AI
+    }
 
     try {
         console.log('🤖 Layer 1: Gemini...');

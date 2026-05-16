@@ -10,7 +10,7 @@ export const CHATBOT_CONFIG = {
 
     // Cấu hình Groq (Dự phòng 1 - Siêu nhanh & Miễn phí)
     groq: {
-        chatModel: 'llama-3.3-70b-versatile',
+        chatModel: 'llama-3.1-8b-instant',
     },
 
     // Cấu hình OpenAI (Dự phòng cuối - Trả phí)
