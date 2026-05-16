@@ -32,7 +32,7 @@ function cosineSimilarity(vecA, vecB) {
     return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-async function getContext(message, provider) {
+async function getContext(message, provider, history = []) {
     let kbProvider = provider === 'groq' ? 'gemini' : provider;
     let kbPath = path.join(process.cwd(), 'public', 'chatbot', `knowledge-base-${kbProvider}.json`);
     
@@ -45,12 +45,16 @@ async function getContext(message, provider) {
         kbCache[kbProvider] = JSON.parse(fs.readFileSync(kbPath, 'utf-8'));
     }
 
+    // Combine current message with previous user message for better context retrieval
+    const lastUserMsg = history.filter(m => m.role === 'user').pop()?.content || '';
+    const searchMessage = `${lastUserMsg} ${message}`;
+
     let userEmbedding;
     try {
         if (kbProvider === 'openai') {
             const response = await openai.embeddings.create({
                 model: CHATBOT_CONFIG.openai.embeddingModel,
-                input: message,
+                input: searchMessage,
             });
             userEmbedding = response.data[0].embedding;
         } else {
@@ -58,12 +62,12 @@ async function getContext(message, provider) {
                 { model: CHATBOT_CONFIG.gemini.embeddingModel },
                 { apiVersion: CHATBOT_CONFIG.gemini.apiVersion }
             );
-            const result = await model.embedContent(message);
+            const result = await model.embedContent(searchMessage);
             userEmbedding = result.embedding.values;
         }
 
         const similarities = kbCache[kbProvider]
-            .filter(item => item.embedding) // Chỉ lấy các item có embedding
+            .filter(item => item.embedding)
             .map(item => ({
                 ...item,
                 similarity: cosineSimilarity(userEmbedding, item.embedding)
@@ -73,14 +77,13 @@ async function getContext(message, provider) {
 
         return similarities
             .sort((a, b) => b.similarity - a.similarity)
-            .slice(0, 8)
+            .slice(0, 4)
             .map(chunk => chunk.text)
             .join('\n\n');
     } catch (embeddingError) {
         console.warn('⚠️ Embedding failed, falling back to keyword search:', embeddingError.message);
         
-        // Simple Keyword Search Fallback
-        const keywords = message.toLowerCase().split(' ').filter(w => w.length > 2);
+        const keywords = searchMessage.toLowerCase().split(' ').filter(w => w.length > 2);
         const matches = kbCache[kbProvider].map(item => {
             const text = item.text.toLowerCase();
             let score = 0;
@@ -90,29 +93,33 @@ async function getContext(message, provider) {
 
         return matches
             .sort((a, b) => b.score - a.score)
-            .slice(0, 5)
+            .slice(0, 3)
             .map(chunk => chunk.text)
             .join('\n\n');
     }
 }
 
 async function tryProvider(provider, message, history, language) {
-    const context = await getContext(message, provider);
-    const systemInstruction = `You are Huy's professional AI assistant. 
-Use the KNOWLEDGE BASE to answer questions about Huy, his projects, and skills: ${context}. 
+    const context = await getContext(message, provider, history);
+    const systemInstruction = `You are Huy's professional AI representative. 
+Here is the information you have memorized about Huy: ${context}. 
+
+Your goal is to provide a helpful and professional experience for visitors to Huy's portfolio.
 
 STRICT RULES:
-- Respond in the same language as the user.
-- You are ONLY authorized to provide information found in the KNOWLEDGE BASE.
-- For ANY topic or request NOT found in the KNOWLEDGE BASE (e.g., general knowledge, creative tasks, math, or translation), politely decline and state that you can only assist with information regarding Huy's professional portfolio.
-- Be professional, concise, and do not mix unrelated scripts.`;
+- Respond ONLY based on the provided information about Huy. 
+- If a user asks about unrelated topics (e.g., football, history, general knowledge, celebrities, etc.), politely explain that your expertise is limited to Huy's professional background and invite them to ask about his projects or skills.
+- NEVER provide general knowledge or facts from your training data that are unrelated to Huy.
+- ALWAYS respond in the same language as the user.
+- Speak naturally, warmly, and stay 100% on-topic.
+- NEVER mention technical terms like "database", "context", or "knowledge base".`;
 
     if (provider === 'openai') {
         const response = await openai.chat.completions.create({
             model: CHATBOT_CONFIG.openai.chatModel,
             messages: [{ role: 'system', content: systemInstruction }, ...history.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })), { role: 'user', content: message }],
             max_tokens: 1000,
-            temperature: 0.2,
+            temperature: 0.1,
         });
         return response.choices[0].message.content;
     } else if (provider === 'groq') {
@@ -123,7 +130,7 @@ STRICT RULES:
                 model: CHATBOT_CONFIG.groq.chatModel,
                 messages: [{ role: 'system', content: systemInstruction }, ...history.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content })), { role: 'user', content: message }],
                 max_tokens: 1000,
-                temperature: 0.2,
+                temperature: 0.1,
             })
         });
         const data = await response.json();
@@ -150,7 +157,7 @@ STRICT RULES:
         const chat = chatModel.startChat({ 
             history: geminiHistory,
             generationConfig: {
-                temperature: 0.2,
+                temperature: 0.1,
                 maxOutputTokens: 1000,
             }
         });
