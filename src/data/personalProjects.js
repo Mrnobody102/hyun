@@ -117,7 +117,7 @@ export const personalProjects = [
         imageUrl: godazImage,
         imageAlt: 'Modern e-commerce dashboard interface',
         tags: ['NextJS', 'Spring Boot', 'PostgreSQL', 'Redis', 'RabbitMQ', 'Kafka', 'Elasticsearch', 'AWS', 'Docker'],
-        githubLink: '',
+        githubLink: 'https://github.com/Mrnobody102/godaz-client-nextjs',
         liveLink: 'https://godaz.shop/',
         details: {
             features: [
@@ -148,7 +148,7 @@ export const personalProjects = [
         imageAlt: 'Omnichannel sales analytics dashboard',
         tags: ['Spring Boot', 'ReactJS', 'OpenAI', 'Kafka', 'Websocket', 'Kubernetes', 'AWS', 'Docker', 'PostgreSQL'],
         githubLink: 'https://github.com/Mrnobody102/zeng',
-        liveLink: 'https://zengsell.com',
+        liveLink: '',
         details: {
             features: [
                 { en: 'AI Sales Analytics', vi: 'Phân tích bán hàng AI' },

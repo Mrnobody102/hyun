@@ -9,85 +9,8 @@ import { t } from '@/lib/utils';
 import ShareModal from './ShareModal';
 import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
-
-const ContentBlock = memo(({ block }) => {
-    const trimmed = block.trim();
-    if (!trimmed) return null;
-
-    // Heading 2
-    if (trimmed.startsWith('## ')) {
-        return (
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b pb-3 border-slate-100 dark:border-slate-800">
-                {trimmed.replace('## ', '')}
-            </h2>
-        );
-    }
-
-    // Heading 3
-    if (trimmed.startsWith('### ')) {
-        return (
-            <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-10 mb-4">
-                {trimmed.replace('### ', '')}
-            </h3>
-        );
-    }
-
-    // Code Blocks
-    if (trimmed.startsWith('```')) {
-        const lines = trimmed.split('\n');
-        const codeLines = lines.slice(1, -1); // Remove backticks lines
-        return (
-            <div className="relative group my-8">
-                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-                <pre className="relative bg-slate-900 text-slate-100 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed shadow-2xl font-mono">
-                    <code>{codeLines.join('\n')}</code>
-                </pre>
-            </div>
-        );
-    }
-
-    // Lists
-    if (trimmed.includes('\n- ') || trimmed.startsWith('- ')) {
-        const items = trimmed.split('\n').map(line => line.trim()).filter(line => line.startsWith('- '));
-        if (items.length > 0) {
-            return (
-                <ul className="grid gap-4 my-8 ml-2">
-                    {items.map((item, i) => (
-                        <li key={i} className="flex items-start gap-3 text-slate-700 dark:text-slate-300">
-                            <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-                            <span className="leading-relaxed">{item.replace('- ', '')}</span>
-                        </li>
-                    ))}
-                </ul>
-            );
-        }
-    }
-
-    // Numbered Lists
-    if (trimmed.match(/^\d+\.\s/)) {
-        const items = trimmed.split('\n').map(line => line.trim()).filter(line => line.match(/^\d+\.\s/));
-        if (items.length > 0) {
-            return (
-                <ol className="grid gap-4 my-8 ml-2">
-                    {items.map((item, i) => (
-                        <li key={i} className="flex items-start gap-3 text-slate-700 dark:text-slate-300">
-                            <span className="font-black text-amber-500 min-w-[1.5rem]">{i + 1}.</span>
-                            <span className="leading-relaxed">{item.replace(/^\d+\.\s/, '')}</span>
-                        </li>
-                    ))}
-                </ol>
-            );
-        }
-    }
-
-    // Default Paragraph
-    return (
-        <p className="leading-relaxed text-lg text-slate-700 dark:text-slate-300 mb-6 font-medium opacity-90">
-            {trimmed}
-        </p>
-    );
-});
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ArticleDetail = ({ articleId, slug, onBack }) => {
     const { language } = useLanguage();
@@ -112,11 +35,6 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
     const relatedArticles = useMemo(() => 
         articleMeta.filter((item) => item.id !== articleId).slice(0, 2),
     [articleId]);
-
-    const contentBlocks = useMemo(() => {
-        if (!article?.content) return [];
-        return article.content.split('\n\n').filter(Boolean);
-    }, [article?.content]);
 
     const handleShare = useCallback(() => setShareModalOpen(true), []);
     const handleCloseShare = useCallback(() => setShareModalOpen(false), []);
@@ -197,9 +115,73 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                     className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-16 shadow-2xl border border-slate-100 dark:border-slate-700 mb-16 relative"
                 >
                     <div className="max-w-none">
-                        {contentBlocks.map((block, index) => (
-                            <ContentBlock key={index} block={block} />
-                        ))}
+                        <div className="prose prose-lg dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
+                            <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                    h2: ({node, children, ...props}) => (
+                                        <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mt-12 mb-6 border-b pb-3 border-slate-100 dark:border-slate-800" {...props}>
+                                            {children}
+                                        </h2>
+                                    ),
+                                    h3: ({node, children, ...props}) => (
+                                        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mt-10 mb-4" {...props}>
+                                            {children}
+                                        </h3>
+                                    ),
+                                    h4: ({node, children, ...props}) => (
+                                        <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-8 mb-3" {...props}>
+                                            {children}
+                                        </h4>
+                                    ),
+                                    p: ({node, children, ...props}) => (
+                                        <p className="leading-relaxed text-lg text-slate-700 dark:text-slate-300 mb-6 font-medium opacity-90" {...props}>
+                                            {children}
+                                        </p>
+                                    ),
+                                    ul: ({node, children, ...props}) => (
+                                        <ul className="grid gap-4 my-8 ml-2 list-none" {...props}>
+                                            {children}
+                                        </ul>
+                                    ),
+                                    ol: ({node, children, ...props}) => (
+                                        <ol className="grid gap-4 my-8 ml-2 list-none" {...props}>
+                                            {children}
+                                        </ol>
+                                    ),
+                                    li: ({node, children, index, ordered, ...props}) => {
+                                        return (
+                                            <li className="flex items-start gap-3 text-slate-700 dark:text-slate-300" {...props}>
+                                                {ordered ? (
+                                                    <span className="font-black text-amber-500 min-w-[1.5rem]">{index + 1}.</span>
+                                                ) : (
+                                                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
+                                                )}
+                                                <span className="leading-relaxed">{children}</span>
+                                            </li>
+                                        );
+                                    },
+                                    code: ({node, inline, className, children, ...props}) => {
+                                        return !inline ? (
+                                            <div className="relative group my-8">
+                                                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                                                <pre className="relative bg-slate-900 text-slate-100 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed shadow-2xl font-mono">
+                                                    <code className={className} {...props}>
+                                                        {String(children).replace(/\n$/, '')}
+                                                    </code>
+                                                </pre>
+                                            </div>
+                                        ) : (
+                                            <code className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded font-mono text-sm font-semibold" {...props}>
+                                                {children}
+                                            </code>
+                                        );
+                                    }
+                                }}
+                            >
+                                {t(article?.content, language)}
+                            </ReactMarkdown>
+                        </div>
                     </div>
                 </motion.article>
 

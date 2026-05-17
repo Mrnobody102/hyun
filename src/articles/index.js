@@ -4,6 +4,7 @@ export const allArticles = {
     3: () => import('./article-3'),
     4: () => import('./article-4'),
     5: () => import('./article-5'),
+    6: () => import('./article-6'),
 };
 
 export async function getArticleById(id) {

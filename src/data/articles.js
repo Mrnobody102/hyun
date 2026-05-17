@@ -3,8 +3,34 @@ import reactPerformanceImage from '../assets/articles/react-performance.png';
 import postgresIndexingImage from '../assets/articles/postgres-indexing.png';
 import dockerKubernetesImage from '../assets/articles/docker-kubernetes.png';
 import fullstackBridgingImage from '../assets/articles/fullstack-bridging.png';
+import cameraAiOptimizationImage from '../assets/articles/camera-ai-optimization.png';
 
 export const articles = [
+    {
+        id: 6,
+        slug: 'camera-ai-optimization-deepstream-nvbufsurface',
+        title: {
+            en: 'Real-Time Camera AI: Solving Streaming Thread Bottlenecks in Production',
+            vi: 'Hệ Thống Camera AI Thời Gian Thực: Giải Quyết Nghẽn Luồng (Bottleneck) Trong Thực Tế',
+        },
+        excerpt: {
+            en: 'How we optimized a real-time face recognition and people counting system using C++ DeepStream, GPU-accelerated cropping via NvBufSurface, and asynchronous thread pools to maintain 30 FPS.',
+            vi: 'Cách tối ưu hệ thống nhận diện khuôn mặt và đếm người thời gian thực bằng C++ DeepStream, GPU crop (NvBufSurface) và Async Thread Pool để duy trì 30 FPS ổn định.',
+        },
+        author: {
+            en: 'Phạm Quang Huy',
+            vi: 'Phạm Quang Huy',
+        },
+        date: {
+            en: 'May 18, 2026',
+            vi: '18 Tháng 5, 2026',
+        },
+        category: {
+            en: 'Computer Vision',
+            vi: 'Computer Vision',
+        },
+        imageUrl: cameraAiOptimizationImage,
+    },
     {
         id: 1,
         slug: 'building-scalable-microservices-with-spring-boot-and-kafka',
