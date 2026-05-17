@@ -4,7 +4,7 @@ export const CHATBOT_CONFIG = {
     // Cấu hình Gemini (Mặc định - Miễn phí)
     gemini: {
         chatModel: 'gemini-1.5-flash',
-        embeddingModel: 'embedding-001',
+        embeddingModel: 'gemini-embedding-001',
         apiVersion: 'v1beta',
     },
 

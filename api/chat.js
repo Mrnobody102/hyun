@@ -77,23 +77,65 @@ async function getContext(message, provider, history = []) {
 
         return similarities
             .sort((a, b) => b.similarity - a.similarity)
-            .slice(0, 4)
+            .slice(0, 8)
             .map(chunk => chunk.text)
             .join('\n\n');
     } catch (embeddingError) {
-        console.warn('⚠️ Embedding failed, falling back to keyword search:', embeddingError.message);
+        console.warn('⚠️ Embedding failed, falling back to smart keyword search:', embeddingError.message);
         
-        const keywords = searchMessage.toLowerCase().split(' ').filter(w => w.length > 2);
+        const searchLower = searchMessage.toLowerCase();
+        // Keep words of length >= 2 to support Vietnamese terms (e.g. dự, án, cv, ai, kỹ)
+        const keywords = searchLower.split(/[\s,📊.?!()\-+]+/).filter(w => w.length >= 2);
+        
         const matches = kbCache[kbProvider].map(item => {
-            const text = item.text.toLowerCase();
+            const textLower = item.text.toLowerCase();
             let score = 0;
-            keywords.forEach(word => { if (text.includes(word)) score++; });
+            
+            // Keyword matching
+            keywords.forEach(word => {
+                if (textLower.includes(word)) {
+                    score += 1;
+                }
+            });
+            
+            // Smart Intent Boosting
+            const isProjectIntent = /dự\s*án|project|sản\s*phẩm|product|làm\s*được|thiết\s*kế|xây\s*dựng/i.test(searchLower);
+            const isSkillIntent = /kỹ\s*năng|skill|công\s*nghệ|tech|ngôn\s*ngữ|lập\s*trình|code/i.test(searchLower);
+            const isExpIntent = /kinh\s*nghiệm|làm\s*việc|work|experience|history|career|quá\s*trình|học\s*vấn|trường|đại\s*học|education/i.test(searchLower);
+            
+            if (isProjectIntent && (item.type === 'personal-project' || item.type === 'company-project')) {
+                score += 5;
+            }
+            if (isSkillIntent && item.type === 'skill') {
+                score += 5;
+            }
+            if (isExpIntent && item.type === 'experience') {
+                score += 5;
+            }
+
             return { ...item, score };
         });
 
-        return matches
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 3)
+        // Filter and sort
+        const hasAnyMatch = matches.some(item => item.score > 0);
+        let results = [];
+        if (hasAnyMatch) {
+            results = matches
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 12);
+        } else {
+            // Diverse default fallback: introduction, all personal projects, FPT company projects, and skills
+            results = kbCache[kbProvider].filter(item => 
+                item.source === 'about.js' || 
+                item.source === 'personalInfo.js' || 
+                item.source === 'skills.js' ||
+                item.type === 'personal-project' ||
+                (item.type === 'company-project' && (item.text.includes('Camera AI') || item.text.includes('Smart Connect')))
+            ).slice(0, 12);
+        }
+
+        return results
             .map(chunk => chunk.text)
             .join('\n\n');
     }
