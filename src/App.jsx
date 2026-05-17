@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { AnimatePresence, motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -301,15 +301,17 @@ function Layout({ children }) {
 
 function App() {
     return (
-        <BrowserRouter>
-            <LanguageProvider>
-                <DarkModeProvider>
-                    <Layout>
-                        <AnimatedRoutes />
-                    </Layout>
-                </DarkModeProvider>
-            </LanguageProvider>
-        </BrowserRouter>
+        <HelmetProvider>
+            <BrowserRouter>
+                <LanguageProvider>
+                    <DarkModeProvider>
+                        <Layout>
+                            <AnimatedRoutes />
+                        </Layout>
+                    </DarkModeProvider>
+                </LanguageProvider>
+            </BrowserRouter>
+        </HelmetProvider>
     );
 }
 
