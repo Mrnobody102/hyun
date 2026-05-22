@@ -243,15 +243,15 @@ function Layout({ children }) {
         // Reset scroll for new routes or restore for back navigation
         const savedPosition = scrollPositions.current[location.pathname];
         
-        // Use a small delay to ensure DOM is ready after transition
-        const timeoutId = window.setTimeout(() => {
+        // Use requestAnimationFrame to restore scroll after DOM is painted
+        const rafId = window.requestAnimationFrame(() => {
             window.scrollTo({ top: savedPosition ?? 0, behavior: 'auto' });
             // Move focus to main for accessibility
             document.querySelector('main')?.focus();
-        }, 50);
+        });
 
         previousPathRef.current = location.pathname;
-        return () => window.clearTimeout(timeoutId);
+        return () => window.cancelAnimationFrame(rafId);
     }, [location.pathname]);
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ChevronLeft, Share2, User, ArrowRight } from 'lucide-react';
+import { Calendar, Check, ChevronLeft, Copy, Share2, User, ArrowRight } from 'lucide-react';
 import { articles as articleMeta, ui } from '@/data';
 import { getArticleUrl } from '@/lib/articles';
 import { getArticleById as fetchArticleById } from '@/articles/index';
@@ -11,6 +11,35 @@ import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+
+const CopyCode = ({ children, className }) => {
+    const [copied, setCopied] = useState(false);
+    const code = String(children).replace(/\n$/, '');
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(code).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
+    };
+
+    return (
+        <div className="relative group my-8">
+            <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+            <pre className="relative bg-slate-900 text-slate-100 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed shadow-2xl font-mono">
+                <button
+                    type="button"
+                    onClick={handleCopy}
+                    aria-label={copied ? 'Copied!' : 'Copy code'}
+                    className="absolute top-3 right-3 p-1.5 rounded-md bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                >
+                    {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
+                </button>
+                <code className={className}>{code}</code>
+            </pre>
+        </div>
+    );
+};
 
 const ArticleDetail = ({ articleId, slug, onBack }) => {
     const { language } = useLanguage();
@@ -163,14 +192,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                                     },
                                     code: ({node, inline, className, children, ...props}) => {
                                         return !inline ? (
-                                            <div className="relative group my-8">
-                                                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
-                                                <pre className="relative bg-slate-900 text-slate-100 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed shadow-2xl font-mono">
-                                                    <code className={className} {...props}>
-                                                        {String(children).replace(/\n$/, '')}
-                                                    </code>
-                                                </pre>
-                                            </div>
+                                            <CopyCode className={className}>{children}</CopyCode>
                                         ) : (
                                             <code className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 rounded font-mono text-sm font-semibold" {...props}>
                                                 {children}
@@ -228,7 +250,7 @@ const ArticleDetail = ({ articleId, slug, onBack }) => {
                                         <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t(relatedArticle.date, language)}</p>
                                     </div>
                                     <div className="mt-6 flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
-                                        Read more <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                        {language === 'vi' ? 'Đọc thêm' : 'Read more'} <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                     </div>
                                 </div>
                             </motion.div>

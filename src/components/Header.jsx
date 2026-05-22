@@ -22,6 +22,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(-1);
     const [isPending, startTransition] = useTransition();
     const inputRef = useRef(null);
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -53,11 +54,16 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
     useEffect(() => {
         if (isSearchOpen) {
+            setActiveIndex(-1);
             window.setTimeout(() => inputRef.current?.focus(), 0);
         }
     }, [isSearchOpen]);
 
     const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    useEffect(() => {
+        setActiveIndex(-1);
+    }, [normalizedQuery]);
 
     useEffect(() => {
         if (!normalizedQuery) {
@@ -103,19 +109,30 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
     const closeSearch = useCallback(() => {
         setIsSearchOpen(false);
+        setActiveIndex(-1);
     }, []);
 
     const handleSearchSubmit = useCallback((event) => {
         event.preventDefault();
+        if (!normalizedQuery) return;
 
-        if (!normalizedQuery) {
-            return;
-        }
-
-        const firstSuggestion = filteredSuggestions[0];
-        firstSuggestion?.onClick?.();
+        const target = activeIndex >= 0 ? filteredSuggestions[activeIndex] : filteredSuggestions[0];
+        target?.onClick?.();
         closeSearch();
-    }, [normalizedQuery, filteredSuggestions, closeSearch]);
+    }, [normalizedQuery, activeIndex, filteredSuggestions, closeSearch]);
+
+    const handleInputKeyDown = useCallback((event) => {
+        if (!filteredSuggestions.length) return;
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            setActiveIndex(prev => Math.min(prev + 1, filteredSuggestions.length - 1));
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            setActiveIndex(prev => Math.max(prev - 1, -1));
+        } else if (event.key === 'Escape') {
+            closeSearch();
+        }
+    }, [filteredSuggestions, closeSearch]);
 
     const highlightText = useCallback((text) => {
         if (!normalizedQuery) return text;
@@ -270,9 +287,13 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                         exit="exit"
                         className="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm flex items-start justify-center pt-16 md:pt-24 px-4"
                         onClick={closeSearch}
+                        role="presentation"
                     >
                         <motion.div
                             variants={fadeInUp}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label={language === 'vi' ? 'Tìm kiếm' : 'Search'}
                             className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800"
                             onClick={(event) => event.stopPropagation()}
                         >
@@ -294,6 +315,10 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                         placeholder={t(searchCopy.placeholder, language)}
                                         value={searchQuery}
                                         onChange={(event) => setSearchQuery(event.target.value)}
+                                        onKeyDown={handleInputKeyDown}
+                                        aria-label={language === 'vi' ? 'Tìm kiếm' : 'Search'}
+                                        aria-autocomplete="list"
+                                        aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
                                         className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-amber-500 outline-none transition-all"
                                     />
                                     {isPending && (
@@ -301,20 +326,31 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     )}
                                 </div>
 
-                                <div className="mt-6 max-h-[60vh] overflow-y-auto">
+                                <div className="mt-6 max-h-[60vh] overflow-y-auto" aria-live="polite">
                                     {normalizedQuery && filteredSuggestions.length === 0 && !isPending && (
                                         <p className="text-center py-8 text-slate-500">{t(searchCopy.noResults, language)}</p>
                                     )}
                                     
-                                    <div className="grid gap-2">
+                                    <div className="grid gap-2 p-1" role="listbox">
                                         {filteredSuggestions.map((suggestion, index) => (
                                             <button
                                                 key={index}
-                                                onClick={() => {
+                                                id={`search-result-${index}`}
+                                                type="button"
+                                                role="option"
+                                                aria-selected={index === activeIndex}
+                                                onMouseDown={(e) => {
+                                                    // Use onMouseDown to prevent focus issues and click swallowing during re-renders
+                                                    e.preventDefault();
                                                     suggestion.onClick?.();
                                                     closeSearch();
                                                 }}
-                                                className="w-full text-left p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+                                                onMouseEnter={() => setActiveIndex(index)}
+                                                className={`w-full text-left p-3 rounded-xl transition-colors group ${
+                                                    index === activeIndex
+                                                        ? 'bg-amber-50 dark:bg-amber-500/10 ring-1 ring-amber-400'
+                                                        : 'hover:bg-slate-100 dark:hover:bg-slate-800'
+                                                }`}
                                             >
                                                 <div className="text-xs font-bold text-amber-600 mb-1 uppercase tracking-wider">{suggestion.section}</div>
                                                 <div className="text-sm text-slate-700 dark:text-slate-300 line-clamp-2">

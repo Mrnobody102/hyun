@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SafeImage = ({ 
@@ -14,17 +14,15 @@ const SafeImage = ({
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(false);
 
-    useEffect(() => {
-        if (!src) {
-            setError(true);
-            return;
-        }
-
-        const img = new Image();
-        img.src = src;
-        img.onload = () => setIsLoaded(true);
-        img.onerror = () => setError(true);
-    }, [src]);
+    if (!src) {
+        return (
+            <div className={`relative overflow-hidden ${className}`} style={style}>
+                <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                    <span className="text-xs">No Image</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`relative overflow-hidden ${className}`} style={style}>
@@ -48,7 +46,9 @@ const SafeImage = ({
                     alt={alt}
                     loading={loading}
                     decoding={decoding}
-                    fetchpriority={fetchPriority}
+                    fetchPriority={fetchPriority}
+                    onLoad={() => setIsLoaded(true)}
+                    onError={() => setError(true)}
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ 
                         opacity: isLoaded ? 1 : 0, 

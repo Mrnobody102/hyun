@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, Share2, User } from 'lucide-react';
 import { articles } from '@/data';
@@ -9,24 +9,9 @@ import ShareModal from './ShareModal';
 import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
-const Articles = ({ onArticleClick }) => {
-    const { language } = useLanguage();
-    const [shareModalOpen, setShareModalOpen] = useState(false);
-    const [selectedArticle, setSelectedArticle] = useState(null);
-
-    const handleOpenShareModal = useCallback((article) => {
-        setSelectedArticle({ ...article, link: getArticleUrl(article) });
-        setShareModalOpen(true);
-    }, []);
-
-    const handleCloseShareModal = useCallback(() => {
-        setShareModalOpen(false);
-        setSelectedArticle(null);
-    }, []);
-
-    const renderedArticles = useMemo(() => articles.map((article) => (
+const ArticleCard = React.memo(function ArticleCard({ article, language, onArticleClick, onOpenShareModal }) {
+    return (
         <motion.article
-            key={article.id}
             variants={fadeInUp}
             whileHover={{ y: -6 }}
             className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row h-full group"
@@ -69,7 +54,7 @@ const Articles = ({ onArticleClick }) => {
                         </div>
                     </div>
                     <motion.button
-                        onClick={() => handleOpenShareModal(article)}
+                        onClick={() => onOpenShareModal(article)}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
                         className="p-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-colors"
@@ -88,7 +73,23 @@ const Articles = ({ onArticleClick }) => {
                 </button>
             </div>
         </motion.article>
-    )), [language, onArticleClick, handleOpenShareModal]);
+    );
+});
+
+const Articles = ({ onArticleClick }) => {
+    const { language } = useLanguage();
+    const [shareModalOpen, setShareModalOpen] = useState(false);
+    const [selectedArticle, setSelectedArticle] = useState(null);
+
+    const handleOpenShareModal = useCallback((article) => {
+        setSelectedArticle({ ...article, link: getArticleUrl(article) });
+        setShareModalOpen(true);
+    }, []);
+
+    const handleCloseShareModal = useCallback(() => {
+        setShareModalOpen(false);
+        setSelectedArticle(null);
+    }, []);
 
     return (
         <section id="articles" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-white via-amber-50 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
@@ -120,7 +121,15 @@ const Articles = ({ onArticleClick }) => {
                     viewport={{ once: true, margin: "-50px" }}
                     className="grid gap-6"
                 >
-                    {renderedArticles}
+                    {articles.map((article) => (
+                        <ArticleCard
+                            key={article.id}
+                            article={article}
+                            language={language}
+                            onArticleClick={onArticleClick}
+                            onOpenShareModal={handleOpenShareModal}
+                        />
+                    ))}
                 </motion.div>
             </div>
 

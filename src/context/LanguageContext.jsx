@@ -12,6 +12,7 @@ export function LanguageProvider({ children }) {
     useEffect(() => {
         if (typeof window === 'undefined') return;
         localStorage.setItem('language', language);
+        document.documentElement.lang = language;
     }, [language]);
 
     const toggleLanguage = React.useCallback(() => {
