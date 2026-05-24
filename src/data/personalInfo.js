@@ -8,27 +8,27 @@ export const personalInfo = {
         vi: 'Hyun',
     },
     title: {
-        en: 'Software Engineer (AI Systems & Web Platforms)',
-        vi: 'Kỹ sư phần mềm (Hệ thống AI & Nền tảng Web)',
+        en: 'Software Engineer | AI Platform & Distributed Systems',
+        vi: 'Kỹ sư phần mềm | Nền tảng AI & Hệ thống phân tán',
     },
-    birthDate: {
-        en: 'February 10, 2001',
-        vi: '10/02/2001',
+    jobTitle: {
+        en: 'Software Engineer',
+        vi: 'Kỹ sư phần mềm',
     },
     location: {
         en: 'Hanoi',
         vi: 'Hà Nội',
     },
     experience: {
-        en: 'Nearly 3 Years',
-        vi: 'Gần 3 năm',
+        en: '4 Years',
+        vi: '4 năm',
     },
     passion: {
-        en: 'Computer Vision, Face Recognition, and High-Performance Streaming Systems',
-        vi: 'Computer Vision, Nhận diện khuôn mặt và Hệ thống streaming hiệu suất cao',
+        en: 'AI Engineering, Distributed Systems, and LLM Workflows',
+        vi: 'Kỹ thuật AI, Hệ thống phân tán, và Ứng dụng LLM',
     },
     shortDescription: {
-        en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.',
-        vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và nền tảng web doanh nghiệp.',
+        en: 'Software Engineer with 4 years of experience building reliable backend services, real-time AI systems, and enterprise web platforms.',
+        vi: 'Kỹ sư phần mềm với 4 năm kinh nghiệm xây dựng dịch vụ backend, hệ thống AI thời gian thực và nền tảng web doanh nghiệp.',
     },
 };

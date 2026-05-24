@@ -1,13 +1,13 @@
 import React, { useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Calendar, ChevronDown, Heart, MapPin } from 'lucide-react';
+import { Briefcase, Terminal, ChevronDown, Heart, MapPin } from 'lucide-react';
 import { aboutMe, personalInfo } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const stats = [
-    { icon: Calendar, label: { en: 'Born', vi: 'Ngày sinh' }, value: personalInfo.birthDate },
+    { icon: Terminal, label: { en: 'Job Title', vi: 'Vị trí' }, value: personalInfo.jobTitle },
     { icon: MapPin, label: { en: 'Location', vi: 'Địa điểm' }, value: personalInfo.location },
     { icon: Briefcase, label: { en: 'Experience', vi: 'Kinh nghiệm' }, value: personalInfo.experience },
     { icon: Heart, label: { en: 'Passion', vi: 'Sở thích' }, value: personalInfo.passion },

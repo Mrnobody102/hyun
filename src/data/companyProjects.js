@@ -1,62 +1,8 @@
 export const companyProjects = [
     {
-        name: 'Camera AI Surveillance System',
-        company: 'FPT Software',
-        duration: '06/2025 – 01/2026',
-        position: { en: 'C++/AI Backend Engineer', vi: 'Kỹ sư C++/AI Backend' },
-        description: {
-            en: 'Developed a real-time AI camera system for face recognition, face embedding search, metadata streaming on NVIDIA GPU-based Linux servers.',
-            vi: 'Phát triển hệ thống camera AI thời gian thực để nhận diện khuôn mặt, tìm kiếm embedding khuôn mặt, truyền phát metadata trên máy chủ Linux chạy NVIDIA GPU.',
-        },
-        responsibilities: {
-            en: [
-                'Built C++17 video processing modules using NVIDIA DeepStream and GStreamer to process continuous RTSP camera streams in real time.',
-                'Integrated Triton Inference Server and local fallback recognition paths for GPU-accelerated face recognition workflows.',
-                'Built event and metadata streaming pipelines using Kafka, Redis, and ZMQ for recognition results and runtime status updates.',
-                'Implemented lightweight video analytics logic based on detection/tracking inputs for server-side and edge-oriented deployment paths.',
-                'Used Qdrant to store face embeddings, perform similarity search, and support identity matching.',
-                'Debugged and deployed services in Docker-based Linux environments on NVIDIA GPU servers.',
-            ],
-            vi: [
-                'Xây dựng các module xử lý video C++17 sử dụng NVIDIA DeepStream và GStreamer để xử lý các luồng camera RTSP liên tục trong thời gian thực.',
-                'Tích hợp Triton Inference Server và các luồng nhận diện dự phòng cục bộ cho quy trình nhận diện khuôn mặt tăng tốc bằng GPU.',
-                'Xây dựng các đường ống truyền phát sự kiện và metadata sử dụng Kafka, Redis và ZMQ cho kết quả nhận diện và cập nhật trạng thái runtime.',
-                'Triển khai logic phân tích video nhẹ dựa trên đầu vào phát hiện/theo dõi cho các lộ trình triển khai server-side và edge-oriented.',
-                'Sử dụng Qdrant để lưu trữ embedding khuôn mặt, thực hiện tìm kiếm tương đồng và hỗ trợ so khớp danh tính.',
-                'Gỡ lỗi và triển khai các dịch vụ trong môi trường Linux dựa trên Docker trên máy chủ NVIDIA GPU.',
-            ],
-        },
-        technologies: ['C++17', 'NVIDIA DeepStream', 'Triton', 'GStreamer', 'Kafka', 'Redis', 'Qdrant', 'Docker', 'Golang', 'Linux'],
-    },
-    {
-        name: 'Smart Connect',
-        company: 'FPT Software – LG CNS Client Project',
-        duration: '05/2024 – 01/2025',
-        position: { en: 'Backend/Middleware Developer', vi: 'Lập trình viên Backend/Middleware' },
-        description: {
-            en: 'Built Java-based middleware services for integrating biometric authentication devices, including facial recognition, fingerprint recognition with enterprise platforms through real-time messaging.',
-            vi: 'Xây dựng các dịch vụ middleware dựa trên Java để tích hợp các thiết bị xác thực sinh trắc học, bao gồm nhận diện khuôn mặt, nhận diện vân tay với các nền tảng doanh nghiệp thông qua tin nhắn thời gian thực.',
-        },
-        responsibilities: {
-            en: [
-                'Designed middleware modules using Java OSGi to integrate biometric devices with enterprise systems.',
-                'Implemented ActiveMQ-based asynchronous messaging for device events, authentication results, and status updates.',
-                'Integrated native C++ libraries with Java services for biometric processing workflows.',
-                'Debugged message routing, device synchronization, and deployment in Docker/Linux environments.',
-            ],
-            vi: [
-                'Thiết kế các module middleware sử dụng Java OSGi để tích hợp các thiết bị sinh trắc học với hệ thống doanh nghiệp.',
-                'Triển khai tin nhắn bất đồng bộ dựa trên ActiveMQ cho các sự kiện thiết bị, kết quả xác thực và cập nhật trạng thái.',
-                'Tích hợp các thư viện C++ native với các dịch vụ Java cho quy trình xử lý sinh trắc học.',
-                'Gỡ lỗi định tuyến tin nhắn, đồng bộ hóa thiết bị và triển khai trong môi trường Docker/Linux.',
-            ],
-        },
-        technologies: ['Java', 'OSGi', 'ActiveMQ', 'C++ Native Library Integration', 'Docker', 'Linux'],
-    },
-    {
         name: 'Telecommunications Core Routing System',
         company: 'FPT Software – Viettel High Tech (Onsite)',
-        duration: '03/2026 – 05/2026',
+        duration: '02/2026 – 05/2026',
         position: { en: 'Backend Developer', vi: 'Lập trình viên Backend' },
         description: {
             en: 'Worked on a high-concurrency telecom core routing system for real-time communication flows and routing business logic.',
@@ -64,12 +10,12 @@ export const companyProjects = [
         },
         responsibilities: {
             en: [
-                'Implemented and optimized routing business logic using Erlang and Java Quarkus.',
+                'Implemented and optimized routing business logic for real-time communication flows using Erlang and Java Quarkus.',
                 'Managed distributed runtime data with Mnesia and persistent business data with MySQL.',
                 'Simulated Linux-based testing environments to validate routing scenarios and fault-tolerance behavior.',
             ],
             vi: [
-                'Triển khai và tối ưu hóa logic nghiệp vụ định tuyến bằng Erlang và Java Quarkus.',
+                'Triển khai và tối ưu hóa logic nghiệp vụ định tuyến cho các luồng giao tiếp thời gian thực bằng Erlang và Java Quarkus.',
                 'Quản lý dữ liệu runtime phân tán với Mnesia và dữ liệu nghiệp vụ bền vững với MySQL.',
                 'Mô phỏng môi trường thử nghiệm dựa trên Linux để xác thực các kịch bản định tuyến và hành vi chịu lỗi.',
             ],
@@ -77,29 +23,33 @@ export const companyProjects = [
         technologies: ['Erlang', 'Java', 'Quarkus', 'Mnesia', 'MySQL', 'Linux'],
     },
     {
-        name: 'SecuxperDP',
-        company: 'FPT Software – LG CNS Client Project',
-        duration: '01/2025 – 06/2025',
-        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
+        name: 'Camera AI Surveillance System',
+        company: 'FPT Software',
+        duration: '03/2025 – 02/2026',
+        position: { en: 'C++/AI Backend Engineer', vi: 'Kỹ sư C++/AI Backend' },
         description: {
-            en: 'Contributed to a full-stack enterprise platform, focusing on backend services, frontend interfaces, and authentication.',
-            vi: 'Đóng góp vào nền tảng doanh nghiệp full-stack, tập trung vào các dịch vụ backend, giao diện frontend và xác thực.',
+            en: 'Developed backend and real-time data components for an AI camera system involving face recognition, embedding-backed retrieval, and metadata streaming on NVIDIA GPU-based Linux servers.',
+            vi: 'Phát triển backend và các thành phần dữ liệu thời gian thực cho hệ thống camera AI bao gồm nhận diện khuôn mặt, tìm kiếm embedding và truyền phát metadata trên máy chủ Linux chạy NVIDIA GPU.',
         },
         responsibilities: {
             en: [
-                'Developed Java Spring Boot backend services, including user management and JWT authentication.',
-                'Built Next.js frontend features and integrated secured RESTful APIs with role-based access control.',
-                'Worked with PostgreSQL and MongoDB for relational business data and configuration storage.',
-                'Supported CI/CD workflows with Jenkins, Docker, and SonarLint.',
+                'Built real-time metadata ingestion and streaming pipelines using Kafka, Redis, and ZMQ to deliver recognition results and runtime status updates.',
+                'Architected and deployed Qdrant vector database to store face embeddings, optimizing similarity search workflows for low-latency retrieval.',
+                'Integrated Triton Inference Server and local fallback recognition paths for GPU-accelerated inference and retrieval flows.',
+                'Developed C++17 video processing modules using NVIDIA DeepStream for continuous RTSP streams.',
+                'Leveraged Claude with structured context to accelerate C++/Go development and debugging workflows.',
+                'Debugged and deployed Docker-based services in Linux environments, focusing on reliability, runtime stability, and low-latency data flow.',
             ],
             vi: [
-                'Phát triển các dịch vụ backend Java Spring Boot, bao gồm quản lý người dùng và xác thực JWT.',
-                'Xây dựng các tính năng frontend Next.js và tích hợp các API RESTful bảo mật với kiểm soát truy cập dựa trên vai trò.',
-                'Làm việc với PostgreSQL và MongoDB cho dữ liệu nghiệp vụ quan hệ và lưu trữ cấu hình.',
-                'Hỗ trợ quy trình CI/CD với Jenkins, Docker và SonarLint.',
+                'Xây dựng các pipeline thu thập và truyền phát metadata thời gian thực sử dụng Kafka, Redis và ZMQ để gửi kết quả nhận diện và cập nhật trạng thái runtime.',
+                'Thiết kế và triển khai cơ sở dữ liệu vector Qdrant để lưu trữ embedding khuôn mặt, tối ưu hóa quy trình tìm kiếm tương đồng cho truy xuất độ trễ thấp.',
+                'Tích hợp Triton Inference Server và các luồng nhận diện dự phòng cục bộ cho quy trình suy luận và truy xuất tăng tốc bằng GPU.',
+                'Phát triển các module xử lý video C++17 sử dụng NVIDIA DeepStream cho các luồng RTSP liên tục.',
+                'Tận dụng Claude với ngữ cảnh có cấu trúc để tăng tốc quy trình phát triển và gỡ lỗi C++/Go.',
+                'Gỡ lỗi và triển khai các dịch vụ dựa trên Docker trong môi trường Linux, tập trung vào độ tin cậy, tính ổn định runtime và luồng dữ liệu độ trễ thấp.',
             ],
         },
-        technologies: ['Java Spring Boot', 'Next.js', 'PostgreSQL', 'MongoDB', 'Jenkins', 'SonarLint', 'Docker', 'JWT'],
+        technologies: ['C++17', 'NVIDIA DeepStream', 'Triton', 'Kafka', 'Redis', 'Qdrant', 'Docker', 'Golang', 'ZMQ', 'Linux'],
     },
     {
         name: 'Honda Digital User Manual',
@@ -123,27 +73,6 @@ export const companyProjects = [
         technologies: ['ReactJS', 'NestJS', 'Tailwind CSS'],
     },
     {
-        name: 'IDP Plus',
-        company: 'FPT Software – LG CNS Client Project',
-        duration: '12/2023 – 05/2024',
-        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
-        description: {
-            en: 'Built internal enterprise features for employee and department data management.',
-            vi: 'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
-        },
-        responsibilities: {
-            en: [
-                'Built internal enterprise features for employee and department data management.',
-                'Developed Java Spring Boot APIs and AngularJS admin interfaces.',
-            ],
-            vi: [
-                'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
-                'Phát triển các API Java Spring Boot và giao diện quản trị AngularJS.',
-            ],
-        },
-        technologies: ['Java Spring Boot', 'AngularJS', 'PostgreSQL', 'MongoDB', 'Redis', 'Jenkins', 'SonarLint'],
-    },
-    {
         name: 'Project KPI Analytics Platform',
         company: 'FPT Software',
         duration: '01/2026 – 02/2026',
@@ -163,5 +92,76 @@ export const companyProjects = [
             ],
         },
         technologies: ['Power BI', 'DAX', 'Power Query', 'Data Lake Integration'],
+    },
+    {
+        name: 'Smart Connect',
+        company: 'FPT Software – LG CNS Client Project',
+        duration: '05/2024 – 03/2025',
+        position: { en: 'Backend/Middleware Developer', vi: 'Lập trình viên Backend/Middleware' },
+        description: {
+            en: 'Built Java-based middleware services for integrating biometric authentication devices with enterprise platforms through asynchronous messaging and device event processing.',
+            vi: 'Xây dựng các dịch vụ middleware dựa trên Java để tích hợp các thiết bị xác thực sinh trắc học với các nền tảng doanh nghiệp thông qua tin nhắn bất đồng bộ và xử lý sự kiện thiết bị.',
+        },
+        responsibilities: {
+            en: [
+                'Designed Java OSGi middleware modules to collect, normalize, and route biometric device events to enterprise systems.',
+                'Implemented ActiveMQ-based asynchronous messaging flows, successfully handling 10,000+ daily authentication events across 50+ distributed biometric devices.',
+                'Integrated native C++ libraries with Java services for biometric processing workflows.',
+                'Debugged message routing, device synchronization, and deployment in Docker/Linux environments.',
+            ],
+            vi: [
+                'Thiết kế các module middleware Java OSGi để thu thập, chuẩn hóa và định tuyến các sự kiện thiết bị sinh trắc học đến hệ thống doanh nghiệp.',
+                'Triển khai các luồng tin nhắn bất đồng bộ dựa trên ActiveMQ, xử lý thành công hơn 10.000 sự kiện xác thực mỗi ngày trên hơn 50 thiết bị sinh trắc học phân tán.',
+                'Tích hợp các thư viện C++ native với các dịch vụ Java cho quy trình xử lý sinh trắc học.',
+                'Gỡ lỗi định tuyến tin nhắn, đồng bộ hóa thiết bị và triển khai trong môi trường Docker/Linux.',
+            ],
+        },
+        technologies: ['Java', 'OSGi', 'ActiveMQ', 'C++ Native Library Integration', 'Docker', 'Linux'],
+    },
+    {
+        name: 'SecuxperDP',
+        company: 'FPT Software – LG CNS Client Project',
+        duration: '03/2023 – 05/2024',
+        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
+        description: {
+            en: 'Contributed to an enterprise web platform, focusing on backend services, secured APIs, authentication, database integration, and frontend-backend workflows.',
+            vi: 'Đóng góp vào một nền tảng web doanh nghiệp, tập trung vào các dịch vụ backend, API bảo mật, xác thực, tích hợp cơ sở dữ liệu và quy trình frontend-backend.',
+        },
+        responsibilities: {
+            en: [
+                'Developed Java Spring Boot services for user management, authentication, and secured RESTful APIs, supporting an enterprise platform with over 10,000 internal users.',
+                'Designed JWT-based authentication and authorization flows.',
+                'Worked with PostgreSQL and MongoDB for relational business data and configuration storage.',
+                'Built NextJS frontend features and integrated them with backend APIs.',
+            ],
+            vi: [
+                'Phát triển các dịch vụ Java Spring Boot để quản lý người dùng, xác thực và API RESTful bảo mật, hỗ trợ một nền tảng doanh nghiệp với hơn 10.000 người dùng nội bộ.',
+                'Thiết kế các luồng xác thực và phân quyền dựa trên JWT.',
+                'Làm việc với PostgreSQL và MongoDB cho dữ liệu nghiệp vụ quan hệ và lưu trữ cấu hình.',
+                'Xây dựng các tính năng frontend NextJS và tích hợp với backend API.',
+            ],
+        },
+        technologies: ['Java Spring Boot', 'NextJS', 'PostgreSQL', 'MongoDB', 'Jenkins', 'SonarLint', 'Docker', 'JWT'],
+    },
+    {
+        name: 'IDP Plus',
+        company: 'FPT Software – LG CNS Client Project',
+        duration: '06/2022 – 03/2023',
+        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
+        description: {
+            en: 'Built internal enterprise features for employee and department data management.',
+            vi: 'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
+        },
+        responsibilities: {
+            en: [
+                'Built internal enterprise features for employee and department data management.',
+                'Built Spring Boot APIs and ReactJS admin interfaces.',
+            ],
+            vi: [
+                'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
+                'Xây dựng API Spring Boot và giao diện quản trị ReactJS.',
+            ],
+        },
+        technologies: ['Java Spring Boot', 'ReactJS', 'PostgreSQL', 'MongoDB', 'Redis', 'Jenkins', 'SonarLint'],
     },
 ];
