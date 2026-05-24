@@ -2,31 +2,19 @@
   {
     "source": "about.js",
     "type": "info",
-    "text": "[GIỚI THIỆU] { paragraph1: { en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.', vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và các nền tảng web doanh nghiệp.', }, paragraph2: { en: 'Experienced with C++17, NVIDIA DeepStream, Triton, GStreamer, Kafka, Redis, Docker, Linux, Java backend, and React/Next.js.', vi: 'Có kinh nghiệm với C++17, NVIDIA DeepStream, Triton, GStreamer, Kafka, Redis, Docker, Linux, Java backend và React/Next.js.', }, paragraph3: { en: 'Interested in Computer Vision, face recognition, video analytics, and high-performance streaming systems.', vi: 'Quan tâm đến Computer Vision, nhận diện khuôn mặt, phân tích video và các hệ thống streaming hiệu suất cao.', }, };",
+    "text": "[GIỚI THIỆU] { paragraph1: { en: 'Backend Engineer with 4 years of experience building reliable backend services, AI real-time systems, and enterprise web platforms.', vi: 'Kỹ sư Backend với 4 năm kinh nghiệm xây dựng các dịch vụ backend đáng tin cậy, hệ thống AI thời gian thực và nền tảng web doanh nghiệp.', }, paragraph2: { en: 'Experienced in Java, C++17, Spring Boot, NextJS, Kafka, Redis, Qdrant, Docker, Linux, and asynchronous messaging. Strong background in database integration, vector/embedding-backed retrieval, and production deployment.', vi: 'Có kinh nghiệm với Java, C++17, Spring Boot, NextJS, Kafka, Redis, Qdrant, Docker, Linux và xử lý tin nhắn bất đồng bộ. Có nền tảng vững chắc về tích hợp cơ sở dữ liệu, truy xuất dựa trên vector/embedding và triển khai sản phẩm.', }, paragraph3: { en: 'Familiar with LLM-assisted engineering workflows. Passionate about building real-time metadata pipelines, similarity search workflows, and high-performance systems where latency and reliability matter.', vi: 'Sử dụng thành thạo quy trình phát triển có sự hỗ trợ của LLM. Đam mê xây dựng các pipeline metadata thời gian thực, luồng tìm kiếm tương đồng và các hệ thống hiệu năng cao yêu cầu độ trễ thấp và tính ổn định.', }, };",
     "embedding": null
   },
   {
     "source": "companyProjects.js",
     "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Camera AI Surveillance System. Chi tiết: { name: 'Camera AI Surveillance System', company: 'FPT Software', duration: '06/2025 – 01/2026', position: { en: 'C++/AI Backend Engineer', vi: 'Kỹ sư C++/AI Backend' }",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Telecommunications Core Routing System. Chi tiết: { name: 'Telecommunications Core Routing System', company: 'FPT Software – Viettel High Tech (Onsite)', duration: '02/2026 – 05/2026', position: { en: 'Backend Developer', vi: 'Lập trình viên Backend' }",
     "embedding": null
   },
   {
     "source": "companyProjects.js",
     "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Smart Connect. Chi tiết: { name: 'Smart Connect', company: 'FPT Software – LG CNS Client Project', duration: '05/2024 – 01/2025', position: { en: 'Backend/Middleware Developer', vi: 'Lập trình viên Backend/Middleware' }",
-    "embedding": null
-  },
-  {
-    "source": "companyProjects.js",
-    "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Telecommunications Core Routing System. Chi tiết: { name: 'Telecommunications Core Routing System', company: 'FPT Software – Viettel High Tech (Onsite)', duration: '03/2026 – 05/2026', position: { en: 'Backend Developer', vi: 'Lập trình viên Backend' }",
-    "embedding": null
-  },
-  {
-    "source": "companyProjects.js",
-    "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: SecuxperDP. Chi tiết: { name: 'SecuxperDP', company: 'FPT Software – LG CNS Client Project', duration: '01/2025 – 06/2025', position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' }",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Camera AI Surveillance System. Chi tiết: { name: 'Camera AI Surveillance System', company: 'FPT Software', duration: '03/2025 – 02/2026', position: { en: 'C++/AI Backend Engineer', vi: 'Kỹ sư C++/AI Backend' }",
     "embedding": null
   },
   {
@@ -38,13 +26,25 @@
   {
     "source": "companyProjects.js",
     "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: IDP Plus. Chi tiết: { name: 'IDP Plus', company: 'FPT Software – LG CNS Client Project', duration: '12/2023 – 05/2024', position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' }",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Project KPI Analytics Platform. Chi tiết: { name: 'Project KPI Analytics Platform', company: 'FPT Software', duration: '01/2026 – 02/2026', position: { en: 'Data Analyst / BI Developer', vi: 'Nhà phân tích dữ liệu / Lập trình viên BI' }",
     "embedding": null
   },
   {
     "source": "companyProjects.js",
     "type": "company-project",
-    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Project KPI Analytics Platform. Chi tiết: { name: 'Project KPI Analytics Platform', company: 'FPT Software', duration: '01/2026 – 02/2026', position: { en: 'Data Analyst / BI Developer', vi: 'Nhà phân tích dữ liệu / Lập trình viên BI' }",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: Smart Connect. Chi tiết: { name: 'Smart Connect', company: 'FPT Software – LG CNS Client Project', duration: '05/2024 – 03/2025', position: { en: 'Backend/Middleware Developer', vi: 'Lập trình viên Backend/Middleware' }",
+    "embedding": null
+  },
+  {
+    "source": "companyProjects.js",
+    "type": "company-project",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: SecuxperDP. Chi tiết: { name: 'SecuxperDP', company: 'FPT Software – LG CNS Client Project', duration: '03/2023 – 05/2024', position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' }",
+    "embedding": null
+  },
+  {
+    "source": "companyProjects.js",
+    "type": "company-project",
+    "text": "[DỰ ÁN CÔNG TY] Tên dự án: IDP Plus. Chi tiết: { name: 'IDP Plus', company: 'FPT Software – LG CNS Client Project', duration: '06/2022 – 03/2023', position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' }",
     "embedding": null
   },
   {
@@ -63,18 +63,6 @@
     "source": "educationExperience.js",
     "type": "experience",
     "text": "[KINH NGHIỆM] { en: 'Foundational Software Engineering education with high academic performance.', vi: 'Nền tảng giáo dục Kỹ sư phần mềm với kết quả học tập xuất sắc.', }",
-    "embedding": null
-  },
-  {
-    "source": "educationExperience.js",
-    "type": "experience",
-    "text": "[KINH NGHIỆM] { type: 'education', title: 'FPT Software Academy', subtitle: { en: 'Korean Bridge Software Engineer | GPA: 9.0/10', vi: 'Kỹ sư phần mềm cầu nối Hàn Quốc | GPA: 9.0/10', }",
-    "embedding": null
-  },
-  {
-    "source": "educationExperience.js",
-    "type": "experience",
-    "text": "[KINH NGHIỆM] { en: 'Intensive program focusing on Korean language and software engineering bridge roles.', vi: 'Chương trình chuyên sâu tập trung vào tiếng Hàn và vai trò kỹ sư cầu nối phần mềm.', }",
     "embedding": null
   },
   {
@@ -104,7 +92,7 @@
   {
     "source": "personalInfo.js",
     "type": "info",
-    "text": "[GIỚI THIỆU] { fullName: { en: 'Pham Quang Huy', vi: 'Phạm Quang Huy', }, nickname: { en: 'Hyun', vi: 'Hyun', }, title: { en: 'Software Engineer (AI Systems & Web Platforms)', vi: 'Kỹ sư phần mềm (Hệ thống AI & Nền tảng Web)', }, birthDate: { en: 'February 10, 2001', vi: '10/02/2001', }, location: { en: 'Hanoi', vi: 'Hà Nội', }, experience: { en: 'Nearly 3 Years', vi: 'Gần 3 năm', }, passion: { en: 'Computer Vision, Face Recognition, and High-Performance Streaming Systems', vi: 'Computer Vision, Nhận diện khuôn mặt và Hệ thống streaming hiệu suất cao', }, shortDescription: { en: 'Software Engineer with nearly 3 years of experience building real-time AI camera systems, backend services, and enterprise web platforms.', vi: 'Kỹ sư phần mềm với gần 3 năm kinh nghiệm xây dựng hệ thống camera AI thời gian thực, dịch vụ backend và nền tảng web doanh nghiệp.', }, };",
+    "text": "[GIỚI THIỆU] { fullName: { en: 'Pham Quang Huy', vi: 'Phạm Quang Huy', }, nickname: { en: 'Hyun', vi: 'Hyun', }, title: { en: 'Software Engineer | AI Platform & Distributed Systems', vi: 'Kỹ sư phần mềm | Nền tảng AI & Hệ thống phân tán', }, jobTitle: { en: 'Software Engineer', vi: 'Kỹ sư phần mềm', }, location: { en: 'Hanoi', vi: 'Hà Nội', }, experience: { en: '4 Years', vi: '4 năm', }, passion: { en: 'AI Engineering, Distributed Systems, and LLM Workflows', vi: 'Kỹ thuật AI, Hệ thống phân tán, và Ứng dụng LLM', }, shortDescription: { en: 'Software Engineer with 4 years of experience building reliable backend services, real-time AI systems, and enterprise web platforms.', vi: 'Kỹ sư phần mềm với 4 năm kinh nghiệm xây dựng dịch vụ backend, hệ thống AI thời gian thực và nền tảng web doanh nghiệp.', }, };",
     "embedding": null
   },
   {
@@ -140,7 +128,7 @@
   {
     "source": "skills.js",
     "type": "skill",
-    "text": "[KỸ NĂNG] { programmingLanguages: { title: { en: 'Programming Languages', vi: 'Ngôn ngữ lập trình' }, skills: ['Java', 'C++17', 'TypeScript/JavaScript', 'Erlang', 'Basic Python'], }, computerVisionStreaming: { title: { en: 'Computer Vision / Streaming', vi: 'Computer Vision / Streaming' }, skills: ['NVIDIA DeepStream', 'Triton Inference Server', 'GStreamer', 'RTSP'], }, backendMiddleware: { title: { en: 'Backend & Middleware', vi: 'Backend & Middleware' }, skills: ['Spring Boot', 'NestJS', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ'], }, databasesVectorSearch: { title: { en: 'Databases & Vector Search', vi: 'Cơ sở dữ liệu & Vector Search' }, skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'], }, frontendUi: { title: { en: 'Frontend Frameworks & UI', vi: 'Frontend Frameworks & UI' }, skills: ['ReactJS', 'Next.js', 'AngularJS', 'Tailwind CSS', 'Bootstrap', 'MUI'], }, devOpsSystems: { title: { en: 'DevOps & Systems', vi: 'DevOps & Hệ thống' }, skills: ['Linux', 'Docker', 'Jenkins', 'GitHub Actions', 'Basic AWS'], }, tools: { title: { en: 'Tools', vi: 'Công cụ' }, skills: ['Git', 'SVN', 'SonarLint', 'Postman', 'DBeaver', 'Power BI', 'SoapUI'], }, languages: { title: { en: 'Languages', vi: 'Ngôn ngữ' }, skills: ['English (Intermediate)', 'Korean (TOPIK 4)'], } };",
+    "text": "[KỸ NĂNG] { programmingLanguages: { title: { en: 'Programming', vi: 'Ngôn ngữ lập trình' }, skills: ['Java', 'C++17', 'TypeScript/JavaScript', 'Erlang', 'Basic Python'], }, backendMiddleware: { title: { en: 'Backend & Messaging', vi: 'Backend & Hệ thống nhắn tin' }, skills: ['Spring Boot', 'NestJS', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ', 'ZMQ'], }, databasesVectorSearch: { title: { en: 'Data & Retrieval', vi: 'Cơ sở dữ liệu & Truy xuất' }, skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'], }, aiWorkflows: { title: { en: 'AI Workflows & LLM', vi: 'Công cụ AI & LLM' }, skills: ['Claude', 'Antigravity', 'Cursor', 'Codex', 'Prompt Engineering', 'Multi-agent Systems'], }, computerVisionStreaming: { title: { en: 'Computer Vision & Streaming', vi: 'Computer Vision & Streaming' }, skills: ['NVIDIA DeepStream', 'Triton', 'GStreamer', 'RTSP'], }, devOpsSystems: { title: { en: 'DevOps & Operations', vi: 'DevOps & Vận hành' }, skills: ['Linux', 'Docker', 'Jenkins', 'GitHub Actions', 'Basic AWS', 'Git'], }, frontendUi: { title: { en: 'Frontend', vi: 'Frontend' }, skills: ['ReactJS', 'NextJS', 'AngularJS', 'Tailwind CSS'], }, languages: { title: { en: 'Languages', vi: 'Ngoại ngữ' }, skills: ['English (Intermediate)', 'Korean (TOPIK 4)'], } };",
     "embedding": null
   }
 ]

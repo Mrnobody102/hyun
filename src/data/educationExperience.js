@@ -14,27 +14,13 @@ export const educationExperience = [
         },
     },
     {
-        type: 'education',
-        title: 'FPT Software Academy',
-        subtitle: {
-            en: 'Korean Bridge Software Engineer | GPA: 9.0/10',
-            vi: 'Kỹ sư phần mềm cầu nối Hàn Quốc | GPA: 9.0/10',
-        },
-        period: '09/2022 – 12/2023',
-        color: 'from-slate-600 to-amber-500',
-        description: {
-            en: 'Intensive program focusing on Korean language and software engineering bridge roles.',
-            vi: 'Chương trình chuyên sâu tập trung vào tiếng Hàn và vai trò kỹ sư cầu nối phần mềm.',
-        },
-    },
-    {
         type: 'work',
         title: 'FPT Software',
         subtitle: {
             en: 'Software Engineer (AI & Fullstack)',
             vi: 'Kỹ sư phần mềm (AI & Fullstack)',
         },
-        period: '12/2023 – Present',
+        period: '06/2022 – 05/2026',
         color: 'from-yellow-500 to-amber-600',
         description: {
             en: 'Leading AI camera surveillance development and fullstack enterprise platforms for major global clients.',
@@ -48,7 +34,7 @@ export const educationExperience = [
             en: 'Telecom Backend Developer',
             vi: 'Lập trình viên Backend Viễn thông',
         },
-        period: '03/2026 – 05/2026',
+        period: '02/2026 – 05/2026',
         color: 'from-slate-700 to-slate-900',
         description: {
             en: 'Optimizing high-concurrency routing systems using Erlang and Java Quarkus.',

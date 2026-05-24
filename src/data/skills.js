@@ -1,34 +1,34 @@
 export const skills = {
     programmingLanguages: {
-        title: { en: 'Programming Languages', vi: 'Ngôn ngữ lập trình' },
+        title: { en: 'Programming', vi: 'Ngôn ngữ lập trình' },
         skills: ['Java', 'C++17', 'TypeScript/JavaScript', 'Erlang', 'Basic Python'],
     },
-    computerVisionStreaming: {
-        title: { en: 'Computer Vision / Streaming', vi: 'Computer Vision / Streaming' },
-        skills: ['NVIDIA DeepStream', 'Triton Inference Server', 'GStreamer', 'RTSP'],
-    },
     backendMiddleware: {
-        title: { en: 'Backend & Middleware', vi: 'Backend & Middleware' },
-        skills: ['Spring Boot', 'NestJS', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ'],
+        title: { en: 'Backend & Messaging', vi: 'Backend & Hệ thống nhắn tin' },
+        skills: ['Spring Boot', 'NestJS', 'Quarkus', 'OSGi', 'Kafka', 'ActiveMQ', 'ZMQ'],
     },
     databasesVectorSearch: {
-        title: { en: 'Databases & Vector Search', vi: 'Cơ sở dữ liệu & Vector Search' },
+        title: { en: 'Data & Retrieval', vi: 'Cơ sở dữ liệu & Truy xuất' },
         skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Qdrant', 'Redis', 'Mnesia'],
     },
-    frontendUi: {
-        title: { en: 'Frontend Frameworks & UI', vi: 'Frontend Frameworks & UI' },
-        skills: ['ReactJS', 'Next.js', 'AngularJS', 'Tailwind CSS', 'Bootstrap', 'MUI'],
+    aiWorkflows: {
+        title: { en: 'AI Workflows & LLM', vi: 'Công cụ AI & LLM' },
+        skills: ['Claude', 'Antigravity', 'Cursor', 'Codex', 'Prompt Engineering', 'Multi-agent Systems'],
+    },
+    computerVisionStreaming: {
+        title: { en: 'Computer Vision & Streaming', vi: 'Computer Vision & Streaming' },
+        skills: ['NVIDIA DeepStream', 'Triton', 'GStreamer', 'RTSP'],
     },
     devOpsSystems: {
-        title: { en: 'DevOps & Systems', vi: 'DevOps & Hệ thống' },
-        skills: ['Linux', 'Docker', 'Jenkins', 'GitHub Actions', 'Basic AWS'],
+        title: { en: 'DevOps & Operations', vi: 'DevOps & Vận hành' },
+        skills: ['Linux', 'Docker', 'Jenkins', 'GitHub Actions', 'Basic AWS', 'Git'],
     },
-    tools: {
-        title: { en: 'Tools', vi: 'Công cụ' },
-        skills: ['Git', 'SVN', 'SonarLint', 'Postman', 'DBeaver', 'Power BI', 'SoapUI'],
+    frontendUi: {
+        title: { en: 'Frontend', vi: 'Frontend' },
+        skills: ['ReactJS', 'NextJS', 'AngularJS', 'Tailwind CSS'],
     },
     languages: {
-        title: { en: 'Languages', vi: 'Ngôn ngữ' },
+        title: { en: 'Languages', vi: 'Ngoại ngữ' },
         skills: ['English (Intermediate)', 'Korean (TOPIK 4)'],
     }
 };
