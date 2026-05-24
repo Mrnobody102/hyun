@@ -9,8 +9,8 @@ export const educationExperience = [
         period: '09/2019 – 12/2023',
         color: 'from-amber-500 to-yellow-500',
         description: {
-            en: 'Foundational Software Engineering education with high academic performance.',
-            vi: 'Nền tảng giáo dục Kỹ sư phần mềm với kết quả học tập xuất sắc.',
+            en: 'Built a solid foundation in software engineering, algorithms, and system design.',
+            vi: 'Xây dựng nền tảng vững chắc về kỹ thuật phần mềm, thuật toán và thiết kế hệ thống.',
         },
     },
     {
@@ -23,8 +23,8 @@ export const educationExperience = [
         period: '06/2022 – 05/2026',
         color: 'from-yellow-500 to-amber-600',
         description: {
-            en: 'Leading AI camera surveillance development and fullstack enterprise platforms for major global clients.',
-            vi: 'Dẫn dắt phát triển giám sát camera AI và các nền tảng doanh nghiệp fullstack cho nhiều khách hàng lớn toàn cầu.',
+            en: 'Developed backend services and real-time data pipelines for AI camera systems and enterprise platforms.',
+            vi: 'Phát triển các dịch vụ backend và pipeline dữ liệu thời gian thực cho hệ thống camera AI và web doanh nghiệp.',
         },
     },
     {
@@ -37,8 +37,8 @@ export const educationExperience = [
         period: '02/2026 – 05/2026',
         color: 'from-slate-700 to-slate-900',
         description: {
-            en: 'Optimizing high-concurrency routing systems using Erlang and Java Quarkus.',
-            vi: 'Tối ưu hóa hệ thống định tuyến chịu tải cao bằng Erlang và Java Quarkus.',
+            en: 'Worked on routing logic and real-time data flows for telecommunication systems.',
+            vi: 'Tham gia phát triển logic định tuyến và luồng dữ liệu thời gian thực cho hệ thống viễn thông.',
         },
     },
 ];
