@@ -2,7 +2,7 @@ export const navItems = [
     { name: { en: 'Home', vi: 'Trang chủ' }, key: 'home', icon: 'Home' },
     { name: { en: 'Skills & Certifications', vi: 'Kỹ năng & Chứng chỉ' }, key: 'skills', icon: 'Zap' },
     { name: { en: 'Projects', vi: 'Dự án' }, key: 'projects', icon: 'Briefcase' },
-    { name: { en: 'My Little Startups', vi: 'Dự án cá nhân' }, key: 'personal-projects', icon: null, emoji: '🐧' },
+    { name: { en: 'My Little Startups', vi: 'Side Projects' }, key: 'personal-projects', icon: null, emoji: '🐧' },
     { name: { en: 'Articles', vi: 'Bài viết' }, key: 'articles', icon: 'BookOpen' },
     { name: { en: 'Contact', vi: 'Liên hệ' }, key: 'contact', icon: 'Mail' },
 ];

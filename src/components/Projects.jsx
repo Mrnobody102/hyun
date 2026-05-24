@@ -61,7 +61,7 @@ const Projects = ({ compact = false }) => {
                     <div className="flex items-center justify-center gap-4 mb-4">
                         <h2 className="text-4xl md:text-5xl font-bold">
                             <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                                {language === 'vi' ? 'Dự án cá nhân nổi bật' : 'Featured Personal Projects'}
+                                {language === 'vi' ? 'Side Projects nổi bật' : 'Featured Personal Projects'}
                             </span>
                         </h2>
                     </div>

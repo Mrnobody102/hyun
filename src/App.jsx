@@ -174,7 +174,7 @@ const ProjectsPage = memo(function ProjectsPage() {
 
     const titles = {
         en: 'Personal Projects | Hyun',
-        vi: 'Dự án cá nhân | Hyun',
+        vi: 'Side Projects | Hyun',
     };
 
     return (
