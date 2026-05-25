@@ -15,6 +15,8 @@ import { getArticleById, getArticleBySlug, getArticlePath } from '@/lib/articles
 import { getRouteByTab, routesByTab } from '@/lib/routes';
 import { pageTransition } from '@/lib/animations';
 
+import ErrorBoundary from '@/components/ErrorBoundary';
+import CommandPalette from '@/components/CommandPalette';
 import { ArticleSkeleton, ProjectSkeleton, ArticleDetailSkeleton } from '@/components/Skeletons';
 
 const Certifications = lazy(() => import('@/components/Certifications'));
@@ -215,18 +217,20 @@ function AnimatedRoutes() {
     const location = useLocation();
     
     return (
-        <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-                <Route path={routesByTab.home} element={<HomePage />} />
-                <Route path={routesByTab.skills} element={<SkillsPage />} />
-                <Route path={routesByTab.projects} element={<CompanyProjectsPage />} />
-                <Route path={routesByTab['personal-projects']} element={<ProjectsPage />} />
-                <Route path={routesByTab.articles} element={<ArticlesPage />} />
-                <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-                <Route path={routesByTab.contact} element={<ContactPage />} />
-                <Route path="*" element={<Navigate to={routesByTab.home} replace />} />
-            </Routes>
-        </AnimatePresence>
+        <ErrorBoundary>
+            <AnimatePresence mode="popLayout">
+                <Routes location={location} key={location.pathname}>
+                    <Route path={routesByTab.home} element={<HomePage />} />
+                    <Route path={routesByTab.skills} element={<SkillsPage />} />
+                    <Route path={routesByTab.projects} element={<CompanyProjectsPage />} />
+                    <Route path={routesByTab['personal-projects']} element={<ProjectsPage />} />
+                    <Route path={routesByTab.articles} element={<ArticlesPage />} />
+                    <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+                    <Route path={routesByTab.contact} element={<ContactPage />} />
+                    <Route path="*" element={<Navigate to={routesByTab.home} replace />} />
+                </Routes>
+            </AnimatePresence>
+        </ErrorBoundary>
     );
 }
 
@@ -285,6 +289,7 @@ function Layout({ children }) {
                 />
             </Helmet>
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+                <CommandPalette />
                 <Header
                     activeTab={activeTab}
                     onNavigate={handleHeaderNavigate}
