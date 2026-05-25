@@ -16,25 +16,45 @@ export const personalProjects = [
         imageAlt: 'LMS Platform Multi-tenant SaaS Dashboard',
         tags: ['Next.js', 'NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker', 'Monorepo', 'SaaS'],
         githubLink: 'https://github.com/Mrnobody102/lms',
-        liveLink: '',
+        liveLink: 'https://lms-web-student.vercel.app/',
+        demoLinks: [
+            { name: { en: 'Demo: Student Portal', vi: 'Demo: Cổng Học Viên' }, url: 'https://lms-web-student.vercel.app/' },
+            { name: { en: 'Demo: Admin Portal', vi: 'Demo: Quản Trị Trung Tâm' }, url: 'https://lms-web-admin-one.vercel.app/' },
+            { name: { en: 'Demo: Super Portal', vi: 'Demo: Quản Trị Hệ Thống' }, url: 'https://lms-super-portal.vercel.app/' }
+        ],
         details: {
             features: [
-                { en: 'Multi-tenant Architecture', vi: 'Kiến trúc đa khách thuê' },
-                { en: 'Custom Domain & White-labeling', vi: 'Tên miền tùy chỉnh & White-label' },
-                { en: 'Course Authoring Tools', vi: 'Công cụ soạn thảo khóa học' },
-                { en: 'Student Progress Tracking', vi: 'Theo dõi tiến độ học sinh' }
+                { en: 'Monorepo Multi-tenant Architecture', vi: 'Kiến trúc Monorepo Multi-tenant' },
+                { en: 'Hybrid AI-Enhanced Learning', vi: 'Học tập lai tích hợp AI' },
+                { en: 'AI Roleplay & Simulations', vi: 'Nhập vai & Mô phỏng thực tế với AI' },
+                { en: 'Adaptive Skill Tree & Micro-cards', vi: 'Lộ trình học tập thích ứng' }
             ],
             projectDetail: [
                 { 
                     type: 'text', 
-                    en: 'This system is built to handle multiple independent schools on a single infrastructure. Each school can customize its own brand and domain.',
-                    vi: 'Hệ thống được xây dựng để xử lý nhiều trường học độc lập trên một hạ tầng duy nhất. Mỗi trường có thể tùy chỉnh thương hiệu và tên miền riêng.'
+                    en: 'LMS Platform is an enterprise-grade learning management system designed with a Monorepo Multi-tenant architecture. It operates via three distinct portals (Student, Admin, Super Portal), utilizing a Stateless Backend and Cookie-First Browser Auth to ensure high security and horizontal scalability.',
+                    vi: 'LMS Platform là một hệ thống quản lý học tập quy mô lớn được thiết kế theo kiến trúc Monorepo Multi-tenant. Hệ thống bao gồm 3 cổng thông tin độc lập (Student, Admin, Super Portal), sử dụng kiến trúc Stateless Backend và bảo mật Cookie-First Browser Auth giúp mở rộng dễ dàng và an toàn.'
+                },
+                { 
+                    type: 'text', 
+                    en: 'The platform revolutionizes traditional linear learning by introducing a Hybrid AI-Enhanced Learning model. It leverages an "Adaptive Skill Tree" combined with Micro-cards to deliver highly personalized learning paths.',
+                    vi: 'Dự án mang tính đột phá khi chuyển từ mô hình học tập tuyến tính truyền thống sang "Adaptive Skill Tree" (Lộ trình học tập thích ứng) kết hợp các thẻ Micro-cards để mang lại trải nghiệm cá nhân hóa sâu sắc.'
                 },
                 { type: 'image', url: lmsImage },
                 { 
                     type: 'text', 
-                    en: 'We implemented a robust multi-tenant routing logic using Next.js middleware and PostgreSQL row-level security.',
-                    vi: 'Chúng tôi đã triển khai logic định tuyến đa khách thuê mạnh mẽ bằng cách sử dụng middleware của Next.js và bảo mật cấp hàng (RLS) của PostgreSQL.'
+                    en: '✨ AI Product Features: Includes a Contextual AI Tutor for instant grammar/vocabulary explanations, Experiential Simulations for real-time text/audio roleplay, and Multi-modal AI assignments (powered by Gemini) for automated pronunciation and feedback grading.',
+                    vi: '✨ Tích hợp AI vào sản phẩm: Nổi bật với Contextual AI Tutor giúp giải thích ngữ pháp/từ vựng theo ngữ cảnh; tính năng Mô phỏng nhập vai (Roleplay) hỗ trợ âm thanh/văn bản; và Đánh giá đa phương thức bằng AI (Gemini) giúp chấm điểm tự động.'
+                },
+                { 
+                    type: 'text', 
+                    en: '🚀 Tech Stack: Turborepo, pnpm, TypeScript, NestJS, PostgreSQL, Prisma, Next.js (App Router), Tailwind CSS, Zustand, BullMQ.',
+                    vi: '🚀 Công nghệ sử dụng: Turborepo, pnpm, TypeScript, NestJS, PostgreSQL, Prisma, Next.js (App Router), Tailwind CSS, Zustand, BullMQ.'
+                },
+                { 
+                    type: 'text', 
+                    en: '🤖 AI-Driven Development: Built end-to-end using AI Agents. Antigravity handled Architecture Planning & Documentation, Claude took charge of Core Coding Implementation, and Codex performed Code Review & Testing.',
+                    vi: '🤖 Phát triển với AI (AI-Driven): Dự án được xây dựng dưới sự hỗ trợ của AI. Antigravity đảm nhiệm Lên kiến trúc & Tài liệu, Claude thực hiện Triển khai mã nguồn chính, và Codex phụ trách Review code & Kiểm thử.'
                 }
             ],
             videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
@@ -50,7 +70,7 @@ export const personalProjects = [
         },
         imageUrl: itInterviewImage,
         imageAlt: 'IT Interview Preparation App Interface',
-        tags: ['React 18', 'TypeScript', 'Tailwind CSS', 'Markdown', 'Mermaid.js', 'Vite'],
+        tags: ['React 18', 'TypeScript', 'Tailwind CSS', 'ExpressJS', 'MongoDB', 'Markdown', 'Mermaid.js'],
         githubLink: 'https://github.com/Mrnobody102/it-interview-prep',
         liveLink: 'https://it-interview-prep.vercel.app/',
         details: {
@@ -63,18 +83,64 @@ export const personalProjects = [
             projectDetail: [
                 { 
                     type: 'text', 
-                    en: 'The app aims to bridge the knowledge gap for Vietnamese students in technical interviews at top tier companies.',
-                    vi: 'Ứng dụng nhằm mục đích thu hẹp khoảng cách kiến thức cho sinh viên Việt Nam trong các buổi phỏng vấn kỹ thuật tại các công ty hàng đầu.'
+                    en: 'IT Interview Preparation App is a comprehensive, bilingual platform designed to bridge the knowledge gap for software engineers preparing for technical interviews. It covers a wide range of topics including Core Concepts, Data Structures & Algorithms, System Design, and DevOps.',
+                    vi: 'IT Interview Preparation App là nền tảng song ngữ toàn diện, thiết kế nhằm thu hẹp khoảng cách kiến thức cho các kỹ sư phần mềm khi chuẩn bị phỏng vấn kỹ thuật. Hệ thống bao phủ nhiều chủ đề từ Kiến thức cốt lõi, Cấu trúc dữ liệu & Giải thuật, Thiết kế hệ thống đến DevOps.'
+                },
+                { 
+                    type: 'text', 
+                    en: '🚀 Tech Stack: React 18, TypeScript, Tailwind CSS, ExpressJS, MongoDB, Vite, Markdown, Mermaid.js.',
+                    vi: '🚀 Công nghệ: React 18, TypeScript, Tailwind CSS, ExpressJS, MongoDB, Vite, Markdown, Mermaid.js.'
                 },
                 { type: 'image', url: itInterviewImage },
                 { 
                     type: 'text', 
-                    en: 'It features a custom-built Markdown renderer that supports Mermaid diagrams and syntax highlighting for better technical visualization.',
-                    vi: 'Nó tích hợp một trình dựng Markdown tùy chỉnh hỗ trợ biểu đồ Mermaid và highlight cú pháp để hình ảnh hóa kỹ thuật tốt hơn.'
+                    en: 'The platform integrates a custom Markdown renderer with syntax highlighting and interactive Mermaid diagrams, allowing users to visualize complex system architectures effortlessly. The backend is powered by ExpressJS and MongoDB to manage user progress, content synchronization, and interactive quiz sessions.',
+                    vi: 'Nền tảng tích hợp trình render Markdown tùy chỉnh, hỗ trợ highlight cú pháp và biểu đồ Mermaid tương tác, giúp dễ dàng hình dung các kiến trúc hệ thống phức tạp. Backend sử dụng ExpressJS và MongoDB để quản lý tiến độ học tập, đồng bộ nội dung và các phiên hỏi đáp trắc nghiệm.'
                 }
             ],
             videoUrl: '',
             gallery: [itInterviewImage, lmsImage]
+        }
+    },
+    {
+        id: 'godaz-shop',
+        title: 'goDaz shop',
+        description: {
+            en: 'A high-performance e-commerce platform built with microservices, secure transactions, and real-time search capabilities.',
+            vi: 'Nền tảng thương mại điện tử hiệu năng cao với kiến trúc microservices, giao dịch an toàn và tìm kiếm thời gian thực.',
+        },
+        imageUrl: godazImage,
+        imageAlt: 'Modern e-commerce dashboard interface',
+        tags: ['Next.js', 'Spring Boot', 'TypeScript', 'Tailwind CSS', 'Zustand', 'PostgreSQL', 'Redis', 'Kafka', 'Elasticsearch'],
+        githubLink: 'https://github.com/Mrnobody102/godaz-client-nextjs',
+        liveLink: 'https://godaz.shop/',
+        details: {
+            features: [
+                { en: 'Seamless i18n support', vi: 'Đa ngôn ngữ (i18n) mượt mà' },
+                { en: 'Global Cart & Wishlist', vi: 'Giỏ hàng & Yêu thích toàn cục' },
+                { en: 'Dynamic Product Filtering', vi: 'Lọc & Tìm kiếm động' },
+                { en: 'Modern UI/UX with Toast', vi: 'Giao diện tương tác hiện đại' }
+            ],
+            projectDetail: [
+                { 
+                    type: 'text', 
+                    en: 'Godaz is a modern e-commerce web application dedicated to showcasing and distributing traditional Vietnamese wooden handicrafts. It provides a seamless, intuitive, and fully responsive shopping experience.',
+                    vi: 'Godaz là ứng dụng thương mại điện tử hiện đại, chuyên giới thiệu và phân phối các sản phẩm thủ công mỹ nghệ bằng gỗ truyền thống của Việt Nam. Hệ thống mang lại trải nghiệm mua sắm mượt mà, trực quan và tối ưu trên mọi thiết bị.'
+                },
+                { 
+                    type: 'text', 
+                    en: '🚀 Tech Stack: Next.js (App Router), TypeScript, Tailwind CSS, Zustand, Spring Boot 3, PostgreSQL, Redis, Elasticsearch, Kafka.',
+                    vi: '🚀 Công nghệ chính: Next.js, TypeScript, Tailwind CSS, Zustand, Spring Boot 3, PostgreSQL, Redis, Elasticsearch, Kafka.'
+                },
+                { type: 'image', url: godazImage },
+                { 
+                    type: 'text', 
+                    en: '🤖 AI Tools Used: Antigravity (Planning & Documentation), Claude (Frontend Coding & State Management), Codex (Code Review, Build Analysis & Debugging).',
+                    vi: '🤖 Ứng dụng AI: Antigravity (Lên kiến trúc & Tài liệu), Claude (Code Frontend & Quản lý state), Codex (Review code, Phân tích lỗi & Kiểm thử).'
+                }
+            ],
+            videoUrl: '',
+            gallery: [godazImage]
         }
     },
     {
@@ -105,36 +171,6 @@ export const personalProjects = [
             ],
             videoUrl: '',
             gallery: [fuImage]
-        }
-    },
-    {
-        id: 'godaz-shop',
-        title: 'goDaz shop',
-        description: {
-            en: 'A high-performance e-commerce platform built with microservices, secure transactions, and real-time search capabilities.',
-            vi: 'Nền tảng thương mại điện tử hiệu năng cao với kiến trúc microservices, giao dịch an toàn và tìm kiếm thời gian thực.',
-        },
-        imageUrl: godazImage,
-        imageAlt: 'Modern e-commerce dashboard interface',
-        tags: ['NextJS', 'Spring Boot', 'PostgreSQL', 'Redis', 'RabbitMQ', 'Kafka', 'Elasticsearch', 'AWS', 'Docker'],
-        githubLink: 'https://github.com/Mrnobody102/godaz-client-nextjs',
-        liveLink: 'https://godaz.shop/',
-        details: {
-            features: [
-                { en: 'Microservices Architecture', vi: 'Kiến trúc Microservices' },
-                { en: 'Real-time Order Sync', vi: 'Đồng bộ đơn hàng thời gian thực' },
-                { en: 'Secure Payment Integration', vi: 'Tích hợp thanh toán an toàn' }
-            ],
-            projectDetail: [
-                { 
-                    type: 'text', 
-                    en: 'Focused on scalability and reliability, the shop uses a distributed architecture to handle traffic spikes during sales events.',
-                    vi: 'Tập trung vào khả năng mở rộng và độ tin cậy, cửa hàng sử dụng kiến trúc phân tán để xử lý lưu lượng truy cập đột biến.'
-                },
-                { type: 'image', url: godazImage }
-            ],
-            videoUrl: '',
-            gallery: [godazImage]
         }
     },
     {

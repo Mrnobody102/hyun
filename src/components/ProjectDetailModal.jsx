@@ -125,7 +125,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                     </div>
 
                                     {/* Links (Mobile Optimized) */}
-                                    <div className="flex flex-row md:flex-col gap-3">
+                                    <div className="flex flex-col gap-3">
                                         {project.githubLink && (
                                             <a
                                                 href={project.githubLink}
@@ -134,11 +134,10 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                                 className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl font-bold hover:shadow-xl transition-all border border-transparent dark:border-white/10 text-xs md:text-base"
                                             >
                                                 <Github size={18} />
-                                                <span className="hidden sm:inline">{language === 'vi' ? 'Mã nguồn' : 'Source Code'}</span>
-                                                <span className="sm:hidden">{language === 'vi' ? 'Code' : 'Code'}</span>
+                                                <span>{language === 'vi' ? 'Mã nguồn' : 'Source Code'}</span>
                                             </a>
                                         )}
-                                        {project.liveLink && (
+                                        {project.liveLink && !project.demoLinks && (
                                             <a
                                                 href={project.liveLink}
                                                 target="_blank"
@@ -146,10 +145,21 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                                 className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all text-xs md:text-base"
                                             >
                                                 <ExternalLink size={18} />
-                                                <span className="hidden sm:inline">{language === 'vi' ? 'Xem Demo' : 'Live Preview'}</span>
-                                                <span className="sm:hidden">{language === 'vi' ? 'Demo' : 'Demo'}</span>
+                                                <span>{language === 'vi' ? 'Xem Demo' : 'Live Preview'}</span>
                                             </a>
                                         )}
+                                        {project.demoLinks && project.demoLinks.map((link, idx) => (
+                                            <a
+                                                key={idx}
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all text-xs md:text-base"
+                                            >
+                                                <ExternalLink size={18} />
+                                                <span>{language === 'vi' ? link.name.vi : link.name.en}</span>
+                                            </a>
+                                        ))}
                                     </div>
 
                                     {/* Technologies */}
