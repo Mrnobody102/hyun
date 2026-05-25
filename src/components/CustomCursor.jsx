@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
+    // Direct motion values for 60/120fps tracking without React re-renders
+    const cursorX = useMotionValue(-100);
+    const cursorY = useMotionValue(-100);
+
+    // Spring configuration for the trailing aura
+    const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
+    const springX = useSpring(cursorX, springConfig);
+    const springY = useSpring(cursorY, springConfig);
+
     useEffect(() => {
-        // Detect touch device
         const checkMobile = () => {
             setIsMobile(window.matchMedia('(hover: none) and (pointer: coarse)').matches);
         };
@@ -22,16 +29,11 @@ const CustomCursor = () => {
         if (isMobile) return;
 
         const updateMousePosition = (e) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
+            cursorX.set(e.clientX);
+            cursorY.set(e.clientY);
         };
-        
-        // Add cursor-none to body to hide default cursor
-        document.body.classList.add('cursor-none');
-
-        window.addEventListener('mousemove', updateMousePosition);
 
         const handleMouseOver = (e) => {
-            // Check if hovering over a clickable element
             const target = e.target;
             const isClickable = 
                 target.tagName.toLowerCase() === 'a' ||
@@ -43,46 +45,53 @@ const CustomCursor = () => {
             setIsHovered(!!isClickable);
         };
 
+        window.addEventListener('mousemove', updateMousePosition);
         window.addEventListener('mouseover', handleMouseOver);
 
         return () => {
             window.removeEventListener('mousemove', updateMousePosition);
             window.removeEventListener('mouseover', handleMouseOver);
-            document.body.classList.remove('cursor-none');
         };
-    }, [isMobile]);
+    }, [isMobile, cursorX, cursorY]);
 
     if (isMobile) return null;
 
-    const variants = {
-        default: {
-            x: mousePosition.x - 8,
-            y: mousePosition.y - 8,
-            scale: 1,
-            backgroundColor: 'rgba(217, 119, 6, 1)', // Amber-600 equivalent
-            mixBlendMode: 'normal'
-        },
-        hover: {
-            x: mousePosition.x - 24,
-            y: mousePosition.y - 24,
-            scale: 3,
-            backgroundColor: 'rgba(255, 255, 255, 1)',
-            mixBlendMode: 'difference' // Inverts colors underneath
-        }
-    };
-
     return (
-        <motion.div
-            className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[99999]"
-            variants={variants}
-            animate={isHovered ? 'hover' : 'default'}
-            transition={{
-                type: 'spring',
-                stiffness: 400,
-                damping: 28,
-                mass: 0.5
-            }}
-        />
+        <>
+            {/* Tiny dot (instant tracking) */}
+            <motion.div
+                className="fixed top-0 left-0 w-2 h-2 bg-amber-500 rounded-full pointer-events-none z-[100000] mix-blend-difference"
+                style={{
+                    x: cursorX,
+                    y: cursorY,
+                    translateX: "-50%",
+                    translateY: "-50%",
+                }}
+                animate={{
+                    opacity: isHovered ? 0 : 1,
+                    scale: isHovered ? 0 : 1
+                }}
+                transition={{ duration: 0.2 }}
+            />
+            
+            {/* Aura ring (spring tracking) */}
+            <motion.div
+                className="fixed top-0 left-0 rounded-full pointer-events-none z-[99999] border-[1.5px] border-amber-500/80 shadow-[0_0_8px_rgba(245,158,11,0.4)]"
+                style={{
+                    x: springX,
+                    y: springY,
+                    translateX: "-50%",
+                    translateY: "-50%",
+                }}
+                animate={{
+                    width: isHovered ? 56 : 32,
+                    height: isHovered ? 56 : 32,
+                    backgroundColor: isHovered ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                    scale: isHovered ? 1.1 : 1,
+                }}
+                transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+            />
+        </>
     );
 };
 
