@@ -42,7 +42,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
 
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'j') {
                 event.preventDefault();
                 setIsSearchOpen(true);
             }
@@ -213,7 +213,7 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                     whileHover={{ scale: 1.06 }}
                                     whileTap={{ scale: 0.97 }}
                                     className="p-2 rounded-lg transition-all bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white dark:text-blue-400 border border-blue-500/20"
-                                    title={language === 'vi' ? 'Tìm kiếm (Ctrl+K)' : 'Search (Ctrl+K)'}
+                                    title={language === 'vi' ? 'Tìm kiếm (Ctrl+J)' : 'Search (Ctrl+J)'}
                                 >
                                     <Search size={20} />
                                 </motion.button>

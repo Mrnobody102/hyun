@@ -17,6 +17,7 @@ import { pageTransition } from '@/lib/animations';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
 import CommandPalette from '@/components/CommandPalette';
+import CustomCursor from '@/components/CustomCursor';
 import { ArticleSkeleton, ProjectSkeleton, ArticleDetailSkeleton } from '@/components/Skeletons';
 
 const Certifications = lazy(() => import('@/components/Certifications'));
@@ -288,7 +289,8 @@ function Layout({ children }) {
                     content="Portfolio website of Phạm Quang Huy, a Full Stack Developer focused on maintainable systems, modern web experiences, and scalable solutions."
                 />
             </Helmet>
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 cursor-none">
+                <CustomCursor />
                 <CommandPalette />
                 <Header
                     activeTab={activeTab}
