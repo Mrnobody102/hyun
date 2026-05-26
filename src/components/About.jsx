@@ -84,7 +84,7 @@ const About = () => {
                 </div>
             </div>
 
-            <button onClick={scrollToNext} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors animate-bounce" aria-label="Scroll to Education & Experience">
+            <button onClick={scrollToNext} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors animate-bounce z-20 relative p-3 cursor-pointer" aria-label="Scroll to Education & Experience">
                 <ChevronDown size={32} />
             </button>
         </section>

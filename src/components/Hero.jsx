@@ -140,7 +140,8 @@ const Hero = ({ onNavigate = () => {} }) => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 1 }}
                 onClick={scrollToAbout} 
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-amber-600 hover:text-amber-700 transition-colors animate-bounce"
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-amber-600 hover:text-amber-700 transition-colors animate-bounce z-20 p-3 cursor-pointer"
+                aria-label="Scroll to about section"
             >
                 <ChevronDown size={32} />
             </motion.button>

@@ -5,6 +5,7 @@ import { educationExperience } from '@/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import SpotlightCard from './SpotlightCard';
 
 const iconByType = {
     education: GraduationCap,
@@ -58,23 +59,25 @@ const EducationExperience = () => {
                                     <div className="w-full md:w-5/12">
                                         <motion.div
                                             whileHover={{ y: -5, scale: 1.02 }}
-                                            className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border-2 border-slate-400 dark:border-slate-600 group"
+                                            className="group h-full"
                                         >
-                                            <div className="flex items-start gap-4">
-                                                <div className={`p-3 bg-gradient-to-r ${item.color} rounded-lg shrink-0 group-hover:shadow-lg transition-shadow`}>
-                                                    <Icon className="text-white" size={24} />
-                                                </div>
-                                                <div className="flex-1">
-                                                    <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{item.title}</h3>
-                                                    <p className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-2">{t(item.subtitle, language)}</p>
-                                                    <p className="text-slate-600 dark:text-slate-300 text-sm mb-3 leading-relaxed">{t(item.description, language)}</p>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="px-3 py-1 bg-amber-50 dark:bg-slate-700 text-amber-700 dark:text-amber-300 rounded-full text-xs font-semibold border border-amber-100 dark:border-slate-600">
-                                                            {item.period}
-                                                        </span>
+                                            <SpotlightCard className="p-6 bg-white dark:bg-slate-800 border-2 border-slate-400 dark:border-slate-600 h-full">
+                                                <div className="flex items-start gap-4">
+                                                    <div className={`p-3 bg-gradient-to-r ${item.color} rounded-lg shrink-0 group-hover:shadow-lg transition-shadow`}>
+                                                        <Icon className="text-white" size={24} />
+                                                    </div>
+                                                    <div className="flex-1 relative z-10">
+                                                        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{item.title}</h3>
+                                                        <p className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-2">{t(item.subtitle, language)}</p>
+                                                        <p className="text-slate-600 dark:text-slate-300 text-sm mb-3 leading-relaxed">{t(item.description, language)}</p>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="px-3 py-1 bg-amber-50 dark:bg-slate-700 text-amber-700 dark:text-amber-300 rounded-full text-xs font-semibold border border-amber-100 dark:border-slate-600">
+                                                                {item.period}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </SpotlightCard>
                                         </motion.div>
                                     </div>
 

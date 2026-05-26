@@ -92,7 +92,7 @@ const Skills = () => {
                             key={t(category.title, 'en')}
                             variants={fadeInUp}
                             whileHover={{ y: -6 }}
-                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border-2 border-slate-100 dark:border-slate-700 h-full flex flex-col"
+                            className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border-2 border-slate-400 dark:border-slate-600 h-full flex flex-col"
                         >
                             <div className="flex items-center gap-3 mb-6">
                                 <div className={`p-2.5 bg-gradient-to-r ${category.color} rounded-xl shadow-lg shadow-amber-500/10`}>
@@ -118,7 +118,7 @@ const Skills = () => {
                 </motion.div>
             </div>
 
-            <button onClick={scrollToCertifications} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors" aria-label="Scroll to Certifications">
+            <button onClick={scrollToCertifications} className="mt-10 mx-auto flex items-center justify-center text-amber-600 hover:text-amber-700 transition-colors animate-bounce z-20 relative p-3 cursor-pointer" aria-label="Scroll to Certifications">
                 <ChevronDown size={32} />
             </button>
         </section>
