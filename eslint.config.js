@@ -8,7 +8,7 @@ export default [
     ignores: ['dist'],
   },
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['src/**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -26,8 +26,26 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+          allowExportNames: ['buttonVariants', 'useDarkMode', 'useLanguage'],
+        },
+      ],
       'no-unused-vars': ['error', { varsIgnorePattern: '^(React|motion|[A-Z_])' }],
+    },
+  },
+  {
+    files: ['api/**/*.js', 'scripts/**/*.js', '*.config.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: globals.node,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
 ];

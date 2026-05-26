@@ -85,7 +85,7 @@ async function getContext(message, provider, history = []) {
         
         const searchLower = searchMessage.toLowerCase();
         // Keep words of length >= 2 to support Vietnamese terms (e.g. dự, án, cv, ai, kỹ)
-        const keywords = searchLower.split(/[\s,📊.?!()\-+]+/).filter(w => w.length >= 2);
+        const keywords = searchLower.split(/[\s,📊.?!()\-+]+/u).filter(w => w.length >= 2);
         
         const matches = kbCache[kbProvider].map(item => {
             const textLower = item.text.toLowerCase();
@@ -141,7 +141,7 @@ async function getContext(message, provider, history = []) {
     }
 }
 
-async function tryProvider(provider, message, history, language) {
+async function tryProvider(provider, message, history) {
     const context = await getContext(message, provider, history);
     const systemInstruction = `You are Huy's professional AI representative. 
 Here is the information you have memorized about Huy: ${context}. 
@@ -251,19 +251,19 @@ export default async function handler(req, res) {
 
     try {
         console.log('🤖 Layer 1: Gemini...');
-        return res.status(200).json({ response: await tryProvider('gemini', message, history, language) });
+        return res.status(200).json({ response: await tryProvider('gemini', message, history) });
     } catch (e1) {
         console.error('⚠️ Gemini failed:', e1.message);
         try {
             if (!groqKey) throw new Error('No Groq Key');
             console.log('🤖 Layer 2: Groq...');
-            return res.status(200).json({ response: await tryProvider('groq', message, history, language) });
+            return res.status(200).json({ response: await tryProvider('groq', message, history) });
         } catch (e2) {
             console.error('⚠️ Groq failed:', e2.message);
             try {
                 if (!openaiKey) throw new Error('No OpenAI Key');
                 console.log('🤖 Layer 3: OpenAI...');
-                return res.status(200).json({ response: await tryProvider('openai', message, history, language) });
+                return res.status(200).json({ response: await tryProvider('openai', message, history) });
             } catch (e3) {
                 console.error('❌ All AI providers failed:', e3.message);
                 const contactMessage = language === 'vi' 

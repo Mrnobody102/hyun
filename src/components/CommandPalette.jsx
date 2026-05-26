@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Home, Folder, FileText, Wrench, Mail, Moon, Sun, Globe } from 'lucide-react';
@@ -32,7 +32,7 @@ const CommandPalette = () => {
     }, []);
 
     // Actions list
-    const actions = [
+    const actions = useMemo(() => [
         { id: 'home', title: language === 'vi' ? 'Trang chủ' : 'Home', icon: <Home size={18} />, action: () => navigate(routesByTab.home) },
         { id: 'projects', title: language === 'vi' ? 'Dự án chính' : 'Main Projects', icon: <Folder size={18} />, action: () => navigate(routesByTab.projects) },
         { id: 'personal', title: language === 'vi' ? 'Dự án cá nhân' : 'Personal Projects', icon: <Folder size={18} />, action: () => navigate(routesByTab['personal-projects']) },
@@ -41,44 +41,44 @@ const CommandPalette = () => {
         { id: 'contact', title: language === 'vi' ? 'Liên hệ' : 'Contact', icon: <Mail size={18} />, action: () => navigate(routesByTab.contact) },
         { id: 'theme', title: language === 'vi' ? 'Đổi Giao diện (Sáng/Tối)' : 'Toggle Theme', icon: isDarkMode ? <Sun size={18} /> : <Moon size={18} />, action: () => toggleDarkMode() },
         { id: 'lang', title: language === 'vi' ? 'Switch to English' : 'Đổi sang Tiếng Việt', icon: <Globe size={18} />, action: () => toggleLanguage() }
-    ];
+    ], [isDarkMode, language, navigate, toggleDarkMode, toggleLanguage]);
 
-    const filteredActions = actions.filter((action) =>
+    const filteredActions = useMemo(() => actions.filter((action) =>
         action.title.toLowerCase().includes(search.toLowerCase())
-    );
+    ), [actions, search]);
 
     useEffect(() => {
         setSelectedIndex(0);
     }, [search]);
 
-    const handleActionSelect = (action) => {
+    const handleActionSelect = useCallback((action) => {
         action.action();
         setIsOpen(false);
-    };
-
-    const handleKeyDown = (e) => {
-        if (!isOpen) return;
-        
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setSelectedIndex((prev) => (prev + 1) % filteredActions.length);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setSelectedIndex((prev) => (prev - 1 + filteredActions.length) % filteredActions.length);
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (filteredActions[selectedIndex]) {
-                handleActionSelect(filteredActions[selectedIndex]);
-            }
-        }
-    };
+    }, []);
 
     useEffect(() => {
-        if (isOpen) {
-            window.addEventListener('keydown', handleKeyDown);
-            return () => window.removeEventListener('keydown', handleKeyDown);
-        }
-    }, [isOpen, selectedIndex, filteredActions]);
+        if (!isOpen) return undefined;
+
+        const handlePaletteKeyDown = (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (!filteredActions.length) return;
+                setSelectedIndex((prev) => (prev + 1) % filteredActions.length);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!filteredActions.length) return;
+                setSelectedIndex((prev) => (prev - 1 + filteredActions.length) % filteredActions.length);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (filteredActions[selectedIndex]) {
+                    handleActionSelect(filteredActions[selectedIndex]);
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handlePaletteKeyDown);
+        return () => window.removeEventListener('keydown', handlePaletteKeyDown);
+    }, [isOpen, selectedIndex, filteredActions, handleActionSelect]);
 
     useEffect(() => {
         if (isOpen && inputRef.current) {

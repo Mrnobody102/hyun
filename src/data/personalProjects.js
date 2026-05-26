@@ -57,7 +57,7 @@ export const personalProjects = [
                     vi: '🤖 Phát triển với AI (AI-Driven): Dự án được xây dựng dưới sự hỗ trợ của AI. Antigravity đảm nhiệm Lên kiến trúc & Tài liệu, Claude thực hiện Triển khai mã nguồn chính, và Codex phụ trách Review code & Kiểm thử.'
                 }
             ],
-            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            videoUrl: '',
             gallery: [lmsImage, itInterviewImage]
         }
     },
