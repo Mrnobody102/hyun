@@ -1,28 +1,5 @@
 export const companyProjects = [
     {
-        name: 'Telecommunications Core Routing System',
-        company: 'FPT Software – Viettel High Tech (Onsite)',
-        duration: '02/2026 – 05/2026',
-        position: { en: 'Backend Developer', vi: 'Lập trình viên Backend' },
-        description: {
-            en: 'Worked on a high-concurrency telecom core routing system for real-time communication flows and routing business logic.',
-            vi: 'Làm việc trên hệ thống định tuyến lõi viễn thông có độ đồng thời cao cho các luồng giao tiếp thời gian thực và logic nghiệp vụ định tuyến.',
-        },
-        responsibilities: {
-            en: [
-                'Implemented and optimized routing business logic for real-time communication flows using Erlang and Java Quarkus.',
-                'Managed distributed runtime data with Mnesia and persistent business data with MySQL.',
-                'Simulated Linux-based testing environments to validate routing scenarios and fault-tolerance behavior.',
-            ],
-            vi: [
-                'Triển khai và tối ưu hóa logic nghiệp vụ định tuyến cho các luồng giao tiếp thời gian thực bằng Erlang và Java Quarkus.',
-                'Quản lý dữ liệu runtime phân tán với Mnesia và dữ liệu nghiệp vụ bền vững với MySQL.',
-                'Mô phỏng môi trường thử nghiệm dựa trên Linux để xác thực các kịch bản định tuyến và hành vi chịu lỗi.',
-            ],
-        },
-        technologies: ['Erlang', 'Java', 'Quarkus', 'Mnesia', 'MySQL', 'Linux'],
-    },
-    {
         name: 'Camera AI Surveillance System',
         company: 'FPT Software',
         duration: '03/2025 – 02/2026',
@@ -50,6 +27,31 @@ export const companyProjects = [
             ],
         },
         technologies: ['C++17', 'NVIDIA DeepStream', 'Triton', 'Kafka', 'Redis', 'Qdrant', 'Docker', 'Golang', 'ZMQ', 'Linux'],
+    },
+    {
+        name: 'SecuxperDP',
+        company: 'FPT Software – LG CNS Client Project',
+        duration: '03/2023 – 05/2024',
+        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
+        description: {
+            en: 'Contributed to an enterprise web platform, focusing on backend services, secured APIs, authentication, database integration, and frontend-backend workflows.',
+            vi: 'Đóng góp vào một nền tảng web doanh nghiệp, tập trung vào các dịch vụ backend, API bảo mật, xác thực, tích hợp cơ sở dữ liệu và quy trình frontend-backend.',
+        },
+        responsibilities: {
+            en: [
+                'Developed Java Spring Boot services for user management, authentication, and secured RESTful APIs, supporting an enterprise platform with over 10,000 internal users.',
+                'Designed JWT-based authentication and authorization flows.',
+                'Worked with PostgreSQL and MongoDB for relational business data and configuration storage.',
+                'Built NextJS frontend features and integrated them with backend APIs.',
+            ],
+            vi: [
+                'Phát triển các dịch vụ Java Spring Boot để quản lý người dùng, xác thực và API RESTful bảo mật, hỗ trợ một nền tảng doanh nghiệp với hơn 10.000 người dùng nội bộ.',
+                'Thiết kế các luồng xác thực và phân quyền dựa trên JWT.',
+                'Làm việc với PostgreSQL và MongoDB cho dữ liệu nghiệp vụ quan hệ và lưu trữ cấu hình.',
+                'Xây dựng các tính năng frontend NextJS và tích hợp với backend API.',
+            ],
+        },
+        technologies: ['Java Spring Boot', 'NextJS', 'PostgreSQL', 'MongoDB', 'Jenkins', 'SonarLint', 'Docker', 'JWT'],
     },
     {
         name: 'Honda Digital User Manual',
@@ -119,49 +121,26 @@ export const companyProjects = [
         technologies: ['Java', 'OSGi', 'ActiveMQ', 'C++ Native Library Integration', 'Docker', 'Linux'],
     },
     {
-        name: 'SecuxperDP',
-        company: 'FPT Software – LG CNS Client Project',
-        duration: '03/2023 – 05/2024',
-        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
+        name: 'Telecommunications Core Routing System',
+        company: 'FPT Software – Viettel High Tech (Onsite)',
+        duration: '02/2026 – 05/2026',
+        position: { en: 'Backend Developer', vi: 'Lập trình viên Backend' },
         description: {
-            en: 'Contributed to an enterprise web platform, focusing on backend services, secured APIs, authentication, database integration, and frontend-backend workflows.',
-            vi: 'Đóng góp vào một nền tảng web doanh nghiệp, tập trung vào các dịch vụ backend, API bảo mật, xác thực, tích hợp cơ sở dữ liệu và quy trình frontend-backend.',
+            en: 'Worked on a high-concurrency telecom core routing system for real-time communication flows and routing business logic.',
+            vi: 'Làm việc trên hệ thống định tuyến lõi viễn thông có độ đồng thời cao cho các luồng giao tiếp thời gian thực và logic nghiệp vụ định tuyến.',
         },
         responsibilities: {
             en: [
-                'Developed Java Spring Boot services for user management, authentication, and secured RESTful APIs, supporting an enterprise platform with over 10,000 internal users.',
-                'Designed JWT-based authentication and authorization flows.',
-                'Worked with PostgreSQL and MongoDB for relational business data and configuration storage.',
-                'Built NextJS frontend features and integrated them with backend APIs.',
+                'Implemented and optimized routing business logic for real-time communication flows using Erlang and Java Quarkus.',
+                'Managed distributed runtime data with Mnesia and persistent business data with MySQL.',
+                'Simulated Linux-based testing environments to validate routing scenarios and fault-tolerance behavior.',
             ],
             vi: [
-                'Phát triển các dịch vụ Java Spring Boot để quản lý người dùng, xác thực và API RESTful bảo mật, hỗ trợ một nền tảng doanh nghiệp với hơn 10.000 người dùng nội bộ.',
-                'Thiết kế các luồng xác thực và phân quyền dựa trên JWT.',
-                'Làm việc với PostgreSQL và MongoDB cho dữ liệu nghiệp vụ quan hệ và lưu trữ cấu hình.',
-                'Xây dựng các tính năng frontend NextJS và tích hợp với backend API.',
+                'Triển khai và tối ưu hóa logic nghiệp vụ định tuyến cho các luồng giao tiếp thời gian thực bằng Erlang và Java Quarkus.',
+                'Quản lý dữ liệu runtime phân tán với Mnesia và dữ liệu nghiệp vụ bền vững với MySQL.',
+                'Mô phỏng môi trường thử nghiệm dựa trên Linux để xác thực các kịch bản định tuyến và hành vi chịu lỗi.',
             ],
         },
-        technologies: ['Java Spring Boot', 'NextJS', 'PostgreSQL', 'MongoDB', 'Jenkins', 'SonarLint', 'Docker', 'JWT'],
-    },
-    {
-        name: 'IDP Plus',
-        company: 'FPT Software – LG CNS Client Project',
-        duration: '06/2022 – 03/2023',
-        position: { en: 'Fullstack Developer', vi: 'Lập trình viên Fullstack' },
-        description: {
-            en: 'Built internal enterprise features for employee and department data management.',
-            vi: 'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
-        },
-        responsibilities: {
-            en: [
-                'Built internal enterprise features for employee and department data management.',
-                'Built Spring Boot APIs and ReactJS admin interfaces.',
-            ],
-            vi: [
-                'Xây dựng các tính năng doanh nghiệp nội bộ để quản lý dữ liệu nhân viên và phòng ban.',
-                'Xây dựng API Spring Boot và giao diện quản trị ReactJS.',
-            ],
-        },
-        technologies: ['Java Spring Boot', 'ReactJS', 'PostgreSQL', 'MongoDB', 'Redis', 'Jenkins', 'SonarLint'],
+        technologies: ['Erlang', 'Java', 'Quarkus', 'Mnesia', 'MySQL', 'Linux'],
     },
 ];
