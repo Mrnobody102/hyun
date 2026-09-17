@@ -8,25 +8,27 @@ import { t } from '@/lib/utils';
 import ShareModal from './ShareModal';
 import SafeImage from './SafeImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import SectionHeading from './SectionHeading';
 
 const ArticleCard = React.memo(function ArticleCard({ article, language, onArticleClick, onOpenShareModal }) {
     return (
         <motion.article
             variants={fadeInUp}
-            whileHover={{ y: -6 }}
-            className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row h-full group"
+            whileHover={{ y: -5 }}
+            className="rounded-2xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-white/85 dark:bg-white/[0.04] backdrop-blur-sm shadow-card hover:shadow-card-hover hover:border-amber-400/40 dark:hover:border-amber-400/30 transition-all duration-300 flex flex-col md:flex-row h-full group"
         >
             <button
                 onClick={() => onArticleClick?.(article.id)}
-                className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden bg-gradient-to-br from-amber-200 to-yellow-200 dark:from-amber-900 dark:to-yellow-900 flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+                className="relative w-full md:w-64 h-48 md:h-auto overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0 cursor-pointer"
             >
                 <SafeImage
                     src={article.imageUrl}
                     alt={t(article.title, language)}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute top-4 right-4 md:bottom-4 md:right-4 md:top-auto">
-                    <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-semibold">{t(article.category, language)}</span>
+                    <span className="px-3 py-1 rounded-full font-mono text-[10px] font-semibold uppercase tracking-[0.12em] bg-amber-500 text-slate-950 shadow-glow-sm">{t(article.category, language)}</span>
                 </div>
             </button>
 
@@ -34,7 +36,7 @@ const ArticleCard = React.memo(function ArticleCard({ article, language, onArtic
                 <div>
                     <button
                         onClick={() => onArticleClick?.(article.id)}
-                        className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors text-left hover:underline cursor-pointer"
+                        className="font-display text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors text-left cursor-pointer"
                     >
                         {t(article.title, language)}
                     </button>
@@ -42,14 +44,14 @@ const ArticleCard = React.memo(function ArticleCard({ article, language, onArtic
                     <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4 line-clamp-3">{t(article.excerpt, language)}</p>
                 </div>
 
-                <div className="flex flex-wrap gap-4 text-xs text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200 dark:border-slate-700 items-center justify-between">
+                <div className="flex flex-wrap gap-4 font-mono text-[11px] text-slate-500 dark:text-slate-400 mb-4 pb-4 border-b border-slate-200/80 dark:border-white/10 items-center justify-between">
                     <div className="flex flex-wrap gap-4">
-                        <div className="flex items-center gap-1">
-                            <User size={14} />
+                        <div className="flex items-center gap-1.5">
+                            <User size={13} />
                             {t(article.author, language)}
                         </div>
-                        <div className="flex items-center gap-1">
-                            <Calendar size={14} />
+                        <div className="flex items-center gap-1.5">
+                            <Calendar size={13} />
                             {t(article.date, language)}
                         </div>
                     </div>
@@ -57,16 +59,16 @@ const ArticleCard = React.memo(function ArticleCard({ article, language, onArtic
                         onClick={() => onOpenShareModal(article)}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-500/30 transition-colors"
+                        className="p-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white transition-colors"
                         title={language === 'vi' ? 'Chia sẻ' : 'Share'}
                     >
-                        <Share2 size={16} />
+                        <Share2 size={15} />
                     </motion.button>
                 </div>
 
                 <button
                     onClick={() => onArticleClick?.(article.id)}
-                    className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold hover:gap-3 transition-all duration-300 text-sm cursor-pointer w-fit"
+                    className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold hover:gap-3.5 transition-all duration-300 text-sm cursor-pointer w-fit"
                 >
                     {language === 'vi' ? 'Xem bài viết' : 'Read Article'}
                     <ArrowRight size={16} />
@@ -92,29 +94,17 @@ const Articles = ({ onArticleClick }) => {
     }, []);
 
     return (
-        <section id="articles" className="pt-32 pb-20 md:pt-36 px-4 bg-gradient-to-br from-white via-amber-50 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section id="articles" className="pt-32 pb-20 md:pt-36 px-4">
             <div className="container mx-auto max-w-6xl">
-                <motion.div
-                    variants={fadeInUp}
-                    initial="initial"
-                    whileInView="animate"
-                    viewport={{ once: true, margin: "-100px" }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                        <span className="bg-gradient-to-r from-slate-800 via-amber-600 to-yellow-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent">
-                            {language === 'vi' ? 'Bài viết & Blog' : 'Articles & Blog'}
-                        </span>
-                    </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-yellow-500 mx-auto rounded-full" />
-                    <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto">
-                        {language === 'vi'
-                            ? 'Chia sẻ kinh nghiệm, kiến thức và góc nhìn từ quá trình làm sản phẩm'
-                            : 'Sharing insights, technical notes, and lessons from building products'}
-                    </p>
-                </motion.div>
+                <SectionHeading
+                    kicker={language === 'vi' ? 'Chia sẻ' : 'Writing'}
+                    title={language === 'vi' ? 'Bài viết & Blog' : 'Articles & Blog'}
+                    subtitle={language === 'vi'
+                        ? 'Chia sẻ kinh nghiệm, kiến thức và góc nhìn từ quá trình làm sản phẩm'
+                        : 'Sharing insights, technical notes, and lessons from building products'}
+                />
 
-                <motion.div 
+                <motion.div
                     variants={staggerContainer}
                     initial="initial"
                     whileInView="animate"
@@ -139,4 +129,3 @@ const Articles = ({ onArticleClick }) => {
 };
 
 export default React.memo(Articles);
-

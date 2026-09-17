@@ -2,8 +2,8 @@ import hyunImage from '../assets/hyun.jpeg';
 
 export const heroData = {
     greetings: {
-        text1: 'Hi, I am Huy!',
-        text2: 'Hi, I build AI systems!',
+        text1: { en: 'Hi, I am Huy!', vi: 'Chào, mình là Huy!' },
+        text2: { en: 'Hi, I build AI systems!', vi: 'Mình xây dựng hệ thống AI!' },
         base: 'Hi, I ',
     },
     role: {

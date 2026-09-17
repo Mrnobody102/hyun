@@ -8,7 +8,7 @@ export const navItems = [
 ];
 
 export const searchCopy = {
-    title: { en: 'Quick search (Ctrl + K)', vi: 'Tìm kiếm nhanh (Ctrl + K)' },
+    title: { en: 'Quick search (Ctrl + J)', vi: 'Tìm kiếm nhanh (Ctrl + J)' },
     hint: { en: 'Up to 50 characters, press Enter to search', vi: 'Tối đa 50 ký tự, nhấn Enter để tìm' },
     placeholder: { en: 'Search across the site...', vi: 'Tìm kiếm trên trang...' },
     empty: { en: 'Type something to search', vi: 'Hãy nhập nội dung cần tìm' },

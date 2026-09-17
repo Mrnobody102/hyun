@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronDown, Download } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Briefcase, Download, Zap } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import { heroData, personalInfo } from '@/data';
 import SafeImage from './SafeImage';
-import TextReveal from './TextReveal';
-import { fadeInUp, fadeIn } from '@/lib/animations';
+import Tilt3D from './Tilt3D';
+import { fadeInUp, staggerContainer } from '@/lib/animations';
 
 const Hero = ({ onNavigate = () => {} }) => {
     const { language } = useLanguage();
     const { greetings, role, lead, imageUrl, imageAlt, imagePosition, ctaContact, ctaProjects, ctaDownload } = heroData;
-    const [greetingText, setGreetingText] = useState(() => greetings.text1);
     const sectionRef = useRef(null);
-    const greetingOptions = useMemo(() => [greetings.text1, greetings.text2].filter(Boolean), [greetings.text1, greetings.text2]);
+    const greetingOptions = useMemo(
+        () => [greetings.text1, greetings.text2].map((g) => t(g, language)).filter(Boolean),
+        [greetings.text1, greetings.text2, language]
+    );
+    const [greetingText, setGreetingText] = useState(() => greetingOptions[0] || '');
 
     useEffect(() => {
         if (greetingOptions.length <= 1) {
@@ -31,7 +34,6 @@ const Hero = ({ onNavigate = () => {} }) => {
         return () => window.clearInterval(intervalId);
     }, [greetingOptions]);
 
-
     const scrollToAbout = useCallback(() => {
         const element = document.querySelector('#about');
         if (element) {
@@ -42,112 +44,185 @@ const Hero = ({ onNavigate = () => {} }) => {
     }, []);
 
     const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-    const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
+    const y1 = useTransform(scrollY, [0, 1000], [0, 180]);
+
+    // "Software Engineer | AI Platform & Distributed Systems" → plain part + serif-italic accent part
+    const [rolePrimary, roleAccent] = useMemo(() => {
+        const parts = t(role, language).split('|').map((part) => part.trim());
+        return [parts[0] || '', parts.slice(1).join(' · ')];
+    }, [role, language]);
 
     return (
-        <section id="hero" ref={sectionRef} className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+        <section id="hero" ref={sectionRef} className="min-h-[92vh] flex items-center justify-center pt-24 pb-16 px-4 relative overflow-hidden">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <motion.div style={{ y: y1 }} className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-amber-200/20 to-yellow-200/20 dark:from-amber-500/10 dark:to-yellow-500/10 rounded-full blur-3xl" />
-                <motion.div style={{ y: y2 }} className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-slate-200/20 to-amber-100/20 dark:from-slate-800/30 dark:to-amber-600/20 rounded-full blur-3xl" />
+                <motion.div style={{ y: y1 }} className="absolute -top-24 right-[8%] w-[32rem] h-[32rem] rounded-full bg-amber-400/15 dark:bg-amber-500/10 blur-[120px]" />
             </div>
 
             <div className="container mx-auto max-w-6xl relative z-10">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                    <motion.div 
-                        variants={fadeInUp}
+                <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-10 items-center">
+                    <motion.div
+                        variants={staggerContainer}
                         initial="initial"
                         animate="animate"
                         className="space-y-6"
                     >
-                        <div className="space-y-4">
-                            <motion.span 
-                                variants={fadeIn}
-                                className="inline-block px-4 py-2 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 rounded-full text-sm font-semibold mb-4"
-                            >
-                                {greetingText}
-                            </motion.span>
-                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4">
-                                <span className="bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-amber-200 dark:via-yellow-200 dark:to-amber-300 bg-clip-text text-transparent inline-block pb-2">
-                                    {t(personalInfo.fullName, language)}
+                        <motion.div variants={fadeInUp}>
+                            <span className="inline-flex items-center gap-2.5 rounded-full border border-amber-500/30 bg-amber-500/[0.07] dark:bg-amber-400/[0.06] px-4 py-2 font-mono text-xs font-medium text-amber-700 dark:text-amber-300">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                                 </span>
-                            </h1>
-                            <TextReveal 
-                                text={t(role, language)} 
-                                className="text-2xl md:text-3xl lg:text-4xl font-semibold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-200 bg-clip-text text-transparent pb-4 pt-2 leading-[1.4]"
-                                delay={1}
-                            />
-                        </div>
+                                <AnimatePresence mode="wait">
+                                    <motion.span
+                                        key={greetingText}
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -8 }}
+                                        transition={{ duration: 0.35 }}
+                                        className="inline-block"
+                                    >
+                                        {greetingText}
+                                    </motion.span>
+                                </AnimatePresence>
+                            </span>
+                        </motion.div>
 
-                        <p className="text-lg text-slate-600 dark:text-slate-200 leading-relaxed">
+                        <motion.h1
+                            variants={fadeInUp}
+                            className="font-display text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.05]"
+                        >
+                            {t(personalInfo.fullName, language)}
+                            <span className="text-amber-500">.</span>
+                        </motion.h1>
+
+                        <motion.div variants={fadeInUp} className="space-y-1">
+                            <p className="font-display text-2xl md:text-3xl font-semibold text-slate-700 dark:text-slate-200 tracking-tight">
+                                {rolePrimary}
+                            </p>
+                            {roleAccent && (
+                                <p className="font-serif italic text-2xl md:text-3xl text-amber-600 dark:text-amber-400 leading-snug">
+                                    {roleAccent}
+                                </p>
+                            )}
+                        </motion.div>
+
+                        <motion.p variants={fadeInUp} className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
                             {t(lead, language)}
-                        </p>
+                        </motion.p>
 
-                        <div className="flex flex-wrap gap-4">
-                            <motion.button 
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => onNavigate('contact')} 
-                                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-xl transition-all duration-300"
+                        <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-4">
+                            <motion.button
+                                whileHover={{ scale: 1.03, y: -1 }}
+                                whileTap={{ scale: 0.97 }}
+                                onClick={() => onNavigate('contact')}
+                                className="group inline-flex items-center gap-2 rounded-full bg-amber-500 hover:bg-amber-400 px-7 py-3.5 font-semibold text-slate-950 shadow-glow-sm hover:shadow-glow transition-all duration-300"
                             >
                                 {t(ctaContact, language)}
+                                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
                             </motion.button>
-                            <motion.button 
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => onNavigate('projects')} 
-                                className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg font-semibold shadow-md hover:shadow-xl transition-all duration-300"
+                            <motion.button
+                                whileHover={{ scale: 1.03, y: -1 }}
+                                whileTap={{ scale: 0.97 }}
+                                onClick={() => onNavigate('projects')}
+                                className="inline-flex items-center gap-2 rounded-full border border-slate-900/15 dark:border-white/15 bg-white/60 dark:bg-white/5 px-7 py-3.5 font-semibold text-slate-800 dark:text-slate-100 hover:border-amber-500/60 hover:text-amber-600 dark:hover:text-amber-400 transition-all duration-300"
                             >
                                 {t(ctaProjects, language)}
                             </motion.button>
-                            <motion.a 
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
+                            <motion.a
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
                                 href="/Resume.pdf"
                                 download="Pham_Quang_Huy_Resume.pdf"
-                                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
+                                className="inline-flex items-center gap-2 px-2 py-3.5 font-semibold text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-300 cursor-pointer underline decoration-slate-300 dark:decoration-slate-600 decoration-1 underline-offset-8 hover:decoration-amber-500"
                             >
-                                <Download size={18} />
+                                <Download size={17} />
                                 {t(ctaDownload, language)}
                             </motion.a>
-                        </div>
+                        </motion.div>
                     </motion.div>
 
-                    <motion.div 
-                        initial={{ opacity: 0, x: 40 }} 
-                        animate={{ opacity: 1, x: 0 }} 
-                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }} 
+                    <motion.div
+                        initial={{ opacity: 0, y: 32, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
                         className="relative"
                     >
-                        <div className="relative w-full aspect-square max-w-md mx-auto">
-                            <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full blur-3xl opacity-20 animate-pulse" />
-                            <SafeImage
-                                src={imageUrl}
-                                alt={imageAlt}
-                                loading="eager"
-                                fetchPriority="high"
-                                className="relative z-10 w-full h-full rounded-2xl shadow-2xl"
-                                style={{ objectPosition: imagePosition || 'center center' }}
-                            />
-                            <div className="absolute inset-0 rounded-2xl ring-4 ring-amber-200/60 dark:ring-amber-300/20 z-20 pointer-events-none" />
-                        </div>
+                        <Tilt3D max={8} scale={1.01} className="group">
+                            <div className="relative w-full aspect-[4/5] max-w-sm mx-auto preserve-3d">
+                                {/* depth layers behind the portrait */}
+                                <div
+                                    aria-hidden
+                                    style={{ transform: 'translateZ(-60px) rotate(4deg)' }}
+                                    className="absolute -inset-3 rounded-[2rem] border border-amber-500/40 dark:border-amber-400/30"
+                                />
+                                <div
+                                    aria-hidden
+                                    style={{ transform: 'translateZ(-80px)' }}
+                                    className="absolute -inset-8 rounded-full bg-amber-400/20 dark:bg-amber-500/10 blur-3xl"
+                                />
+
+                                <div className="relative h-full w-full overflow-hidden rounded-[1.75rem] ring-1 ring-slate-900/10 dark:ring-white/15 shadow-card-hover">
+                                    <SafeImage
+                                        src={imageUrl}
+                                        alt={imageAlt}
+                                        loading="eager"
+                                        fetchPriority="high"
+                                        className="h-full w-full object-cover"
+                                        style={{ objectPosition: imagePosition || 'center center' }}
+                                    />
+                                    <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-950/45 to-transparent" />
+                                </div>
+
+                                {/* floating badges at different depths */}
+                                <div
+                                    style={{ transform: 'translateZ(55px)' }}
+                                    className="absolute -left-4 md:-left-8 top-10"
+                                >
+                                    <div className="animate-float flex items-center gap-3 rounded-2xl border border-white/50 dark:border-white/15 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-4 py-3 shadow-card">
+                                        <span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                                            <Zap size={17} />
+                                        </span>
+                                        <div>
+                                            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Focus</p>
+                                            <p className="text-sm font-bold text-slate-900 dark:text-white">{language === 'vi' ? 'AI thời gian thực' : 'Real-time AI'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    style={{ transform: 'translateZ(45px)' }}
+                                    className="absolute -right-3 md:-right-7 bottom-12"
+                                >
+                                    <div className="animate-float-delayed flex items-center gap-3 rounded-2xl border border-white/50 dark:border-white/15 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-4 py-3 shadow-card">
+                                        <span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                                            <Briefcase size={17} />
+                                        </span>
+                                        <div>
+                                            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Backend · Web</p>
+                                            <p className="text-sm font-bold text-slate-900 dark:text-white">{t(personalInfo.experience, language)} {language === 'vi' ? 'kinh nghiệm' : 'experience'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Tilt3D>
                     </motion.div>
                 </div>
             </div>
 
-            <motion.button 
+            <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                onClick={scrollToAbout} 
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-amber-600 hover:text-amber-700 transition-colors animate-bounce z-20 p-3 cursor-pointer"
+                transition={{ delay: 1.2, duration: 1 }}
+                onClick={scrollToAbout}
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2.5 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
                 aria-label="Scroll to about section"
             >
-                <ChevronDown size={32} />
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.35em]">Scroll</span>
+                <span className="flex h-10 w-6 justify-center rounded-full border border-slate-400/60 dark:border-slate-500/60 pt-2">
+                    <span className="h-2 w-1 rounded-full bg-amber-500 animate-scroll-dot" />
+                </span>
             </motion.button>
         </section>
     );
 };
 
 export default React.memo(Hero);
-
