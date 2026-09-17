@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, CheckCircle2, AlertCircle, Play, Image as ImageIcon, Code2 } from 'lucide-react';
+import { X, ExternalLink, Github, CheckCircle2, AlertCircle, Code2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/lib/utils';
 import SafeImage from './SafeImage';
@@ -8,12 +8,27 @@ import SafeImage from './SafeImage';
 const ProjectDetailModal = ({ project, isOpen, onClose }) => {
     const { language } = useLanguage();
 
+    // Lock background scroll and close on Escape while open
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen, onClose]);
+
     if (!project) return null;
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8">
+                <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-8">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -31,12 +46,12 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                         className="relative w-full max-w-5xl max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-white/20 dark:border-slate-800"
                     >
                         {/* Header Area */}
-                        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-slate-50/50 dark:bg-slate-800/50">
+                        <div className="flex items-center justify-between p-6 border-b border-slate-200/80 dark:border-white/10 shrink-0 bg-slate-50/60 dark:bg-white/[0.03]">
                             <div className="flex items-center gap-4">
-                                <div className={`p-3 rounded-2xl bg-gradient-to-br ${project.color || 'from-blue-500 to-indigo-500'} text-white shadow-lg`}>
+                                <div className="p-3 rounded-2xl bg-amber-500 text-slate-950 shadow-glow-sm">
                                     {project.icon || <Code2 size={24} />}
                                 </div>
-                                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white">
+                                <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                                     {project.title}
                                 </h2>
                             </div>
@@ -49,13 +64,13 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                         </div>
 
                         {/* Content Body */}
-                        <div className="flex-1 overflow-y-auto p-5 md:p-10">
+                        <div className="flex-1 overflow-y-auto overscroll-contain p-5 md:p-10">
                             <div className="flex flex-col md:grid md:grid-cols-3 gap-8 md:gap-10">
                                 {/* Left Column: Main Info */}
                                 <div className="md:col-span-2 space-y-10 order-2 md:order-1">
                                     {/* Description */}
                                     <div className="space-y-4">
-                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-600 dark:text-amber-400">
                                             {language === 'vi' ? 'Tổng quan dự án' : 'Project Overview'}
                                         </h4>
                                         <p className="text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
@@ -71,7 +86,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                         </h4>
                                         <div className="space-y-6">
                                             {project.details?.projectDetail?.map((item, i) => (
-                                                <div key={i} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                                <div key={i}>
                                                     {item.type === 'text' ? (
                                                         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base">
                                                             {language === 'vi' ? item.vi : item.en}
@@ -94,8 +109,8 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                         </h4>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                             {project.details?.features?.map((f, i) => (
-                                                <div key={i} className="flex items-start gap-3 p-3 md:p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-slate-100 dark:border-slate-700/50">
-                                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                                <div key={i} className="flex items-start gap-3 p-3 md:p-4 bg-slate-900/[0.03] dark:bg-white/[0.04] rounded-2xl border border-slate-900/10 dark:border-white/10">
+                                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
                                                     <span className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-semibold">{t(f, language)}</span>
                                                 </div>
                                             ))}
@@ -107,7 +122,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                 <div className="space-y-8 order-1 md:order-2">
                                     {/* Video / Main Image */}
                                     <div className="space-y-4">
-                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-600 dark:text-amber-400">
                                             {language === 'vi' ? 'Minh họa' : 'Preview'}
                                         </h4>
                                         <div className="aspect-video rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 shadow-inner">
@@ -131,7 +146,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                                 href={project.githubLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl font-bold hover:shadow-xl transition-all border border-transparent dark:border-white/10 text-xs md:text-base"
+                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-full font-semibold hover:shadow-xl transition-all border border-transparent dark:border-white/10 text-xs md:text-base"
                                             >
                                                 <Github size={18} />
                                                 <span>{language === 'vi' ? 'Mã nguồn' : 'Source Code'}</span>
@@ -142,7 +157,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                                 href={project.liveLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all text-xs md:text-base"
+                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full font-semibold shadow-glow-sm hover:shadow-glow transition-all text-xs md:text-base"
                                             >
                                                 <ExternalLink size={18} />
                                                 <span>{language === 'vi' ? 'Xem Demo' : 'Live Preview'}</span>
@@ -154,7 +169,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
                                                 href={link.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all text-xs md:text-base"
+                                                className="flex-1 flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 md:py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full font-semibold shadow-glow-sm hover:shadow-glow transition-all text-xs md:text-base"
                                             >
                                                 <ExternalLink size={18} />
                                                 <span>{language === 'vi' ? link.name.vi : link.name.en}</span>
@@ -164,14 +179,14 @@ const ProjectDetailModal = ({ project, isOpen, onClose }) => {
 
                                     {/* Technologies */}
                                     <div className="space-y-4">
-                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-600 dark:text-amber-400">
                                             {language === 'vi' ? 'Công nghệ' : 'Stack'}
                                         </h4>
                                         <div className="flex flex-wrap gap-2">
                                             {project.tags.map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl text-[10px] md:text-xs font-bold border border-slate-200/50 dark:border-slate-700/50"
+                                                    className="px-2.5 py-1 bg-slate-900/[0.03] dark:bg-white/[0.05] text-slate-700 dark:text-slate-200 rounded-lg text-[10px] md:text-xs font-medium border border-slate-900/10 dark:border-white/10"
                                                 >
                                                     {tag}
                                                 </span>

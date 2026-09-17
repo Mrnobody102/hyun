@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Copy, Facebook, Share2, X, Linkedin, Twitter } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -6,6 +6,21 @@ import { useLanguage } from '@/context/LanguageContext';
 const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
     const { language } = useLanguage();
     const [copied, setCopied] = useState(false);
+
+    // Lock background scroll and close on Escape while open
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = originalOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isOpen, onClose]);
     
     const resolvedTitle =
         articleTitle && typeof articleTitle === 'object'
@@ -83,7 +98,7 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
             id: 'native-share',
             label: language === 'vi' ? 'Hệ thống' : 'System',
             icon: Share2,
-            color: 'from-amber-500 to-yellow-600',
+            color: 'from-amber-500 to-amber-600',
             onClick: async () => {
                 try {
                     await navigator.share({ 
@@ -107,7 +122,7 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center px-4"
+                    className="fixed inset-0 z-[70] bg-slate-950/60 backdrop-blur-md flex items-center justify-center px-4"
                     onClick={onClose}
                 >
                     <motion.div
@@ -120,7 +135,7 @@ const ShareModal = ({ isOpen, onClose, articleUrl, articleTitle }) => {
                     >
                         <div className="flex items-start justify-between mb-8">
                             <div>
-                                <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100">
+                                <h3 className="font-display text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                                     {language === 'vi' ? 'Chia sẻ bài viết' : 'Share Article'}
                                 </h3>
                                 {resolvedTitle && (
