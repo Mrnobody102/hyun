@@ -27,7 +27,7 @@ const BackToTop = () => {
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-8 right-6 z-50 p-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 hover:scale-110 active:scale-95 transition-transform"
+                    className="fixed bottom-24 right-6 z-50 p-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-glow-sm hover:shadow-glow ring-1 ring-amber-400/50 hover:scale-110 active:scale-95 transition-all"
                     aria-label="Back to top"
                     title="Back to top"
                 >

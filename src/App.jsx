@@ -28,6 +28,7 @@ const Projects = lazy(() => import('@/components/Projects'));
 const Articles = lazy(() => import('@/components/Articles'));
 const ArticleDetail = lazy(() => import('@/components/ArticleDetail'));
 const Contact = lazy(() => import('@/components/Contact'));
+const EmAnComChua = lazy(() => import('@/components/EmAnComChua'));
 
 
 const HomePage = memo(function HomePage() {
@@ -220,7 +221,7 @@ function AnimatedRoutes() {
     
     return (
         <ErrorBoundary>
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="wait">
                 <Routes location={location} key={location.pathname}>
                     <Route path={routesByTab.home} element={<HomePage />} />
                     <Route path={routesByTab.skills} element={<SkillsPage />} />
@@ -290,7 +291,14 @@ function Layout({ children }) {
                     content="Portfolio website of Phạm Quang Huy, a Full Stack Developer focused on maintainable systems, modern web experiences, and scalable solutions."
                 />
             </Helmet>
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+            <div className="relative min-h-screen bg-[#f7f5f1] dark:bg-[#080c16] text-slate-800 dark:text-slate-100">
+                {/* Shared ambient backdrop: blueprint grid + warm glow + film grain */}
+                <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
+                    <div className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_90%_70%_at_50%_0%,black_20%,transparent_75%)]" />
+                    <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[60rem] h-[30rem] rounded-full bg-amber-400/10 dark:bg-amber-500/[0.07] blur-[130px]" />
+                    <div className="absolute inset-0 bg-noise opacity-[0.035] dark:opacity-[0.06] mix-blend-overlay" />
+                </div>
+                <div className="relative z-10">
                 <CommandPalette />
                 <Header
                     activeTab={activeTab}
@@ -302,8 +310,29 @@ function Layout({ children }) {
                 <BackToTop />
                 <ChatBot />
                 <Toaster />
+                </div>
             </div>
         </>
+    );
+}
+
+// Route "bí mật" đứng ngoài Layout: không Header/Footer/ChatBot, giao diện riêng hoàn toàn.
+function AppContent() {
+    const location = useLocation();
+    const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+
+    if (normalizedPath === '/emancomchua') {
+        return (
+            <Suspense fallback={null}>
+                <EmAnComChua />
+            </Suspense>
+        );
+    }
+
+    return (
+        <Layout>
+            <AnimatedRoutes />
+        </Layout>
     );
 }
 
@@ -313,9 +342,7 @@ function App() {
             <BrowserRouter>
                 <LanguageProvider>
                     <DarkModeProvider>
-                        <Layout>
-                            <AnimatedRoutes />
-                        </Layout>
+                        <AppContent />
                     </DarkModeProvider>
                 </LanguageProvider>
             </BrowserRouter>

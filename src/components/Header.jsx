@@ -32,12 +32,12 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
     const headerBg = useTransform(
         scrollY,
         [0, 50],
-        ['rgba(255, 255, 255, 0)', isDarkMode ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)']
+        ['rgba(255, 255, 255, 0)', isDarkMode ? 'rgba(8, 12, 22, 0.82)' : 'rgba(247, 245, 241, 0.85)']
     );
     const headerShadow = useTransform(
         scrollY,
         [0, 50],
-        ['none', '0 10px 15px -3px rgb(0 0 0 / 0.1)']
+        ['none', isDarkMode ? '0 1px 0 0 rgb(255 255 255 / 0.08), 0 12px 32px -12px rgb(0 0 0 / 0.5)' : '0 1px 0 0 rgb(15 23 42 / 0.06), 0 12px 32px -16px rgb(15 23 42 / 0.15)']
     );
 
     useEffect(() => {
@@ -168,8 +168,8 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                 <nav className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <motion.button
-                            whileHover={{ scale: 1.03 }}
-                            className="w-12 h-12 relative overflow-hidden rounded-full border-2 border-amber-500 shadow-md bg-white"
+                            whileHover={{ scale: 1.04 }}
+                            className="w-11 h-11 relative overflow-hidden rounded-full ring-2 ring-amber-500/80 ring-offset-2 ring-offset-transparent shadow-glow-sm bg-white"
                             onClick={() => {
                                 if (activeTab === 'home') {
                                     scrollToSection('#hero');
@@ -182,56 +182,65 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                             <img alt="Profile avatar" className="w-full h-full object-cover object-center" src={kimAvatar} loading="eager" decoding="async" width="48" height="48" />
                         </motion.button>
 
-                        <div className="hidden md:flex items-center gap-8">
-                            {navItems.map((item, index) => (
-                                <motion.button
-                                    key={item.key}
-                                    initial={{ opacity: 0, y: -16 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.35, delay: index * 0.05 }}
-                                    onClick={() => handleNavigate(item.key)}
-                                    className={`flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium transition-colors relative group ${
-                                        activeTab === item.key ? 'text-amber-600 dark:text-amber-400' : ''
-                                    }`}
-                                    title={t(item.name, language)}
-                                >
-                                    {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span className="text-lg">{item.emoji || '•'}</span>}
-                                    <span className="hidden xl:inline">{t(item.name, language)}</span>
-                                    <span
-                                        className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-amber-600 to-yellow-500 transition-all duration-300 ${
-                                            activeTab === item.key ? 'w-full' : 'w-0 group-hover:w-full'
+                        <div className="hidden md:flex items-center gap-6">
+                            <div className="flex items-center gap-1 rounded-full border border-slate-900/10 dark:border-white/10 bg-white/50 dark:bg-white/[0.04] backdrop-blur-md p-1">
+                                {navItems.map((item, index) => (
+                                    <motion.button
+                                        key={item.key}
+                                        initial={{ opacity: 0, y: -16 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.35, delay: index * 0.05 }}
+                                        onClick={() => handleNavigate(item.key)}
+                                        className={`relative flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                                            activeTab === item.key
+                                                ? 'text-amber-700 dark:text-amber-300'
+                                                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                                         }`}
-                                    />
-                                </motion.button>
-                            ))}
+                                        title={t(item.name, language)}
+                                    >
+                                        {activeTab === item.key && (
+                                            <motion.span
+                                                layoutId="nav-active-pill"
+                                                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                                                className="absolute inset-0 rounded-full bg-amber-500/[0.12] dark:bg-amber-400/[0.14] ring-1 ring-amber-500/30"
+                                            />
+                                        )}
+                                        <span className="relative z-10 flex items-center gap-2">
+                                            {item.icon ? React.createElement(iconMap[item.icon], { size: 16 }) : <span className="text-base">{item.emoji || '•'}</span>}
+                                            <span className="hidden xl:inline">{t(item.name, language)}</span>
+                                        </span>
+                                    </motion.button>
+                                ))}
+                            </div>
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
                                 <motion.button
                                     onClick={() => {
                                         setIsSearchOpen(true);
                                     }}
                                     whileHover={{ scale: 1.06 }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="p-2 rounded-lg transition-all bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white dark:text-blue-400 border border-blue-500/20"
+                                    className="p-2.5 rounded-full transition-all border border-slate-900/10 dark:border-white/10 bg-white/50 dark:bg-white/[0.04] text-slate-600 dark:text-slate-300 hover:border-amber-500/50 hover:text-amber-600 dark:hover:text-amber-400"
                                     title={language === 'vi' ? 'Tìm kiếm (Ctrl+J)' : 'Search (Ctrl+J)'}
                                 >
-                                    <Search size={20} />
+                                    <Search size={18} />
                                 </motion.button>
 
                                 <motion.button
                                     onClick={toggleDarkMode}
                                     whileHover={{ scale: 1.06 }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="p-2 rounded-lg transition-all bg-amber-500/10 hover:bg-amber-500 text-amber-600 hover:text-white dark:text-amber-400 border border-amber-500/20"
+                                    className="p-2.5 rounded-full transition-all border border-slate-900/10 dark:border-white/10 bg-white/50 dark:bg-white/[0.04] text-slate-600 dark:text-slate-300 hover:border-amber-500/50 hover:text-amber-600 dark:hover:text-amber-400"
+                                    title={language === 'vi' ? 'Chế độ sáng/tối' : 'Toggle theme'}
                                 >
-                                    {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                                    {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                                 </motion.button>
 
                                 <motion.button
                                     onClick={toggleLanguage}
                                     whileHover={{ scale: 1.06 }}
                                     whileTap={{ scale: 0.97 }}
-                                    className="p-1.5 rounded-lg transition-all bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 hover:text-white dark:text-emerald-400 border border-emerald-500/20 font-bold min-w-[2.5rem]"
+                                    className="px-3 py-2 rounded-full transition-all border border-slate-900/10 dark:border-white/10 bg-white/50 dark:bg-white/[0.04] text-slate-600 dark:text-slate-300 hover:border-amber-500/50 hover:text-amber-600 dark:hover:text-amber-400 font-mono text-xs font-semibold tracking-widest"
                                 >
                                     {language.toUpperCase()}
                                 </motion.button>
@@ -260,13 +269,17 @@ const Header = ({ activeTab = 'home', onNavigate = () => {}, onArticleSelect = n
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                className="md:hidden mt-4 overflow-hidden rounded-xl bg-white dark:bg-slate-800 shadow-xl border border-slate-100 dark:border-slate-700"
+                                className="md:hidden mt-4 overflow-hidden rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-card-hover border border-slate-200/80 dark:border-white/10"
                             >
                                 {navItems.map((item) => (
                                     <button
                                         key={item.key}
                                         onClick={() => handleNavigate(item.key)}
-                                        className="flex items-center gap-3 w-full p-4 text-left border-b last:border-0 border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                        className={`flex items-center gap-3 w-full p-4 text-left border-b last:border-0 border-slate-100 dark:border-white/5 transition-colors ${
+                                            activeTab === item.key
+                                                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/[0.06]'
+                                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/5'
+                                        }`}
                                     >
                                         {item.icon ? React.createElement(iconMap[item.icon], { size: 18 }) : <span>{item.emoji}</span>}
                                         {t(item.name, language)}
