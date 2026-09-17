@@ -12,7 +12,7 @@ export const ArticleSkeleton = () => (
         </div>
         <div className="grid gap-8">
             {[1, 2, 3].map(i => (
-                <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700">
+                <div key={i} className="flex flex-col md:flex-row gap-6 p-6 bg-white/70 dark:bg-white/[0.04] rounded-2xl border border-slate-200/80 dark:border-white/10">
                     <Skeleton className="h-48 w-full md:w-64 flex-shrink-0" />
                     <div className="flex-1 space-y-4">
                         <Skeleton className="h-6 w-3/4" />
@@ -33,7 +33,7 @@ export const ProjectSkeleton = () => (
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="space-y-4 p-4 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                <div key={i} className="space-y-4 p-4 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] rounded-2xl">
                     <Skeleton className="h-48 w-full" />
                     <Skeleton className="h-6 w-3/4" />
                     <div className="flex gap-2">
@@ -59,7 +59,7 @@ export const ArticleDetailSkeleton = () => (
             </div>
         </div>
         <Skeleton className="h-[450px] w-full rounded-2xl" />
-        <div className="bg-white dark:bg-slate-800 p-8 md:p-16 rounded-3xl space-y-6">
+        <div className="bg-white/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 p-8 md:p-16 rounded-3xl space-y-6">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-5/6" />
